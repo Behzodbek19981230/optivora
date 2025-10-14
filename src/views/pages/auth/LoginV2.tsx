@@ -5,7 +5,8 @@ import { useState } from 'react'
 
 // Next Imports
 import Link from 'next/link'
-import { useParams } from 'next/navigation'
+
+// Removed locale usage
 
 // MUI Imports
 import useMediaQuery from '@mui/material/useMediaQuery'
@@ -23,7 +24,6 @@ import classnames from 'classnames'
 
 // Type Imports
 import type { SystemMode } from '@core/types'
-import type { Locale } from '@configs/i18n'
 
 // Component Imports
 import Logo from '@components/layout/shared/Logo'
@@ -37,7 +37,6 @@ import { useImageVariant } from '@core/hooks/useImageVariant'
 import { useSettings } from '@core/hooks/useSettings'
 
 // Util Imports
-import { getLocalizedUrl } from '@/utils/i18n'
 
 // Styled Custom Components
 const LoginIllustration = styled('img')(({ theme }) => ({
@@ -76,7 +75,7 @@ const LoginV2 = ({ mode }: { mode: SystemMode }) => {
   const borderedLightIllustration = '/images/illustrations/auth/v2-login-light-border.png'
 
   // Hooks
-  const { lang: locale } = useParams()
+  // i18n removed
   const { settings } = useSettings()
   const theme = useTheme()
   const hidden = useMediaQuery(theme.breakpoints.down('md'))
@@ -113,7 +112,7 @@ const LoginV2 = ({ mode }: { mode: SystemMode }) => {
       </div>
       <div className='flex justify-center items-center bs-full bg-backgroundPaper !min-is-full p-6 md:!min-is-[unset] md:p-12 md:is-[480px]'>
         <Link
-          href={getLocalizedUrl('/', locale as Locale)}
+          href='/'
           className='absolute block-start-5 sm:block-start-[33px] inline-start-6 sm:inline-start-[38px]'
         >
           <Logo />
@@ -143,12 +142,7 @@ const LoginV2 = ({ mode }: { mode: SystemMode }) => {
             />
             <div className='flex justify-between items-center gap-x-3 gap-y-1 flex-wrap'>
               <FormControlLabel control={<Checkbox />} label='Remember me' />
-              <Typography
-                className='text-end'
-                color='primary'
-                component={Link}
-                href={getLocalizedUrl('/pages/auth/forgot-password-v2', locale as Locale)}
-              >
+              <Typography className='text-end' color='primary' component={Link} href='/forgot-password'>
                 Forgot password?
               </Typography>
             </div>
@@ -157,11 +151,7 @@ const LoginV2 = ({ mode }: { mode: SystemMode }) => {
             </Button>
             <div className='flex justify-center items-center flex-wrap gap-2'>
               <Typography>New on our platform?</Typography>
-              <Typography
-                component={Link}
-                href={getLocalizedUrl('/pages/auth/register-v2', locale as Locale)}
-                color='primary'
-              >
+              <Typography component={Link} href='/register' color='primary'>
                 Create an account
               </Typography>
             </div>
