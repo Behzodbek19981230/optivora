@@ -44,8 +44,12 @@ const AuthProvider = ({ children }: Props) => {
         await DataService.get(endpoints.me)
         .then(async response => {
           setLoading(false)
-          setUser({ ...response.data?.result })
-          localStorage.setItem('userData', JSON.stringify(response.data.result))
+          const raw = response.data as any
+          const role = (raw?.roles?.name || raw?.role || 'user').toString().toLowerCase()
+          const roleId = typeof raw?.role === 'number' ? raw.role : raw?.roleId || null
+          const normalized = { ...raw, role, roleId }
+          setUser(normalized)
+          localStorage.setItem('userData', JSON.stringify(normalized))
         })
         .catch(() => {
           localStorage.removeItem('userData')
@@ -72,17 +76,20 @@ const AuthProvider = ({ children }: Props) => {
        ...params
       })
 
-      window.localStorage.setItem(authConfig.storageTokenKeyName, res.data?.result.access_token)
+      window.localStorage.setItem(authConfig.storageTokenKeyName, res?.data?.access)
 
       const returnUrl = router.query.returnUrl
 
-      setUser({
-        ...res.data?.result
-      })
+      const raw = res.data?.result as any
+      const role = (raw?.roles?.name || raw?.role || 'user').toString().toLowerCase()
+      const roleId = typeof raw?.role === 'number' ? raw.role : raw?.roleId || null
+      const normalized = { ...raw, role, roleId }
+      setUser(normalized)
 
-      params.rememberMe ? window.localStorage.setItem('userData', JSON.stringify(res.data?.result)) : null
+      if (params.rememberMe) {
+        window.localStorage.setItem('userData', JSON.stringify(normalized))
+      }
 
-      const redirectURL = returnUrl && returnUrl !== '/' ? returnUrl : '/'
       initAuth()
 
       router

@@ -8,30 +8,19 @@ const navigation = (): VerticalNavItemsType => {
       icon: 'tabler:dashboard',
       path: '/dashboard'
     },
+  
     {
-      title: 'Employees',
-      icon: 'tabler:user',
-      path: '/employee/list'
+      sectionTitle: 'CMS'
     },
     {
-      title: 'Buyers',
-      icon: 'tabler:shopping-cart',
-      path: '/buyer/list'
+      title: 'Industries',
+      icon: 'tabler:category',
+      path: '/cms/industries'
     },
     {
-      title: 'Merchants',
-      icon: 'tabler:building-store',
-      path: '/merchants'
-    },
-    {
-      title: 'Agreement',
-      icon: 'tabler:files',
-      path: '/agreement'
-    },
-    {
-      title: 'billing',
-      icon: 'tabler:receipt',
-      path: '/billing'
+      title: 'Services',
+      icon: 'tabler:tools',
+      path: '/cms/services'
     }
   ]
 }

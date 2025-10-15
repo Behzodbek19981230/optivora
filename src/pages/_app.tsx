@@ -14,8 +14,7 @@ import 'src/configs/i18n'
 import { defaultACLObj } from 'src/configs/acl'
 import themeConfig from 'src/configs/themeConfig'
 
-// ** Fake-DB Import
-import 'src/@fake-db'
+
 
 // ** Third Party Import
 import { Toaster } from 'react-hot-toast'
@@ -39,12 +38,9 @@ import ReactHotToast from 'src/@core/styles/libs/react-hot-toast'
 
 // ** Utils Imports
 import { createEmotionCache } from 'src/@core/utils/create-emotion-cache'
+import { SWRConfig } from 'swr'
+import { DataService } from 'src/configs/dataService'
 
-// ** Prismjs Styles
-import 'prismjs'
-import 'prismjs/themes/prism-tomorrow.css'
-import 'prismjs/components/prism-jsx'
-import 'prismjs/components/prism-tsx'
 
 // ** React Perfect Scrollbar Style
 import 'react-perfect-scrollbar/dist/css/styles.css'
@@ -124,14 +120,38 @@ const App = (props: ExtendedAppProps) => {
               {({ settings }) => {
                 return (
                   <ThemeComponent settings={settings}>
-                    <Guard authGuard={authGuard} guestGuard={guestGuard}>
-                      <AclGuard aclAbilities={aclAbilities} guestGuard={guestGuard} authGuard={authGuard}>
-                        {getLayout(<Component {...pageProps} />)}
-                      </AclGuard>
-                    </Guard>
-                    <ReactHotToast>
-                      <Toaster position={settings.toastPosition} toastOptions={{ className: 'react-hot-toast' }} />
-                    </ReactHotToast>
+                    <SWRConfig
+                      value={{
+                        fetcher: async (key: any) => {
+                          if (Array.isArray(key)) {
+                            const [url, params] = key as [string, Record<string, any>]
+                            const res = await DataService.get(url, params)
+                            return res.data
+                          }
+                          if (typeof key === 'string') {
+                            const res = await DataService.get(key)
+                            return res.data
+                          }
+                          if (key && typeof key === 'object' && 'url' in key) {
+                            const { url, params } = key as { url: string; params?: Record<string, any> }
+                            const res = await DataService.get(url, params)
+                            return res.data
+                          }
+                          throw new Error('Unsupported SWR key')
+                        },
+                        revalidateOnFocus: false,
+                        keepPreviousData: true
+                      }}
+                    >
+                      <Guard authGuard={authGuard} guestGuard={guestGuard}>
+                        <AclGuard aclAbilities={aclAbilities} guestGuard={guestGuard} authGuard={authGuard}>
+                          {getLayout(<Component {...pageProps} />)}
+                        </AclGuard>
+                      </Guard>
+                      <ReactHotToast>
+                        <Toaster position={settings.toastPosition} toastOptions={{ className: 'react-hot-toast' }} />
+                      </ReactHotToast>
+                    </SWRConfig>
                   </ThemeComponent>
                 )
               }}

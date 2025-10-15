@@ -2,7 +2,6 @@
 import { useEffect, ReactNode } from 'react'
 
 // ** MUI Imports
-import { Direction } from '@mui/material'
 
 // ** Emotion Imports
 import createCache from '@emotion/cache'
@@ -13,7 +12,7 @@ import stylisRTLPlugin from 'stylis-plugin-rtl'
 
 interface DirectionProps {
   children: ReactNode
-  direction: Direction
+  direction: 'rtl' | 'ltr'
 }
 
 const styleCache = () =>

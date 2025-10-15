@@ -30,5 +30,7 @@ export enum otpBillingTypes {
 }
 
 export enum Roles {
-    admin = 'admin',
+  admin = 'admin',
+  manager = 'manager',
+  superuser = 'superuser',
 }

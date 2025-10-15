@@ -22,13 +22,16 @@ const AclGuard = (props: AclGuardProps) => {
   let ability: AppAbility
   useEffect(() => {
     if (auth.user && auth.user.role && !guestGuard && router.route === '/') {
-      const homeRoute = getHomeRoute(auth.user.role)
+      const role = (auth.user.role || '').toString().toLowerCase()
+      const homeRoute = getHomeRoute(role)
       router.replace(homeRoute)
     }
   }, [auth.user, guestGuard, router])
+console.log('auth in acl', auth);
 
   if (auth.user && !ability) {
-    ability = buildAbilityFor(auth.user.role, aclAbilities.subject)
+    const role = (auth.user.role || '').toString().toLowerCase()
+    ability = buildAbilityFor(role, aclAbilities.subject)
     if (router.route === '/') {
       return <Spinner />
     }

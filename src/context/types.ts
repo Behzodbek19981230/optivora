@@ -1,4 +1,3 @@
-import { UsersType } from 'src/types/apps/userTypes'
 import { BranchesType } from 'src/types/dictionaries/branchesType'
 import { MerchantType } from 'src/types/dictionaries/merchantType'
 import { CategoryTypes } from 'src/types/dictionaries/ratesType'
@@ -16,13 +15,38 @@ export type LoginClientParams = {
   username: string
 }
 
+export type UserRole = {
+  id: number
+  name: string
+  description?: string | null
+}
+
 export type UserDataType = {
   id: number
-  role: string
   username: string
-  fullName: string
-  password: string
+  first_name: string
+  last_name: string
+  second_name?: string | null
+  email: string
+  phone_number: string
+  address?: string | null
+  country?: any | null
+  region?: any | null
+  district?: any | null
+  gender?: string | null
+  is_active: boolean
   avatar?: string | null
+  passport_number: string
+  passport_series: string
+  date_joined: string
+  date_of_birthday?: string | null
+  // Backend role id (numeric)
+  roleId?: number | null
+  // Backend roles object
+  roles?: UserRole | null
+  // App-consumed role string used in checks/ACL (derived from roles?.name)
+  role: string
+  // Optional relations
   merchant?: MerchantType | null
   branch?: BranchesType | null
 }

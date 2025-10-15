@@ -18,15 +18,11 @@ export type ACLObj = {
  */
 const defineRulesFor = (role: string, subject: string) => {
   const { can, rules } = new AbilityBuilder(AppAbility)
-  switch (role) {
-    case 'admin':
-      can('manage', 'all')
-      break
-  
-
-    default:
-      can(['read', 'create', 'update', 'delete'], subject)
-      break
+  const r = (role || '').toString().toLowerCase()
+  if (r === 'admin' || r === 'superuser' || r === 'manager' || r === '1') {
+    can('manage', 'all')
+  } else {
+    can(['read', 'create', 'update', 'delete'], subject)
   }
 
   return rules

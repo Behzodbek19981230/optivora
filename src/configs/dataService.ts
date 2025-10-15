@@ -19,7 +19,6 @@ const authHeader = () => {
 const client = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
-    'Access-Control-Allow-Origin': '*'
   }
 })
 const contentTypeJson = {
@@ -33,7 +32,7 @@ const contentTypeForm = {
 }
 
 class DataService {
-  static get(path: string, params = {}, optionalHeader: OptionalHeader = {}): Promise<AxiosResponse> {
+  static get<T = any>(path: string, params = {}, optionalHeader: OptionalHeader = {}): Promise<AxiosResponse<T>> {
     const config: AxiosRequestConfig = {
       method: 'GET',
       url: path,
@@ -43,7 +42,7 @@ class DataService {
     return client(config)
   }
 
-  static post(path: string = '', data: any = {}, optionalHeader: OptionalHeader = {}) {
+  static post<T = any, B = any>(path: string = '', data: B = {} as B, optionalHeader: OptionalHeader = {}) {
     const config: AxiosRequestConfig = {
       method: 'POST',
       url: path,
@@ -53,7 +52,7 @@ class DataService {
     return client(config)
   }
 
-  static patch(path: string = '', data: any = {}): Promise<AxiosResponse> {
+  static patch<T = any, B = any>(path: string = '', data: B = {} as B): Promise<AxiosResponse<T>> {
     const config: AxiosRequestConfig = {
       method: 'PATCH',
       url: path,
@@ -63,7 +62,7 @@ class DataService {
     return client(config)
   }
 
-  static delete(path: string = '', data: any = {}): Promise<AxiosResponse> {
+  static delete<T = any, B = any>(path: string = '', data: B = {} as B): Promise<AxiosResponse<T>> {
     const config: AxiosRequestConfig = {
       method: 'DELETE',
       url: path,
@@ -73,7 +72,7 @@ class DataService {
     return client(config)
   }
 
-  static put(path: string = '', data: any = {}, optionalHeader: OptionalHeader = {}): Promise<AxiosResponse> {
+  static put<T = any, B = any>(path: string = '', data: B = {} as B, optionalHeader: OptionalHeader = {}): Promise<AxiosResponse<T>> {
     const config: AxiosRequestConfig = {
       method: 'PUT',
       url: path,
@@ -82,7 +81,7 @@ class DataService {
     }
     return client(config)
   }
-  static login(path: string = '', data: any = {}, optionalHeader: OptionalHeader = {}): Promise<AxiosResponse> {
+  static login<T = any, B = any>(path: string = '', data: B = {} as B, optionalHeader: OptionalHeader = {}): Promise<AxiosResponse<T>> {
     const config: AxiosRequestConfig = {
       method: 'POST',
       url: path,
@@ -91,7 +90,7 @@ class DataService {
     }
     return client(config)
   }
-  static postForm(path: string = '', data: any = {}, optionalHeader: OptionalHeader = {}): Promise<AxiosResponse> {
+  static postForm<T = any, B = any>(path: string = '', data: B = {} as B, optionalHeader: OptionalHeader = {}): Promise<AxiosResponse<T>> {
     const config: AxiosRequestConfig = {
       method: 'POST',
       url: path,
@@ -100,7 +99,7 @@ class DataService {
     }
     return client(config)
   }
-  static putForm(path: string = '', data: any = {}, optionalHeader: OptionalHeader = {}): Promise<AxiosResponse> {
+  static putForm<T = any, B = any>(path: string = '', data: B = {} as B, optionalHeader: OptionalHeader = {}): Promise<AxiosResponse<T>> {
     const config: AxiosRequestConfig = {
       method: 'PUT',
       url: path,
@@ -110,6 +109,24 @@ class DataService {
     return client(config)
   }
 }
+
+// Ensure all requests end with a trailing slash before query/hash
+const ensureTrailingSlash = (url: string) => {
+  if (!url) return url
+  // Separate hash if any
+  const [noHash, hash] = url.split('#', 2)
+  // Separate query if any
+  const [path, query] = noHash.split('?', 2)
+  const normalizedPath = path.endsWith('/') ? path : `${path}/`
+  return normalizedPath + (query ? `?${query}` : '') + (hash ? `#${hash}` : '')
+}
+
+client.interceptors.request.use(config => {
+  if (config.url) {
+    config.url = ensureTrailingSlash(config.url)
+  }
+  return config
+})
 
 client.interceptors.response.use(
   function (response) {
