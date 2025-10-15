@@ -1,27 +1,19 @@
-// MUI Imports
-import type { Theme } from '@mui/material/styles'
+// ** Type Imports
+import { OwnerStateThemeType } from './'
+import { Skin } from 'src/@core/layouts/types'
 
-// Type Imports
-import type { Skin } from '@core/types'
-
-const snackbar = (skin: Skin): Theme['components'] => ({
-  MuiSnackbarContent: {
-    styleOverrides: {
-      root: ({ theme }) => ({
-        padding: theme.spacing(0, 4),
-        ...(skin !== 'bordered'
-          ? {
-              boxShadow: 'var(--mui-customShadows-xs)'
-            }
-          : {
-              boxShadow: 'none'
-            }),
-        '& .MuiSnackbarContent-message': {
-          paddingBlock: theme.spacing(3)
-        }
-      })
+const Snackbar = (skin: Skin) => {
+  return {
+    MuiSnackbarContent: {
+      styleOverrides: {
+        root: ({ theme }: OwnerStateThemeType) => ({
+          ...(skin === 'bordered' && { boxShadow: 'none' }),
+          backgroundColor: `rgb(${theme.palette.customColors.main})`,
+          color: theme.palette.common[theme.palette.mode === 'light' ? 'white' : 'black']
+        })
+      }
     }
   }
-})
+}
 
-export default snackbar
+export default Snackbar

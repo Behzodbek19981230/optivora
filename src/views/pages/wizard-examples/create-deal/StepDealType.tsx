@@ -1,68 +1,74 @@
-// React Imports
-import { useState } from 'react'
-import type { ChangeEvent } from 'react'
+// ** React Imports
+import { ChangeEvent, useState } from 'react'
 
-// MUI Imports
+// ** MUI Imports
+import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
-import FormHelperText from '@mui/material/FormHelperText'
 import MenuItem from '@mui/material/MenuItem'
-import Button from '@mui/material/Button'
+import Typography from '@mui/material/Typography'
 import { styled, useTheme } from '@mui/material/styles'
+import { SelectChangeEvent } from '@mui/material/Select'
 
-// Third-party Imports
-import classnames from 'classnames'
+// ** Custom Component Import
+import CustomTextField from 'src/@core/components/mui/text-field'
 
-// Type Imports
-import type { Mode } from '@core/types'
-import type { CustomInputVerticalData } from '@core/components/custom-inputs/types'
+// ** Type Imports
+import { CustomRadioIconsData, CustomRadioIconsProps } from 'src/@core/components/custom-radio/types'
 
-// Component Imports
-import CustomInputVertical from '@core/components/custom-inputs/Vertical'
-import CustomTextField from '@core/components/mui/TextField'
-import DirectionalIcon from '@components/DirectionalIcon'
+// ** Custom Components Imports
+import CustomChip from 'src/@core/components/mui/chip'
+import CustomRadioIcons from 'src/@core/components/custom-radio/icons'
 
-type Props = {
-  activeStep: number
-  handleNext: () => void
-  handlePrev: () => void
-  steps: { title: string; subtitle: string }[]
-  mode?: Mode
+interface IconType {
+  icon: CustomRadioIconsProps['icon']
+  iconProps: CustomRadioIconsProps['iconProps']
 }
 
-// Vars
-const data: CustomInputVerticalData[] = [
+const data: CustomRadioIconsData[] = [
   {
-    title: 'Percentage',
+    isSelected: true,
     value: 'percentage',
     content: 'Create a deal which offer uses some % off (i.e 5% OFF) on total.',
-    asset: 'tabler-discount-check-filled',
-    isSelected: true
+    title: (
+      <Typography variant='h6' sx={{ mb: 1 }}>
+        Percentage
+      </Typography>
+    )
   },
   {
-    title: 'Flat Amount',
     value: 'flat-amount',
     content: 'Create a deal which offer uses flat $ off (i.e $5 OFF) on the total.',
-    asset: 'tabler-credit-card-filled'
+    title: (
+      <Typography variant='h6' sx={{ mb: 1 }}>
+        Flat Amount
+      </Typography>
+    )
   },
   {
-    title: 'Prime Member',
-    value: 'prime member',
+    value: 'prime-member',
     content: 'Create prime member only deal to encourage the prime members.',
-    asset: 'tabler-diamond-filled'
+    title: (
+      <Typography variant='h6' sx={{ mb: 1 }}>
+        Prime Member
+      </Typography>
+    )
   }
 ]
+
+const regionArray = ['Asia', 'Europe', 'Africa', 'Australia', 'North America', 'South America']
 
 const ImgWrapper = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'flex-end',
   justifyContent: 'center',
-  borderRadius: 'var(--mui-shape-borderRadius)',
-  border: '1px solid var(--mui-palette-divider)',
+  borderRadius: theme.shape.borderRadius,
+  border: `1px solid ${theme.palette.divider}`,
   [theme.breakpoints.down('sm')]: {
     padding: theme.spacing(4, 4, 0, 4)
   },
   [theme.breakpoints.up('sm')]: {
-    height: 237
+    height: 250,
+    padding: theme.spacing(5, 5, 0, 5)
   },
   '& img': {
     height: 'auto',
@@ -70,109 +76,107 @@ const ImgWrapper = styled('div')(({ theme }) => ({
   }
 }))
 
-const regionArray = ['Select Region', 'Asia', 'Europe', 'Africa', 'Australia', 'North America', 'South America']
-
-const StepDealType = ({ activeStep, handleNext, handlePrev, steps }: Props) => {
-  const initialSelectedOption: string = data.filter(item => item.isSelected)[
+const StepDealType = () => {
+  const initialIconSelected: string = data.filter(item => item.isSelected)[
     data.filter(item => item.isSelected).length - 1
   ].value
 
-  // States
-  const [selectedOption, setSelectedOption] = useState<string>(initialSelectedOption)
-  const [region, setRegion] = useState<string>('')
+  // ** States
+  const [region, setRegion] = useState<string[]>([])
+  const [selectedRadio, setSelectedRadio] = useState<string>(initialIconSelected)
 
-  // Hooks
+  // ** Hook
   const theme = useTheme()
 
-  const handleOptionChange = (prop: string | ChangeEvent<HTMLInputElement>) => {
+  const icons: IconType[] = [
+    {
+      icon: 'tabler:discount-check',
+      iconProps: { fontSize: '2.5rem', style: { marginBottom: 8 }, color: theme.palette.text.secondary }
+    },
+    {
+      icon: 'tabler:credit-card',
+      iconProps: { fontSize: '2.5rem', style: { marginBottom: 8 }, color: theme.palette.text.secondary }
+    },
+    {
+      icon: 'tabler:diamond',
+      iconProps: { fontSize: '2.5rem', style: { marginBottom: 8 }, color: theme.palette.text.secondary }
+    }
+  ]
+
+  const handleChange = (event: SelectChangeEvent<typeof region>) => {
+    const {
+      target: { value }
+    } = event
+    setRegion(typeof value === 'string' ? value.split(',') : value)
+  }
+
+  const handleRadioChange = (prop: string | ChangeEvent<HTMLInputElement>) => {
     if (typeof prop === 'string') {
-      setSelectedOption(prop)
+      setSelectedRadio(prop)
     } else {
-      setSelectedOption((prop.target as HTMLInputElement).value)
+      setSelectedRadio((prop.target as HTMLInputElement).value)
     }
   }
 
   return (
-    <Grid container spacing={6}>
-      <Grid item xs={12}>
-        <ImgWrapper>
-          <img width={650} alt='illustration' src={`/images/pages/create-deal-type-${theme.palette.mode}.png`} />
-        </ImgWrapper>
-      </Grid>
-      {data.map((item, index) => {
-        let asset
-
-        if (item.asset && typeof item.asset === 'string') {
-          asset = <i className={classnames(item.asset, 'text-[1.75rem]')} />
-        }
-
-        return (
-          <CustomInputVertical
-            type='radio'
+    <>
+      <Grid container sx={{ mb: 6 }} spacing={4}>
+        <Grid item xs={12} sx={{ mb: 2 }}>
+          <ImgWrapper>
+            <img width={650} alt='illustration' src={`/images/pages/create-deal-type-${theme.palette.mode}.png`} />
+          </ImgWrapper>
+        </Grid>
+        {data.map((item, index) => (
+          <CustomRadioIcons
             key={index}
+            data={data[index]}
+            icon={icons[index].icon}
+            selected={selectedRadio}
+            name='custom-radios-deal'
             gridProps={{ sm: 4, xs: 12 }}
-            selected={selectedOption}
-            name='custom-radios-basic'
-            handleChange={handleOptionChange}
-            data={typeof item.asset === 'string' ? { ...item, asset } : item}
+            handleChange={handleRadioChange}
+            iconProps={icons[index].iconProps}
           />
-        )
-      })}
-      <Grid item xs={12} sm={6}>
-        <CustomTextField
-          fullWidth
-          type='number'
-          label='Discount'
-          placeholder='25'
-          helperText='Enter the discount percentage. 10 = 10%'
-        />
+        ))}
       </Grid>
-      <Grid item xs={12} sm={6}>
-        <CustomTextField
-          select
-          fullWidth
-          value={region}
-          SelectProps={{
-            onChange: e => setRegion(e.target.value as string)
-          }}
-          label='Region'
-        >
-          {regionArray.map((item, index) => (
-            <MenuItem key={item} value={index === 0 ? '' : item}>
-              {item}
-            </MenuItem>
-          ))}
-        </CustomTextField>
-        <FormHelperText>Select applicable regions for the deal.</FormHelperText>
-      </Grid>
-      <Grid item xs={12}>
-        <div className='flex items-center justify-between'>
-          <Button
-            variant='tonal'
-            color='secondary'
-            disabled={activeStep === 0}
-            onClick={handlePrev}
-            startIcon={<DirectionalIcon ltrIconClass='tabler-arrow-left' rtlIconClass='tabler-arrow-right' />}
-          >
-            Previous
-          </Button>
-          <Button
-            variant='contained'
-            color={activeStep === steps.length - 1 ? 'success' : 'primary'}
-            onClick={handleNext}
-            endIcon={
-              activeStep === steps.length - 1 ? (
-                <i className='tabler-check' />
-              ) : (
-                <DirectionalIcon ltrIconClass='tabler-arrow-right' rtlIconClass='tabler-arrow-left' />
+      <Grid container spacing={4}>
+        <Grid item xs={12} sm={6}>
+          <CustomTextField
+            fullWidth
+            type='number'
+            label='Discount'
+            placeholder='25'
+            helperText='Enter the discount percentage. 10 = 10%'
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <CustomTextField
+            select
+            fullWidth
+            label='Region'
+            helperText='Select applicable regions for the deal.'
+            SelectProps={{
+              multiple: true,
+              value: region,
+              onChange: e => handleChange(e as SelectChangeEvent<typeof region>),
+              renderValue: selected => (
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                  {(selected as string[]).map(value => (
+                    <CustomChip rounded key={value} label={value} skin='light' />
+                  ))}
+                </Box>
               )
-            }
+            }}
           >
-            {activeStep === steps.length - 1 ? 'Submit' : 'Next'}
-          </Button>
-        </div>
+            {regionArray.map(reg => (
+              <MenuItem key={reg} value={reg}>
+                {reg}
+              </MenuItem>
+            ))}
+          </CustomTextField>
+        </Grid>
       </Grid>
-    </Grid>
+    </>
   )
 }
 

@@ -1,29 +1,23 @@
-// MUI Imports
+// ** MUI Imports
 import Grid from '@mui/material/Grid'
-import InputAdornment from '@mui/material/InputAdornment'
-import FormControl from '@mui/material/FormControl'
+import Radio from '@mui/material/Radio'
+import Checkbox from '@mui/material/Checkbox'
 import MenuItem from '@mui/material/MenuItem'
 import FormLabel from '@mui/material/FormLabel'
-import Radio from '@mui/material/Radio'
-import FormControlLabel from '@mui/material/FormControlLabel'
 import RadioGroup from '@mui/material/RadioGroup'
-import Checkbox from '@mui/material/Checkbox'
-import Button from '@mui/material/Button'
+import FormControl from '@mui/material/FormControl'
+import InputAdornment from '@mui/material/InputAdornment'
+import FormControlLabel from '@mui/material/FormControlLabel'
 
-// Component Imports
-import CustomTextField from '@core/components/mui/TextField'
-import DirectionalIcon from '@components/DirectionalIcon'
+// ** Custom Component Import
+import CustomTextField from 'src/@core/components/mui/text-field'
 
-type Props = {
-  activeStep: number
-  handleNext: () => void
-  handlePrev: () => void
-  steps: { title: string; subtitle: string }[]
-}
+// ** Icon Imports
+import Icon from 'src/@core/components/icon'
 
-const StepPriceDetails = ({ activeStep, handleNext, handlePrev, steps }: Props) => {
+const StepPriceDetails = () => {
   return (
-    <Grid container spacing={6}>
+    <Grid container spacing={4}>
       <Grid item xs={12} md={6}>
         <CustomTextField
           fullWidth
@@ -33,7 +27,7 @@ const StepPriceDetails = ({ activeStep, handleNext, handlePrev, steps }: Props) 
           InputProps={{
             endAdornment: (
               <InputAdornment position='end'>
-                <i className='tabler-currency-dollar' />
+                <Icon fontSize='1.25rem' icon='tabler:currency-dollar' />
               </InputAdornment>
             )
           }}
@@ -48,7 +42,7 @@ const StepPriceDetails = ({ activeStep, handleNext, handlePrev, steps }: Props) 
           InputProps={{
             endAdornment: (
               <InputAdornment position='end'>
-                <i className='tabler-currency-dollar' />
+                <Icon fontSize='1.25rem' icon='tabler:currency-dollar' />
               </InputAdornment>
             )
           }}
@@ -63,7 +57,7 @@ const StepPriceDetails = ({ activeStep, handleNext, handlePrev, steps }: Props) 
           InputProps={{
             endAdornment: (
               <InputAdornment position='end'>
-                <i className='tabler-currency-dollar' />
+                <Icon fontSize='1.25rem' icon='tabler:currency-dollar' />
               </InputAdornment>
             )
           }}
@@ -71,13 +65,12 @@ const StepPriceDetails = ({ activeStep, handleNext, handlePrev, steps }: Props) 
       </Grid>
 
       <Grid item xs={12} md={6}>
-        <CustomTextField select fullWidth label='Maintenance Period' defaultValue=''>
-          <MenuItem value=''>Select Maintenance Period</MenuItem>
-          <MenuItem value='monthly'>Monthly</MenuItem>
-          <MenuItem value='quarterly'>Quarterly</MenuItem>
-          <MenuItem value='half-yearly'>Half Yearly</MenuItem>
-          <MenuItem value='yearly'>Yearly</MenuItem>
-          <MenuItem value='one-time'>One-time</MenuItem>
+        <CustomTextField select fullWidth id='select-maintenance' label='Maintenance Period' defaultValue=''>
+          <MenuItem value='Monthly'>Monthly</MenuItem>
+          <MenuItem value='Quarterly'>Quarterly</MenuItem>
+          <MenuItem value='Yearly'>Yearly</MenuItem>
+          <MenuItem value='One-time'>One-time</MenuItem>
+          <MenuItem value='Per Sqft.Monthly'>Per Sqft.Monthly</MenuItem>
         </CustomTextField>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -89,7 +82,7 @@ const StepPriceDetails = ({ activeStep, handleNext, handlePrev, steps }: Props) 
           InputProps={{
             endAdornment: (
               <InputAdornment position='end'>
-                <i className='tabler-currency-dollar' />
+                <Icon fontSize='1.25rem' icon='tabler:currency-dollar' />
               </InputAdornment>
             )
           }}
@@ -104,7 +97,7 @@ const StepPriceDetails = ({ activeStep, handleNext, handlePrev, steps }: Props) 
           InputProps={{
             endAdornment: (
               <InputAdornment position='end'>
-                <i className='tabler-currency-dollar' />
+                <Icon fontSize='1.25rem' icon='tabler:currency-dollar' />
               </InputAdornment>
             )
           }}
@@ -112,7 +105,9 @@ const StepPriceDetails = ({ activeStep, handleNext, handlePrev, steps }: Props) 
       </Grid>
       <Grid item xs={12} md={6}>
         <FormControl>
-          <FormLabel id='price-radio'>Show Price As</FormLabel>
+          <FormLabel id='price-radio' sx={{ fontSize: theme => theme.typography.body2.fontSize }}>
+            Show Price As
+          </FormLabel>
           <RadioGroup name='price-group' defaultValue='negotiable' aria-labelledby='price-radio'>
             <FormControlLabel value='negotiable' control={<Radio />} label='Negotiable' />
             <FormControlLabel value='call-for-price' control={<Radio />} label='Call For Price' />
@@ -120,38 +115,16 @@ const StepPriceDetails = ({ activeStep, handleNext, handlePrev, steps }: Props) 
         </FormControl>
       </Grid>
       <Grid item xs={12} md={6}>
-        <FormControl>
-          <FormLabel>Price Includes</FormLabel>
-          <FormControlLabel control={<Checkbox defaultChecked />} label='Car Parking' />
+        <FormControl component='fieldset'>
+          <FormLabel component='legend' sx={{ fontSize: theme => theme.typography.body2.fontSize }}>
+            Price Includes
+          </FormLabel>
+          <FormControlLabel control={<Checkbox />} label='Car Parking' />
           <FormControlLabel control={<Checkbox />} label='Club Membership' />
         </FormControl>
       </Grid>
-      <Grid item xs={12}>
-        <div className='flex items-center justify-between'>
-          <Button
-            variant='tonal'
-            color='secondary'
-            disabled={activeStep === 0}
-            onClick={handlePrev}
-            startIcon={<DirectionalIcon ltrIconClass='tabler-arrow-left' rtlIconClass='tabler-arrow-right' />}
-          >
-            Previous
-          </Button>
-          <Button
-            variant='contained'
-            color={activeStep === steps.length - 1 ? 'success' : 'primary'}
-            onClick={handleNext}
-            endIcon={
-              activeStep === steps.length - 1 ? (
-                <i className='tabler-check' />
-              ) : (
-                <DirectionalIcon ltrIconClass='tabler-arrow-right' rtlIconClass='tabler-arrow-left' />
-              )
-            }
-          >
-            {activeStep === steps.length - 1 ? 'Submit' : 'Next'}
-          </Button>
-        </div>
+      <Grid item xs={12} sx={{ pt: theme => `${theme.spacing(2)} !important` }}>
+        <FormControlLabel control={<Checkbox defaultChecked />} label='Stamp Duty & Registration charges excluded.' />
       </Grid>
     </Grid>
   )

@@ -1,0 +1,68 @@
+// ** MUI Imports
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+
+// ** Custom Component Import
+import CustomTextField from 'src/@core/components/mui/text-field'
+
+// ** Icon Imports
+import Icon from 'src/@core/components/icon'
+import Translations from 'src/layouts/components/Translations'
+import { useTranslation } from 'react-i18next'
+import { useTheme } from '@mui/material'
+import { LoadingButton } from '@mui/lab'
+
+interface TableHeaderProps {
+  value: string
+  toggle?: () => void
+  handleFilter: (val: string) => void
+  handleClick?: () => void
+  onExport?: () => void
+  exportLoading?: boolean
+}
+
+const TableHeaderEmployee = (props: TableHeaderProps) => {
+  // ** Props
+  const theme = useTheme()
+  const { handleFilter, value, handleClick, onExport, toggle } = props
+  const { t } = useTranslation()
+  return (
+    <Box
+      sx={{
+        py: 4,
+        px: 6,
+        rowGap: 2,
+        columnGap: 4,
+        display: 'flex',
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        justifyContent: 'flex-end'
+      }}
+    >
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 2 }}>
+        <CustomTextField
+          value={value}
+          sx={{ mr: 4 }}
+          placeholder={t('Search') ?? ''}
+          onChange={e => handleFilter(e.target.value)}
+        />
+
+        <LoadingButton
+          style={{ background: theme.palette.primary.contrastText }}
+          variant='outlined'
+          startIcon={<Icon icon='tabler:screen-share' />}
+          onClick={onExport}
+          loading={props.exportLoading}
+        >
+          <Translations text='Export' />
+        </LoadingButton>
+        <Button onClick={toggle} variant='outlined'>
+          <Icon icon='tabler:plus' />
+          <Translations text='Add employee' />
+        </Button>
+      </Box>
+    </Box>
+  )
+}
+
+export default TableHeaderEmployee

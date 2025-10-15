@@ -1,9 +1,4 @@
-'use client'
-
-// Next Imports
-import dynamic from 'next/dynamic'
-
-// MUI Imports
+// ** MUI Imports
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import Divider from '@mui/material/Divider'
@@ -11,22 +6,21 @@ import CardHeader from '@mui/material/CardHeader'
 import Typography from '@mui/material/Typography'
 import CardContent from '@mui/material/CardContent'
 
-// Component Imports
+// ** Third Party Imports
 import {
   Radar,
   Tooltip,
   PolarGrid,
   RadarChart,
+  TooltipProps,
   PolarAngleAxis,
   PolarRadiusAxis,
   ResponsiveContainer
-} from '@/libs/Recharts'
-import type { TooltipProps } from '@/libs/Recharts'
+} from 'recharts'
 
-// Styled Component Imports
-const AppRecharts = dynamic(() => import('@/libs/styles/AppRecharts'))
+// ** Icon Imports
+import Icon from 'src/@core/components/icon'
 
-// Vars
 const data = [
   {
     subject: 'Battery',
@@ -70,21 +64,20 @@ const data = [
   }
 ]
 
-const CustomTooltip = (props: TooltipProps<any, any>) => {
-  // Props
-  const { active, payload } = props
+const CustomTooltip = (data: TooltipProps<any, any>) => {
+  const { active, payload } = data
 
   if (active && payload) {
     return (
       <div className='recharts-custom-tooltip'>
-        <Typography color='text.primary'>{props.label}</Typography>
+        <Typography>{data.label}</Typography>
         <Divider />
-        {props &&
-          props.payload &&
-          props.payload.map((i: any) => {
+        {data &&
+          data.payload &&
+          data.payload.map((i: any) => {
             return (
-              <Box key={i.dataKey} className='flex items-center gap-2.5' sx={{ '& i': { color: i.fill } }}>
-                <i className='tabler-circle-filled text-[10px]' />
+              <Box sx={{ display: 'flex', alignItems: 'center', '& svg': { color: i.fill, mr: 2.5 } }} key={i.dataKey}>
+                <Icon icon='mdi:circle' fontSize='0.6rem' />
                 <Typography variant='body2'>{`${i.dataKey} : ${i.payload[i.dataKey]}`}</Typography>
               </Box>
             )
@@ -101,30 +94,28 @@ const RechartsRadarChart = () => {
     <Card>
       <CardHeader title='Mobile Comparison' />
       <CardContent>
-        <AppRecharts>
-          <div className='bs-[350px]'>
-            <ResponsiveContainer>
-              <RadarChart cx='50%' cy='50%' height={350} data={data} style={{ direction: 'ltr' }}>
-                <PolarGrid />
-                <PolarAngleAxis dataKey='subject' />
-                <PolarRadiusAxis />
-                <Tooltip content={CustomTooltip} />
-                <Radar dataKey='iPhone 11' stroke='#fde802' fill='#fde802' fillOpacity={1} />
-                <Radar dataKey='Samsung s20' stroke='#9b88fa' fill='#9b88fa' fillOpacity={0.8} />
-              </RadarChart>
-            </ResponsiveContainer>
-          </div>
-        </AppRecharts>
-        <div className='flex justify-center gap-6'>
-          <Box className='flex items-center gap-1.5' sx={{ '& i': { color: '#fde802' } }}>
-            <i className='tabler-circle-filled text-xs' />
+        <Box sx={{ height: 350 }}>
+          <ResponsiveContainer>
+            <RadarChart cx='50%' cy='50%' height={350} data={data} style={{ direction: 'ltr' }}>
+              <PolarGrid />
+              <PolarAngleAxis dataKey='subject' />
+              <PolarRadiusAxis />
+              <Tooltip content={CustomTooltip} />
+              <Radar dataKey='iPhone 11' stroke='#fde802' fill='#fde802' fillOpacity={1} />
+              <Radar dataKey='Samsung s20' stroke='#9b88fa' fill='#9b88fa' fillOpacity={0.8} />
+            </RadarChart>
+          </ResponsiveContainer>
+        </Box>
+        <Box sx={{ display: 'flex', mb: 4, justifyContent: 'center' }}>
+          <Box sx={{ mr: 6, display: 'flex', alignItems: 'center', '& svg': { mr: 1.5, color: '#fde802' } }}>
+            <Icon icon='mdi:circle' fontSize='0.75rem' />
             <Typography variant='body2'>iPhone 11</Typography>
           </Box>
-          <Box className='flex items-center gap-1.5' sx={{ '& i': { color: '#9b88fa' } }}>
-            <i className='tabler-circle-filled text-xs' />
+          <Box sx={{ display: 'flex', alignItems: 'center', '& svg': { mr: 1.5, color: '#9b88fa' } }}>
+            <Icon icon='mdi:circle' fontSize='0.75rem' />
             <Typography variant='body2'>Samsung s20</Typography>
           </Box>
-        </div>
+        </Box>
       </CardContent>
     </Card>
   )

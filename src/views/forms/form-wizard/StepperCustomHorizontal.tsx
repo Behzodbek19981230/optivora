@@ -1,75 +1,73 @@
-'use client'
+// ** React Imports
+import { ChangeEvent, Fragment, useState } from 'react'
 
-// React Imports
-import { useState } from 'react'
-
-// MUI Imports
-import { styled, useTheme } from '@mui/material/styles'
-import useMediaQuery from '@mui/material/useMediaQuery'
+// ** MUI Imports
+import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
-import CardContent from '@mui/material/CardContent'
+import Avatar from '@mui/material/Avatar'
+import Button from '@mui/material/Button'
+import Divider from '@mui/material/Divider'
 import Stepper from '@mui/material/Stepper'
+import MenuItem from '@mui/material/MenuItem'
 import StepLabel from '@mui/material/StepLabel'
 import Typography from '@mui/material/Typography'
-import Button from '@mui/material/Button'
-import MenuItem from '@mui/material/MenuItem'
-import InputAdornment from '@mui/material/InputAdornment'
 import IconButton from '@mui/material/IconButton'
-import Divider from '@mui/material/Divider'
-import MuiStep from '@mui/material/Step'
-import type { StepProps } from '@mui/material/Step'
+import CardContent from '@mui/material/CardContent'
+import { Theme, styled } from '@mui/material/styles'
+import useMediaQuery from '@mui/material/useMediaQuery'
+import MuiStep, { StepProps } from '@mui/material/Step'
+import { SelectChangeEvent } from '@mui/material/Select'
+import InputAdornment from '@mui/material/InputAdornment'
 
-// Third-party Imports
-import { toast } from 'react-toastify'
-import classnames from 'classnames'
+// ** Third Party Imports
+import toast from 'react-hot-toast'
 
-// Component Imports
-import CustomAvatar from '@core/components/mui/Avatar'
-import DirectionalIcon from '@components/DirectionalIcon'
-import CustomTextField from '@core/components/mui/TextField'
+// ** Icon Imports
+import Icon from 'src/@core/components/icon'
 
-// Styles Component Imports
-import StepperWrapper from '@core/styles/stepper'
+// ** Custom Components Imports
+import StepperCustomDot from './StepperCustomDot'
+import CustomAvatar from 'src/@core/components/mui/avatar'
+import CustomTextField from 'src/@core/components/mui/text-field'
 
-type FormDataType = {
-  username: string
-  email: string
+// ** Hook Import
+import { useSettings } from 'src/@core/hooks/useSettings'
+
+// ** Util Import
+import { hexToRGBA } from 'src/@core/utils/hex-to-rgba'
+
+// ** Styled Component
+import StepperWrapper from 'src/@core/styles/mui/stepper'
+
+interface State {
   password: string
-  isPasswordShown: boolean
-  confirmPassword: string
-  isConfirmPasswordShown: boolean
-  firstName: string
-  lastName: string
-  country: string
-  language: string[]
-  twitter: string
-  facebook: string
-  instagram: string
-  github: string
+  password2: string
+  showPassword: boolean
+  showPassword2: boolean
 }
 
-// Vars
 const steps = [
   {
-    icon: 'tabler-file-analytics',
+    icon: 'tabler:home',
     title: 'Account Details',
-    subtitle: 'Enter your account details'
+    subtitle: 'Enter your Account Details'
   },
   {
-    icon: 'tabler-user',
+    icon: 'tabler:user',
     title: 'Personal Info',
     subtitle: 'Setup Information'
   },
   {
-    icon: 'tabler-brand-instagram',
+    icon: 'tabler:link',
     title: 'Social Links',
     subtitle: 'Add Social Links'
   }
 ]
 
 const Step = styled(MuiStep)<StepProps>(({ theme }) => ({
-  paddingInline: theme.spacing(7),
+  paddingLeft: theme.spacing(4),
+  paddingRight: theme.spacing(4),
   '&:first-of-type': {
     paddingLeft: 0
   },
@@ -79,91 +77,109 @@ const Step = styled(MuiStep)<StepProps>(({ theme }) => ({
   '& .MuiStepLabel-iconContainer': {
     display: 'none'
   },
-  '&.Mui-completed .step-title , &.Mui-completed .step-subtitle': {
-    color: 'var(--mui-palette-text-disabled)'
+  '& .step-subtitle': {
+    color: `${theme.palette.text.disabled} !important`
   },
-
+  '& + svg': {
+    color: theme.palette.text.disabled
+  },
+  '&.Mui-completed .step-title': {
+    color: theme.palette.text.disabled
+  },
+  '&.Mui-completed + svg': {
+    color: theme.palette.primary.main
+  },
   [theme.breakpoints.down('md')]: {
     padding: 0,
     ':not(:last-of-type)': {
-      marginBlockEnd: theme.spacing(6)
+      marginBottom: theme.spacing(6)
     }
   }
 }))
 
 const StepperCustomHorizontal = () => {
-  // States
-  const [activeStep, setActiveStep] = useState(0)
-
-  const theme = useTheme()
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'))
-
-  const [formData, setFormData] = useState<FormDataType>({
-    username: '',
-    email: '',
+  // ** States
+  const [email, setEmail] = useState<string>('')
+  const [google, setGoogle] = useState<string>('')
+  const [country, setCountry] = useState<string>('')
+  const [twitter, setTwitter] = useState<string>('')
+  const [username, setUsername] = useState<string>('')
+  const [lastName, setLastName] = useState<string>('')
+  const [facebook, setFacebook] = useState<string>('')
+  const [linkedIn, setLinkedIn] = useState<string>('')
+  const [firstName, setFirstName] = useState<string>('')
+  const [activeStep, setActiveStep] = useState<number>(0)
+  const [language, setLanguage] = useState<string[]>([])
+  const [state, setState] = useState<State>({
     password: '',
-    isPasswordShown: false,
-    confirmPassword: '',
-    isConfirmPasswordShown: false,
-    firstName: '',
-    lastName: '',
-    country: '',
-    language: [],
-    twitter: '',
-    facebook: '',
-    instagram: '',
-    github: ''
+    password2: '',
+    showPassword: false,
+    showPassword2: false
   })
 
-  const handleClickShowPassword = () => setFormData(show => ({ ...show, isPasswordShown: !show.isPasswordShown }))
+  // ** Hooks & Var
+  const { settings } = useSettings()
+  const smallScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'))
+  const { direction } = settings
 
-  const handleClickShowConfirmPassword = () =>
-    setFormData(show => ({ ...show, isConfirmPasswordShown: !show.isConfirmPasswordShown }))
-
-  const handleReset = () => {
-    setActiveStep(0)
-    setFormData({
-      username: '',
-      email: '',
-      password: '',
-      isPasswordShown: false,
-      confirmPassword: '',
-      isConfirmPasswordShown: false,
-      firstName: '',
-      lastName: '',
-      country: '',
-      language: [],
-      twitter: '',
-      facebook: '',
-      instagram: '',
-      github: ''
-    })
+  // Handle Stepper
+  const handleBack = () => {
+    setActiveStep(prevActiveStep => prevActiveStep - 1)
   }
-
   const handleNext = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1)
-
     if (activeStep === steps.length - 1) {
       toast.success('Form Submitted')
     }
   }
-
-  const handleBack = () => {
-    setActiveStep(prevActiveStep => prevActiveStep - 1)
+  const handleReset = () => {
+    setEmail('')
+    setGoogle('')
+    setCountry('')
+    setTwitter('')
+    setUsername('')
+    setLastName('')
+    setFacebook('')
+    setLinkedIn('')
+    setLanguage([])
+    setFirstName('')
+    setActiveStep(0)
+    setState({ ...state, password: '', password2: '' })
   }
 
-  const renderStepContent = (activeStep: number) => {
-    switch (activeStep) {
+  // Handle Password
+  const handlePasswordChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
+    setState({ ...state, [prop]: event.target.value })
+  }
+  const handleClickShowPassword = () => {
+    setState({ ...state, showPassword: !state.showPassword })
+  }
+
+  // Handle Confirm Password
+  const handleConfirmChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
+    setState({ ...state, [prop]: event.target.value })
+  }
+  const handleClickShowConfirmPassword = () => {
+    setState({ ...state, showPassword2: !state.showPassword2 })
+  }
+
+  // Handle Language
+  const handleSelectChange = (event: SelectChangeEvent<string[]>) => {
+    setLanguage(event.target.value as string[])
+  }
+
+  const getStepContent = (step: number) => {
+    switch (step) {
       case 0:
         return (
-          <>
+          <Fragment>
             <Grid item xs={12} sm={6}>
               <CustomTextField
                 fullWidth
                 label='Username'
-                placeholder='johnDoe'
-                value={formData.username}
-                onChange={e => setFormData({ ...formData, username: e.target.value })}
+                value={username}
+                placeholder='carterLeonard'
+                onChange={e => setUsername(e.target.value)}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -171,20 +187,19 @@ const StepperCustomHorizontal = () => {
                 fullWidth
                 type='email'
                 label='Email'
-                placeholder='johndoe@gmail.com'
-                value={formData.email}
-                onChange={e => setFormData({ ...formData, email: e.target.value })}
+                value={email}
+                placeholder='carterleonard@gmail.com'
+                onChange={e => setEmail(e.target.value)}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <CustomTextField
                 fullWidth
                 label='Password'
-                placeholder='············'
-                id='stepper-customHorizontal-password'
-                type={formData.isPasswordShown ? 'text' : 'password'}
-                value={formData.password}
-                onChange={e => setFormData({ ...formData, password: e.target.value })}
+                value={state.password}
+                id='stepper-custom-horizontal-account-password'
+                onChange={handlePasswordChange('password')}
+                type={state.showPassword ? 'text' : 'password'}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position='end'>
@@ -194,7 +209,7 @@ const StepperCustomHorizontal = () => {
                         onMouseDown={e => e.preventDefault()}
                         aria-label='toggle password visibility'
                       >
-                        <i className={formData.isPasswordShown ? 'tabler-eye-off' : 'tabler-eye'} />
+                        <Icon fontSize='1.25rem' icon={state.showPassword ? 'tabler:eye' : 'tabler:eye-off'} />
                       </IconButton>
                     </InputAdornment>
                   )
@@ -204,49 +219,48 @@ const StepperCustomHorizontal = () => {
             <Grid item xs={12} sm={6}>
               <CustomTextField
                 fullWidth
+                value={state.password2}
                 label='Confirm Password'
-                placeholder='············'
-                id='stepper-customHorizontal-confirm-password'
-                type={formData.isConfirmPasswordShown ? 'text' : 'password'}
-                value={formData.confirmPassword}
-                onChange={e => setFormData({ ...formData, confirmPassword: e.target.value })}
+                id='stepper-custom-horizontal-account-password-2'
+                onChange={handleConfirmChange('password2')}
+                type={state.showPassword2 ? 'text' : 'password'}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position='end'>
                       <IconButton
                         edge='end'
-                        onClick={handleClickShowConfirmPassword}
                         onMouseDown={e => e.preventDefault()}
-                        aria-label='toggle confirm password visibility'
+                        aria-label='toggle password visibility'
+                        onClick={handleClickShowConfirmPassword}
                       >
-                        <i className={formData.isConfirmPasswordShown ? 'tabler-eye-off' : 'tabler-eye'} />
+                        <Icon fontSize='1.25rem' icon={state.showPassword2 ? 'tabler:eye' : 'tabler:eye-off'} />
                       </IconButton>
                     </InputAdornment>
                   )
                 }}
               />
             </Grid>
-          </>
+          </Fragment>
         )
       case 1:
         return (
-          <>
+          <Fragment key={step}>
             <Grid item xs={12} sm={6}>
               <CustomTextField
                 fullWidth
                 label='First Name'
-                placeholder='John'
-                value={formData.firstName}
-                onChange={e => setFormData({ ...formData, firstName: e.target.value })}
+                placeholder='Leonard'
+                value={firstName}
+                onChange={e => setFirstName(e.target.value)}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <CustomTextField
                 fullWidth
                 label='Last Name'
-                placeholder='Doe'
-                value={formData.lastName}
-                onChange={e => setFormData({ ...formData, lastName: e.target.value })}
+                placeholder='Carter'
+                value={lastName}
+                onChange={e => setLastName(e.target.value)}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -254,10 +268,12 @@ const StepperCustomHorizontal = () => {
                 select
                 fullWidth
                 label='Country'
-                value={formData.country}
-                onChange={e => setFormData({ ...formData, country: e.target.value as string })}
+                id='stepper-custom-horizontal-personal-select'
+                SelectProps={{
+                  value: country,
+                  onChange: e => setCountry(e.target.value as string)
+                }}
               >
-                <MenuItem value=''>Select Country</MenuItem>
                 <MenuItem value='UK'>UK</MenuItem>
                 <MenuItem value='USA'>USA</MenuItem>
                 <MenuItem value='Australia'>Australia</MenuItem>
@@ -269,11 +285,12 @@ const StepperCustomHorizontal = () => {
                 select
                 fullWidth
                 label='Language'
-                value={formData.language}
                 SelectProps={{
                   multiple: true,
-                  onChange: e => setFormData({ ...formData, language: e.target.value as string[] })
+                  value: language,
+                  onChange: e => handleSelectChange(e as SelectChangeEvent<string[]>)
                 }}
+                id='stepper-custom-horizontal-personal-multiple-select'
               >
                 <MenuItem value='English'>English</MenuItem>
                 <MenuItem value='French'>French</MenuItem>
@@ -284,150 +301,137 @@ const StepperCustomHorizontal = () => {
                 <MenuItem value='Arabic'>Arabic</MenuItem>
               </CustomTextField>
             </Grid>
-          </>
+          </Fragment>
         )
       case 2:
         return (
-          <>
-            <Grid item xs={12} sm={6}>
-              <CustomTextField
-                fullWidth
-                label='Facebook'
-                placeholder='https://www.facebook.com/johndoe'
-                value={formData.facebook}
-                onChange={e => setFormData({ ...formData, facebook: e.target.value })}
-              />
-            </Grid>
+          <Fragment key={step}>
             <Grid item xs={12} sm={6}>
               <CustomTextField
                 fullWidth
                 label='Twitter'
-                placeholder='https://www.twitter.com/johndoe'
-                value={formData.twitter}
-                onChange={e => setFormData({ ...formData, twitter: e.target.value })}
+                value={twitter}
+                onChange={e => setTwitter(e.target.value)}
+                placeholder='https://twitter.com/carterLeonard'
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <CustomTextField
                 fullWidth
-                label='Instagram'
-                placeholder='https://www.instagram.com/johndoe'
-                value={formData.instagram}
-                onChange={e => setFormData({ ...formData, instagram: e.target.value })}
+                label='Facebook'
+                value={facebook}
+                onChange={e => setFacebook(e.target.value)}
+                placeholder='https://facebook.com/carterLeonard'
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <CustomTextField
                 fullWidth
-                label='Github'
-                placeholder='https://www.github.com/johndoe'
-                value={formData.github}
-                onChange={e => setFormData({ ...formData, github: e.target.value })}
+                label='Google+'
+                value={google}
+                onChange={e => setGoogle(e.target.value)}
+                placeholder='https://plus.google.com/carterLeonard'
               />
             </Grid>
-          </>
+            <Grid item xs={12} sm={6}>
+              <CustomTextField
+                fullWidth
+                label='LinkedIn'
+                value={linkedIn}
+                onChange={e => setLinkedIn(e.target.value)}
+                placeholder='https://linkedin.com/carterLeonard'
+              />
+            </Grid>
+          </Fragment>
         )
       default:
-        return 'Unknown step'
+        return 'Unknown Step'
+    }
+  }
+
+  const renderContent = () => {
+    if (activeStep === steps.length) {
+      return (
+        <>
+          <Typography>All steps are completed!</Typography>
+          <Box sx={{ mt: 4, display: 'flex', justifyContent: 'flex-end' }}>
+            <Button variant='contained' onClick={handleReset}>
+              Reset
+            </Button>
+          </Box>
+        </>
+      )
+    } else {
+      return (
+        <form onSubmit={e => e.preventDefault()}>
+          <Grid container spacing={5}>
+            <Grid item xs={12}>
+              <Typography variant='body2' sx={{ fontWeight: 600, color: 'text.primary' }}>
+                {steps[activeStep].title}
+              </Typography>
+              <Typography variant='caption' component='p'>
+                {steps[activeStep].subtitle}
+              </Typography>
+            </Grid>
+            {getStepContent(activeStep)}
+            <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Button variant='tonal' color='secondary' disabled={activeStep === 0} onClick={handleBack}>
+                Back
+              </Button>
+              <Button variant='contained' onClick={handleNext}>
+                {activeStep === steps.length - 1 ? 'Submit' : 'Next'}
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
+      )
     }
   }
 
   return (
-    <>
-      <Card>
-        <CardContent>
-          <StepperWrapper>
-            <Stepper
-              activeStep={activeStep}
-              connector={
-                !isSmallScreen ? (
-                  <DirectionalIcon
-                    ltrIconClass='tabler-chevron-right'
-                    rtlIconClass='tabler-chevron-left'
-                    className='text-xl'
-                  />
-                ) : null
-              }
-            >
-              {steps.map((step, index) => {
-                return (
-                  <Step key={index}>
-                    <StepLabel>
-                      <div className='step-label'>
-                        <CustomAvatar
-                          variant='rounded'
-                          skin={activeStep === index ? 'filled' : 'light'}
-                          {...(activeStep >= index && { color: 'primary' })}
-                          {...(activeStep === index && { className: 'shadow-primarySm' })}
-                          size={38}
-                        >
-                          <i className={classnames(step.icon)} />
-                        </CustomAvatar>
-                        <div>
-                          <Typography className='step-title'>{step.title}</Typography>
-                          <Typography className='step-subtitle'>{step.subtitle}</Typography>
-                        </div>
+    <Card>
+      <CardContent>
+        <StepperWrapper>
+          <Stepper
+            activeStep={activeStep}
+            connector={
+              !smallScreen ? <Icon icon={direction === 'ltr' ? 'tabler:chevron-right' : 'tabler:chevron-left'} /> : null
+            }
+          >
+            {steps.map((step, index) => {
+              const RenderAvatar = activeStep >= index ? CustomAvatar : Avatar
+
+              return (
+                <Step key={index}>
+                  <StepLabel StepIconComponent={StepperCustomDot}>
+                    <div className='step-label'>
+                      <RenderAvatar
+                        variant='rounded'
+                        {...(activeStep >= index && { skin: 'light' })}
+                        {...(activeStep === index && { skin: 'filled' })}
+                        {...(activeStep >= index && { color: 'primary' })}
+                        sx={{
+                          ...(activeStep === index && { boxShadow: theme => theme.shadows[3] }),
+                          ...(activeStep > index && { color: theme => hexToRGBA(theme.palette.primary.main, 0.4) })
+                        }}
+                      >
+                        <Icon icon={step.icon} />
+                      </RenderAvatar>
+                      <div>
+                        <Typography className='step-title'>{step.title}</Typography>
+                        <Typography className='step-subtitle'>{step.subtitle}</Typography>
                       </div>
-                    </StepLabel>
-                  </Step>
-                )
-              })}
-            </Stepper>
-          </StepperWrapper>
-        </CardContent>
-        <Divider sx={{ m: '0 !important' }} />
-        <CardContent>
-          {activeStep === steps.length ? (
-            <>
-              <Typography className='mlb-2 mli-1'>All steps are completed!</Typography>
-              <div className='flex justify-end mt-4'>
-                <Button variant='contained' onClick={handleReset}>
-                  Reset
-                </Button>
-              </div>
-            </>
-          ) : (
-            <>
-              <form onSubmit={e => e.preventDefault()}>
-                <Grid container spacing={6}>
-                  <Grid item xs={12}>
-                    <Typography className='font-medium' color='text.primary'>
-                      {steps[activeStep].title}
-                    </Typography>
-                    <Typography variant='body2'>{steps[activeStep].subtitle}</Typography>
-                  </Grid>
-                  {renderStepContent(activeStep)}
-                  <Grid item xs={12} className='flex justify-between'>
-                    <Button
-                      variant='tonal'
-                      disabled={activeStep === 0}
-                      onClick={handleBack}
-                      startIcon={<DirectionalIcon ltrIconClass='tabler-arrow-left' rtlIconClass='tabler-arrow-right' />}
-                      color='secondary'
-                    >
-                      Back
-                    </Button>
-                    <Button
-                      variant='contained'
-                      onClick={handleNext}
-                      endIcon={
-                        activeStep === steps.length - 1 ? (
-                          <i className='tabler-check' />
-                        ) : (
-                          <DirectionalIcon ltrIconClass='tabler-arrow-right' rtlIconClass='tabler-arrow-left' />
-                        )
-                      }
-                    >
-                      {activeStep === steps.length - 1 ? 'Submit' : 'Next'}
-                    </Button>
-                  </Grid>
-                </Grid>
-              </form>
-            </>
-          )}
-        </CardContent>
-      </Card>
-    </>
+                    </div>
+                  </StepLabel>
+                </Step>
+              )
+            })}
+          </Stepper>
+        </StepperWrapper>
+      </CardContent>
+      <Divider sx={{ m: '0 !important' }} />
+      <CardContent>{renderContent()}</CardContent>
+    </Card>
   )
 }
 

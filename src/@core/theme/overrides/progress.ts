@@ -1,22 +1,24 @@
-// MUI Imports
-import type { Theme } from '@mui/material/styles'
+// ** Type Import
+import { OwnerStateThemeType } from './'
 
-const progress: Theme['components'] = {
-  MuiLinearProgress: {
-    styleOverrides: {
-      root: ({ theme }) => ({
-        blockSize: 6,
-        borderRadius: 'var(--mui-shape-borderRadius)',
-        backgroundColor: 'var(--mui-palette-customColors-trackBg)',
-        '& .MuiLinearProgress-bar': {
-          borderRadius: 'var(--mui-shape-borderRadius)'
-        },
-        '& .MuiLinearProgress-dashed': {
-          marginTop: theme.spacing(0.2)
+const Progress = () => {
+  return {
+    MuiLinearProgress: {
+      styleOverrides: {
+        root: ({ theme }: OwnerStateThemeType) => ({
+          height: 12,
+          borderRadius: '10px',
+          backgroundColor: theme.palette.customColors.trackBg,
+          '& .MuiLinearProgress-dashed': {
+            marginTop: theme.spacing(1)
+          }
+        }),
+        bar: {
+          borderRadius: '10px'
         }
-      })
+      }
     }
   }
 }
 
-export default progress
+export default Progress

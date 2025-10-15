@@ -1,0 +1,157 @@
+// ** React Imports
+import { useState, ElementType, ChangeEvent, SyntheticEvent, useEffect } from 'react'
+
+// ** MUI Imports
+import Box from '@mui/material/Box'
+import Grid from '@mui/material/Grid'
+import Card from '@mui/material/Card'
+
+import { styled } from '@mui/material/styles'
+
+import Typography from '@mui/material/Typography'
+
+import CardContent from '@mui/material/CardContent'
+
+import Button, { ButtonProps } from '@mui/material/Button'
+import { useTheme } from '@mui/material'
+
+import { useRouter } from 'next/router'
+// ** Icon Imports
+import Icon from 'src/@core/components/icon'
+import Translations from 'src/layouts/components/Translations'
+import CustomChip from 'src/@core/components/mui/chip'
+import CustomAvatar from 'src/@core/components/mui/avatar'
+import TabPanel from '@mui/lab/TabPanel'
+import TabContext from '@mui/lab/TabContext'
+import MuiTab, { TabProps } from '@mui/material/Tab'
+import MuiTabList, { TabListProps } from '@mui/lab/TabList'
+import ApplicationList from 'src/views/pages/application/TabContent/ApplicationList'
+import PageHeader from 'src/@core/components/page-header'
+import MerchantAllGood from './MerchantTab/MerchantAllGood'
+interface Data {
+  email: string
+  state: string
+  address: string
+  country: string
+  lastName: string
+  currency: string
+  language: string
+  timezone: string
+  firstName: string
+  organization: string
+  number: number | string
+  zipCode: number | string
+}
+
+const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
+  flexDirection: 'row',
+  '& svg': {
+    marginBottom: '0 !important',
+    marginRight: theme.spacing(1.5)
+  }
+}))
+
+const TabList = styled(MuiTabList)<TabListProps>(({ theme }) => ({
+  borderBottom: '0 !important',
+  '&, & .MuiTabs-scroller': {
+    boxSizing: 'content-box',
+    padding: theme.spacing(1.25, 1.25, 2),
+    margin: `${theme.spacing(-1.25, -1.25, -2)} !important`
+  },
+  '& .MuiTabs-indicator': {
+    display: 'none'
+  },
+  '& .Mui-selected': {
+    boxShadow: theme.shadows[2],
+    backgroundColor: `${theme.palette.primary.main} !important`,
+    color: `${theme.palette.common.white} !important`
+  },
+  '& .MuiTab-root': {
+    lineHeight: 1,
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: theme.palette.grey[200],
+    color: theme.palette.primary.main,
+
+    '&:hover': {
+      color: theme.palette.primary.main
+    }
+  }
+}))
+const ImgStyled = styled('img')(({ theme }) => ({
+  width: 100,
+  height: 100,
+  marginRight: theme.spacing(6),
+  borderRadius: theme.shape.borderRadius
+}))
+
+const MerchantTabMain = ({ tab }: any) => {
+  // ** State
+  const theme = useTheme()
+  const [activeTab, setActiveTab] = useState<string>(tab)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const router = useRouter()
+  useEffect(() => {
+    router
+      .push({
+        pathname: `/merchants/${tab}`
+      })
+      .then(() => {
+        setIsLoading(false)
+      })
+  }, [])
+  const handleChange = (event: SyntheticEvent, value: string) => {
+    setIsLoading(true)
+    router
+      .push({
+        pathname: `/merchants/${value}`
+      })
+      .then(() => {
+        setActiveTab(value)
+        setIsLoading(false)
+      })
+  }
+
+  return (
+    <Grid container spacing={6}>
+      <PageHeader
+        title={
+          <Typography variant='h4'>
+            <Translations text='Merchants' />
+          </Typography>
+        }
+      />
+      <Grid item xs={12}>
+        <TabContext value={activeTab}>
+          <TabList
+            variant='scrollable'
+            scrollButtons='auto'
+            onChange={handleChange}
+            aria-label='forced scroll tabs example'
+            sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
+          >
+            <Tab
+              value='allgood'
+              label={<Translations text='ALL GOOD' />}
+              icon={<Icon fontSize='1.125rem' icon='tabler:shopping-cart' />}
+              sx={{ mr: 5 }}
+            />
+            {/* <Tab
+              value='allgood-car'
+              label={<Translations text='ALL GOOD CAR' />}
+              icon={<Icon fontSize='1.125rem' icon='tabler:car' />}
+            /> */}
+          </TabList>
+          <Card sx={{ mt: 10 }}>
+            <TabPanel sx={{ p: 0 }} value='allgood'>
+              <MerchantAllGood />
+            </TabPanel>
+            <TabPanel sx={{ p: 0 }} value='allgood-car'>
+              <ApplicationList />{' '}
+            </TabPanel>
+          </Card>
+        </TabContext>
+      </Grid>
+    </Grid>
+  )
+}
+export default MerchantTabMain

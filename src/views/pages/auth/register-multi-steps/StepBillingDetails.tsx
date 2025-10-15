@@ -1,158 +1,240 @@
-// React Imports
-import { useState } from 'react'
-import type { ChangeEvent } from 'react'
+// ** React Imports
+import { useState, ChangeEvent } from 'react'
 
-// MUI Imports
+// ** MUI Components
+import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
+import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
-import type { TypographyProps } from '@mui/material/Typography'
-import { styled } from '@mui/material/styles'
+import FormControl from '@mui/material/FormControl'
+import InputAdornment from '@mui/material/InputAdornment'
 
-// Component Imports
-import CustomInputVertical from '@core/components/custom-inputs/Vertical'
-import CustomTextField from '@core/components/mui/TextField'
-import DirectionalIcon from '@components/DirectionalIcon'
-import type { CustomInputVerticalData } from '@core/components/custom-inputs/types'
+// ** Third Party Imports
+import Payment from 'payment'
 
-// Styled Components
-const Content = styled(Typography, {
-  name: 'MuiCustomInputVertical',
-  slot: 'content'
-})<TypographyProps>(({ theme }) => ({
-  ...theme.typography.body2,
-  textAlign: 'center'
-}))
+// ** Type Import
+import { CustomRadioIconsData } from 'src/@core/components/custom-radio/types'
 
-// Vars
-const customInputData: CustomInputVerticalData[] = [
+// ** Icon Imports
+import Icon from 'src/@core/components/icon'
+
+// ** Custom Components Imports
+import CustomTextField from 'src/@core/components/mui/text-field'
+import CustomRadioIcons from 'src/@core/components/custom-radio/icons'
+
+// ** Util Import
+import { formatCVC, formatExpirationDate, formatCreditCardNumber } from 'src/@core/utils/format'
+
+// ** Styles Import
+import 'react-credit-cards/es/styles-compiled.css'
+
+const data: CustomRadioIconsData[] = [
   {
-    title: 'Basic',
     value: 'basic',
+    title: (
+      <Typography variant='h4' sx={{ mb: 1 }}>
+        Basic
+      </Typography>
+    ),
     content: (
-      <Content component='div' className='flex flex-col justify-center items-center bs-full gap-2'>
-        <Typography>A simple start for start ups & Students</Typography>
-        <div className='flex items-baseline'>
-          <Typography component='sup' className='self-start' color='primary'>
+      <Box sx={{ my: 'auto', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+        <Typography sx={{ textAlign: 'center', color: 'text.secondary' }}>
+          A simple start for start ups & Students
+        </Typography>
+        <Box sx={{ mt: 1, display: 'flex' }}>
+          <Typography component='sup' sx={{ mt: 1.5, color: 'primary.main', alignSelf: 'flex-start' }}>
             $
           </Typography>
-          <Typography component='span' variant='h3' color='primary'>
+          <Typography variant='h2' sx={{ color: 'primary.main' }}>
             0
           </Typography>
-          <Typography component='sub' className='self-baseline text-textDisabled'>
+          <Typography component='sub' sx={{ mb: 1.5, alignSelf: 'flex-end', color: 'text.disabled' }}>
             /month
           </Typography>
-        </div>
-      </Content>
+        </Box>
+      </Box>
     )
   },
   {
-    title: 'Standard',
+    isSelected: true,
     value: 'standard',
+    title: (
+      <Typography variant='h4' sx={{ mb: 1 }}>
+        Standard
+      </Typography>
+    ),
     content: (
-      <Content component='div' className='flex flex-col justify-center items-center bs-full gap-2'>
-        <Typography>For small to medium businesses</Typography>
-        <div className='flex items-baseline'>
-          <Typography component='sup' className='self-start' color='primary'>
+      <Box sx={{ my: 'auto', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+        <Typography sx={{ textAlign: 'center', color: 'text.secondary' }}>For small to medium businesses</Typography>
+        <Box sx={{ mt: 1, display: 'flex' }}>
+          <Typography component='sup' sx={{ mt: 1.5, color: 'primary.main', alignSelf: 'flex-start' }}>
             $
           </Typography>
-          <Typography component='span' variant='h3' color='primary'>
+          <Typography variant='h2' sx={{ color: 'primary.main' }}>
             99
           </Typography>
-          <Typography component='sub' className='self-baseline text-textDisabled'>
+          <Typography component='sub' sx={{ mb: 1.5, alignSelf: 'flex-end', color: 'text.disabled' }}>
             /month
           </Typography>
-        </div>
-      </Content>
-    ),
-    isSelected: true
+        </Box>
+      </Box>
+    )
   },
   {
-    title: 'Enterprise',
     value: 'enterprise',
+    title: (
+      <Typography variant='h4' sx={{ mb: 1 }}>
+        Enterprise
+      </Typography>
+    ),
     content: (
-      <Content component='div' className='flex flex-col justify-center items-center bs-full gap-2'>
-        <Typography>Solution for enterprise & organizations</Typography>
-        <div className='flex items-baseline'>
-          <Typography component='sup' className='self-start' color='primary'>
+      <Box sx={{ my: 'auto', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+        <Typography sx={{ textAlign: 'center', color: 'text.secondary' }}>
+          Solution for enterprise & organizations
+        </Typography>
+        <Box sx={{ mt: 1, display: 'flex' }}>
+          <Typography component='sup' sx={{ mt: 1.5, color: 'primary.main', alignSelf: 'flex-start' }}>
             $
           </Typography>
-          <Typography component='span' variant='h3' color='primary'>
+          <Typography variant='h2' sx={{ color: 'primary.main' }}>
             499
           </Typography>
-          <Typography component='sub' className='self-baseline text-textDisabled'>
+          <Typography component='sub' sx={{ mb: 1.5, alignSelf: 'flex-end', color: 'text.disabled' }}>
             /month
           </Typography>
-        </div>
-      </Content>
+        </Box>
+      </Box>
     )
   }
 ]
 
 const StepBillingDetails = ({ handlePrev }: { handlePrev: () => void }) => {
-  const initialSelectedOption: string = customInputData.filter(item => item.isSelected)[
-    customInputData.filter(item => item.isSelected).length - 1
-  ].value
+  const initialSelected: string = data.filter(item => item.isSelected)[data.filter(item => item.isSelected).length - 1]
+    .value
 
-  // States
-  const [selectedOption, setSelectedOption] = useState<string>(initialSelectedOption)
+  // ** State
+  const [cvc, setCvc] = useState<string>('')
+  const [name, setName] = useState<string>('')
+  const [expiry, setExpiry] = useState<string>('')
+  const [cardNumber, setCardNumber] = useState<string>('')
+  const [selectedRadio, setSelectedRadio] = useState<string>(initialSelected)
 
-  const handleOptionChange = (prop: string | ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    if (target.name === 'cardNumber') {
+      target.value = formatCreditCardNumber(target.value, Payment)
+      setCardNumber(target.value)
+    } else if (target.name === 'expiry') {
+      target.value = formatExpirationDate(target.value)
+      setExpiry(target.value)
+    } else if (target.name === 'cvc') {
+      target.value = formatCVC(target.value, cardNumber, Payment)
+      setCvc(target.value)
+    }
+  }
+
+  const handleRadioChange = (prop: string | ChangeEvent<HTMLInputElement>) => {
     if (typeof prop === 'string') {
-      setSelectedOption(prop)
+      setSelectedRadio(prop)
     } else {
-      setSelectedOption((prop.target as HTMLInputElement).value)
+      setSelectedRadio((prop.target as HTMLInputElement).value)
     }
   }
 
   return (
     <>
-      <div className='mbe-5'>
-        <Typography variant='h4'>Select Plan</Typography>
-        <Typography>Select plan as per your requirement</Typography>
-      </div>
+      <Box sx={{ mb: 6 }}>
+        <Typography variant='h3' sx={{ mb: 1.5 }}>
+          Select Plan
+        </Typography>
+        <Typography sx={{ color: 'text.secondary' }}>Select plan as per your requirement</Typography>
+      </Box>
+
       <Grid container spacing={5}>
-        {customInputData.map((item, index) => (
-          <CustomInputVertical
-            type='radio'
+        {data.map((item, index) => (
+          <CustomRadioIcons
             key={index}
-            data={item}
-            gridProps={{ xs: 12, sm: 4 }}
-            selected={selectedOption}
-            name='custom-radios-basic'
-            handleChange={handleOptionChange}
+            data={data[index]}
+            selected={selectedRadio}
+            name='custom-radios-plan'
+            gridProps={{ sm: 4, xs: 12 }}
+            handleChange={handleRadioChange}
           />
         ))}
-      </Grid>
-      <div className='mbs-6 md:mbs-12 mbe-6'>
-        <Typography variant='h4'>Payment Information</Typography>
-        <Typography>Enter your card information</Typography>
-      </div>
-      <Grid container spacing={6}>
-        <Grid item xs={12}>
-          <CustomTextField fullWidth label='Card Number' placeholder='1356 3215 6548 7898' />
+
+        <Grid item xs={12} sx={{ pt: theme => `${theme.spacing(6)} !important` }}>
+          <Typography variant='h3' sx={{ mb: 1.5 }}>
+            Payment Information
+          </Typography>
+          <Typography sx={{ color: 'text.secondary' }}>Enter your card information</Typography>
+        </Grid>
+        <Grid item xs={12} sx={{ pt: theme => `${theme.spacing(6)} !important` }}>
+          <FormControl fullWidth>
+            <CustomTextField
+              fullWidth
+              name='cardNumber'
+              value={cardNumber}
+              autoComplete='off'
+              label='Card Number'
+              onChange={handleInputChange}
+              placeholder='0000 0000 0000 0000'
+            />
+          </FormControl>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <CustomTextField fullWidth label='Name On Card' placeholder='John Doe' />
+          <CustomTextField
+            fullWidth
+            name='name'
+            value={name}
+            autoComplete='off'
+            label='Name on Card'
+            placeholder='John Doe'
+            onChange={e => setName(e.target.value)}
+          />
         </Grid>
-        <Grid item xs={12} sm={3}>
-          <CustomTextField fullWidth label='Expiry Date' placeholder='MM/YY' />
+        <Grid item xs={6} sm={3}>
+          <CustomTextField
+            fullWidth
+            name='expiry'
+            label='Expiry'
+            value={expiry}
+            placeholder='MM/YY'
+            onChange={handleInputChange}
+            inputProps={{ maxLength: '5' }}
+          />
         </Grid>
-        <Grid item xs={12} sm={3}>
-          <CustomTextField fullWidth label='CVV Code' placeholder='654' />
+        <Grid item xs={6} sm={3}>
+          <CustomTextField
+            fullWidth
+            name='cvc'
+            label='CVC'
+            value={cvc}
+            placeholder='234'
+            autoComplete='off'
+            onChange={handleInputChange}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position='start' sx={{ '& svg': { cursor: 'pointer' } }}>
+                  <Tooltip title='Card Verification Value'>
+                    <Box sx={{ display: 'flex' }}>
+                      <Icon fontSize='1.25rem' icon='tabler:question-circle' />
+                    </Box>
+                  </Tooltip>
+                </InputAdornment>
+              )
+            }}
+          />
         </Grid>
-        <Grid item xs={12} className='flex justify-between'>
-          <Button
-            variant='tonal'
-            color='secondary'
-            onClick={handlePrev}
-            startIcon={<DirectionalIcon ltrIconClass='tabler-arrow-left' rtlIconClass='tabler-arrow-right' />}
-          >
-            Previous
-          </Button>
-          <Button variant='contained' color='success' onClick={() => alert('Submitted..!!')}>
-            Submit
-          </Button>
+        <Grid item xs={12} sx={{ pt: theme => `${theme.spacing(6)} !important` }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Button color='secondary' variant='tonal' onClick={handlePrev} sx={{ '& svg': { mr: 2 } }}>
+              <Icon fontSize='1.125rem' icon='tabler:arrow-left' />
+              Previous
+            </Button>
+            <Button color='success' variant='contained' onClick={() => alert('Submitted..!!')}>
+              Submit
+            </Button>
+          </Box>
         </Grid>
       </Grid>
     </>

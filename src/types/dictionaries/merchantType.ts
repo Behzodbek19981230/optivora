@@ -1,0 +1,32 @@
+export type MerchantType = {
+  name: string
+  username: string
+  password: string
+  brandname: string
+  group: string
+  category: number
+  status: string
+  condition: string
+  inn: string
+  bank_account: string
+  bank: number
+  mfo: string
+  address: string
+  owner: string
+  owner_phone: string
+  cashback: string
+  tax_code: string
+  contract_no: string
+  contract_start: string
+  contract_expiry: string
+  auto_annual: string
+  logo: string
+  static_contract: string
+  longitude: string
+  latitude: string
+  is_active: true
+  created_by: number
+  id: number
+  created_at: string
+  updated_at: string
+}

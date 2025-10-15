@@ -1,40 +1,85 @@
-'use client'
-
-// MUI Imports
-import Card from '@mui/material/Card'
-import CardHeader from '@mui/material/CardHeader'
-import CardContent from '@mui/material/CardContent'
+// ** MUI Imports
 import Grid from '@mui/material/Grid'
+import Card from '@mui/material/Card'
 import Button from '@mui/material/Button'
 import MenuItem from '@mui/material/MenuItem'
+import { styled } from '@mui/material/styles'
+import CardHeader from '@mui/material/CardHeader'
+import CardContent from '@mui/material/CardContent'
+import FormControl from '@mui/material/FormControl'
 
-// Component Imports
-import CustomTextField from '@core/components/mui/TextField'
+// ** Third Party Imports
+import { useForm, Controller } from 'react-hook-form'
+import CustomTextField from 'src/@core/components/mui/text-field'
 
-const CreateApiKey = () => {
+const Img = styled('img')(({ theme }) => ({
+  [theme.breakpoints.down('md')]: {
+    marginBottom: theme.spacing(-6)
+  },
+  [theme.breakpoints.up('md')]: {
+    bottom: 0,
+    position: 'absolute'
+  }
+}))
+
+const CreateApiKeyCard = () => {
+  // ** Hooks
+  const {
+    control,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({ defaultValues: { apiKeyName: '' } })
+
+  const onSubmit = () => {
+    return true
+  }
+
   return (
-    <Card>
-      <CardHeader title='Create an API Key' />
-      <CardContent className='!pb-0'>
+    <Card sx={{ position: 'relative' }}>
+      <CardHeader title='Create an API key' />
+      <CardContent>
         <Grid container spacing={6}>
           <Grid item xs={12} md={6}>
-            <form className='flex justify-end items-end bs-full flex-col gap-5 pbe-6'>
-              <CustomTextField select fullWidth label='Choose the API key type you want to create' defaultValue=''>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <CustomTextField
+                select
+                fullWidth
+                sx={{ mb: 5 }}
+                defaultValue=''
+                label='Choose The Api Key Type You Want To Create'
+              >
                 <MenuItem value='full-control'>Full Control</MenuItem>
                 <MenuItem value='modify'>Modify</MenuItem>
-                <MenuItem value='read-execute'>Read & Execute</MenuItem>
+                <MenuItem value='read-execute'>Read Execute</MenuItem>
                 <MenuItem value='list-folder-contents'>List Folder Contents</MenuItem>
                 <MenuItem value='read-only'>Read Only</MenuItem>
-                <MenuItem value='read-write'>Read & Write</MenuItem>
+                <MenuItem value='read-write'>Read Write</MenuItem>
               </CustomTextField>
-              <CustomTextField label='Name the API key' placeholder='Server key 1' fullWidth />
-              <Button variant='contained' fullWidth>
+              <FormControl fullWidth sx={{ mb: 5 }}>
+                <Controller
+                  name='apiKeyName'
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <CustomTextField
+                      fullWidth
+                      {...field}
+                      placeholder='Api Key 1'
+                      label='Name The Api Key'
+                      error={Boolean(errors.apiKeyName)}
+                      {...(errors.apiKeyName && { error: true, helperText: 'Please enter API key name' })}
+                    />
+                  )}
+                />
+              </FormControl>
+              <Button type='submit' variant='contained' fullWidth>
                 Create Key
               </Button>
             </form>
           </Grid>
-          <Grid item xs={12} md={6} className='flex items-end justify-center '>
-            <img src='/images/illustrations/characters/4.png' width={197} height={224} alt='api illustration' />
+
+          <Grid item md={6} xs={12} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Img alt='avatar' height={250} src='/images/pages/girl-with-laptop.png' />
           </Grid>
         </Grid>
       </CardContent>
@@ -42,4 +87,4 @@ const CreateApiKey = () => {
   )
 }
 
-export default CreateApiKey
+export default CreateApiKeyCard

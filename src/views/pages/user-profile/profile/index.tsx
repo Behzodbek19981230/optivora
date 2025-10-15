@@ -1,34 +1,34 @@
-// MUI Imports
+// ** MUI Components
 import Grid from '@mui/material/Grid'
 
-// Type Imports
-import type { ProfileTabType } from '@/types/pages/profileTypes'
+// ** Demo Components
+import AboutOverivew from 'src/views/pages/user-profile/profile/AboutOverivew'
+import ProjectsTable from 'src/views/pages/user-profile/profile/ProjectsTable'
+import ActivityTimeline from 'src/views/pages/user-profile/profile/ActivityTimeline'
+import ConnectionsTeams from 'src/views/pages/user-profile/profile/ConnectionsTeams'
 
-// Component Imports
-import AboutOverview from './AboutOverview'
-import ActivityTimeline from './ActivityTimeline'
-import ConnectionsTeams from './ConnectionsTeams'
-import ProjectsTable from './ProjectsTables'
+// ** Types
+import { ProfileTabType } from 'src/@fake-db/types'
 
-const ProfileTab = ({ data }: { data?: ProfileTabType }) => {
-  return (
+const ProfileTab = ({ data }: { data: ProfileTabType }) => {
+  return data && Object.values(data).length ? (
     <Grid container spacing={6}>
       <Grid item lg={4} md={5} xs={12}>
-        <AboutOverview data={data} />
+        <AboutOverivew about={data.about} contacts={data.contacts} teams={data.teams} overview={data.overview} />
       </Grid>
       <Grid item lg={8} md={7} xs={12}>
         <Grid container spacing={6}>
           <Grid item xs={12}>
             <ActivityTimeline />
           </Grid>
-          <ConnectionsTeams connections={data?.connections} teamsTech={data?.teamsTech} />
+          <ConnectionsTeams connections={data.connections} teams={data.teamsTech} />
           <Grid item xs={12}>
-            <ProjectsTable projectTable={data?.projectTable} />
+            <ProjectsTable />
           </Grid>
         </Grid>
       </Grid>
     </Grid>
-  )
+  ) : null
 }
 
 export default ProfileTab

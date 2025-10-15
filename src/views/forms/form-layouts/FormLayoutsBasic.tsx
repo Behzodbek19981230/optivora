@@ -1,48 +1,72 @@
-'use client'
+// ** React Imports
+import { ChangeEvent, useState } from 'react'
 
-// React Imports
-import { useState } from 'react'
-
-// Next Imports
+// ** Next Import
 import Link from 'next/link'
 
-// MUI Imports
+// ** MUI Imports
+import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
-import Typography from '@mui/material/Typography'
 import CardHeader from '@mui/material/CardHeader'
-import CardContent from '@mui/material/CardContent'
 import IconButton from '@mui/material/IconButton'
+import Typography from '@mui/material/Typography'
+import CardContent from '@mui/material/CardContent'
 import InputAdornment from '@mui/material/InputAdornment'
 
-// Components Imports
-import CustomTextField from '@core/components/mui/TextField'
+// ** Custom Component Import
+import CustomTextField from 'src/@core/components/mui/text-field'
+
+// ** Icon Imports
+import Icon from 'src/@core/components/icon'
+
+interface State {
+  password: string
+  showPassword: boolean
+}
 
 const FormLayoutsBasic = () => {
-  // States
-  const [isPasswordShown, setIsPasswordShown] = useState(false)
-  const [isConfirmPasswordShown, setIsConfirmPasswordShown] = useState(false)
+  // ** States
+  const [values, setValues] = useState<State>({
+    password: '',
+    showPassword: false
+  })
+  const [confirmPassValues, setConfirmPassValues] = useState<State>({
+    password: '',
+    showPassword: false
+  })
 
-  const handleClickShowPassword = () => setIsPasswordShown(show => !show)
+  const handleChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
+    setValues({ ...values, [prop]: event.target.value })
+  }
 
-  const handleClickShowConfirmPassword = () => setIsConfirmPasswordShown(show => !show)
+  const handleConfirmPassChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
+    setConfirmPassValues({ ...confirmPassValues, [prop]: event.target.value })
+  }
+  const handleClickShowPassword = () => {
+    setValues({ ...values, showPassword: !values.showPassword })
+  }
+
+  const handleClickConfirmPassShow = () => {
+    setConfirmPassValues({ ...confirmPassValues, showPassword: !confirmPassValues.showPassword })
+  }
 
   return (
     <Card>
       <CardHeader title='Basic' />
       <CardContent>
         <form onSubmit={e => e.preventDefault()}>
-          <Grid container spacing={6}>
+          <Grid container spacing={5}>
             <Grid item xs={12}>
-              <CustomTextField fullWidth label='Name' placeholder='John Doe' />
+              <CustomTextField fullWidth label='Name' placeholder='Leonard Carter' />
             </Grid>
             <Grid item xs={12}>
               <CustomTextField
                 fullWidth
                 type='email'
                 label='Email'
-                placeholder='johndoe@gmail.com'
+                placeholder='carterleonard@gmail.com'
                 helperText='You can use letters, numbers & periods'
               />
             </Grid>
@@ -50,9 +74,11 @@ const FormLayoutsBasic = () => {
               <CustomTextField
                 fullWidth
                 label='Password'
-                placeholder='············'
-                id='form-layout-basic-password'
-                type={isPasswordShown ? 'text' : 'password'}
+                value={values.password}
+                id='form-layouts-basic-password'
+                onChange={handleChange('password')}
+                type={values.showPassword ? 'text' : 'password'}
+                aria-describedby='form-layouts-basic-password-helper'
                 helperText='Use 8 or more characters with a mix of letters, numbers & symbols'
                 InputProps={{
                   endAdornment: (
@@ -63,7 +89,7 @@ const FormLayoutsBasic = () => {
                         onMouseDown={e => e.preventDefault()}
                         aria-label='toggle password visibility'
                       >
-                        <i className={isPasswordShown ? 'tabler-eye-off' : 'tabler-eye'} />
+                        <Icon fontSize='1.25rem' icon={values.showPassword ? 'tabler:eye' : 'tabler:eye-off'} />
                       </IconButton>
                     </InputAdornment>
                   )
@@ -74,20 +100,25 @@ const FormLayoutsBasic = () => {
               <CustomTextField
                 fullWidth
                 label='Confirm Password'
-                placeholder='············'
-                id='form-layout-basic-confirm-password'
-                type={isConfirmPasswordShown ? 'text' : 'password'}
+                value={confirmPassValues.password}
+                id='form-layouts-confirm-password'
+                onChange={handleConfirmPassChange('password')}
+                aria-describedby='form-layouts-confirm-password-helper'
                 helperText='Make sure to type the same password as above'
+                type={confirmPassValues.showPassword ? 'text' : 'password'}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position='end'>
                       <IconButton
                         edge='end'
-                        onClick={handleClickShowConfirmPassword}
+                        onClick={handleClickConfirmPassShow}
                         onMouseDown={e => e.preventDefault()}
-                        aria-label='toggle confirm password visibility'
+                        aria-label='toggle password visibility'
                       >
-                        <i className={isConfirmPasswordShown ? 'tabler-eye-off' : 'tabler-eye'} />
+                        <Icon
+                          fontSize='1.25rem'
+                          icon={confirmPassValues.showPassword ? 'tabler:eye' : 'tabler:eye-off'}
+                        />
                       </IconButton>
                     </InputAdornment>
                   )
@@ -95,17 +126,31 @@ const FormLayoutsBasic = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              <div className='flex items-center justify-between flex-wrap gap-5'>
-                <Button variant='contained' type='submit'>
+              <Box
+                sx={{
+                  gap: 5,
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  alignItems: 'center',
+                  justifyContent: 'space-between'
+                }}
+              >
+                <Button type='submit' variant='contained'>
                   Get Started!
                 </Button>
-                <div className='flex items-center justify-center gap-2'>
-                  <Typography>Already have an account?</Typography>
-                  <Link href='/' onClick={e => e.preventDefault()} className='text-primary'>
-                    Log In
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    '& a': { color: 'primary.main', textDecoration: 'none' }
+                  }}
+                >
+                  <Typography sx={{ mr: 2 }}>Already have an account?</Typography>
+                  <Link href='/' onClick={e => e.preventDefault()}>
+                    Log in
                   </Link>
-                </div>
-              </div>
+                </Box>
+              </Box>
             </Grid>
           </Grid>
         </form>

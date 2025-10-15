@@ -1,140 +1,69 @@
-// MUI Imports
-import type { Theme } from '@mui/material/styles'
+// ** Type Import
+import { OwnerStateThemeType } from './'
 
-// Config Imports
-import themeConfig from '@configs/themeConfig'
+// ** Util Import
+import { hexToRGBA } from 'src/@core/utils/hex-to-rgba'
 
-const iconButton: Theme['components'] = {
+const IconButton = {
   MuiIconButton: {
-    styleOverrides: {
-      root: {
-        '& .MuiSvgIcon-root, & i, & svg': {
-          fontSize: 'inherit'
-        }
-      },
-      sizeSmall: ({ theme }) => ({
-        padding: theme.spacing(1.25),
-        fontSize: '1.25rem'
-      }),
-      sizeMedium: ({ theme }) => ({
-        padding: theme.spacing(2),
-        fontSize: '1.375rem'
-      }),
-      sizeLarge: ({ theme }) => ({
-        padding: theme.spacing(3),
-        fontSize: '1.5rem'
-      })
-    },
     variants: [
       {
-        props: { color: 'default' },
-        style: {
-          '&:not(.Mui-disabled):hover, &:not(.Mui-disabled):active': {
-            backgroundColor: 'rgb(var(--mui-palette-text-primaryChannel) / 0.08)'
-          },
-          ...(themeConfig.disableRipple && {
-            '&.Mui-focusVisible:not(.Mui-disabled)': {
-              backgroundColor: 'rgb(var(--mui-palette-text-primaryChannel) / 0.08)'
-            }
-          }),
-          '&.Mui-disabled': {
-            opacity: 0.45,
-            color: 'var(--mui-palette-action-active)'
-          }
-        }
-      },
-      {
         props: { color: 'primary' },
-        style: {
-          '&:not(.Mui-disabled):hover, &:not(.Mui-disabled):active': {
-            backgroundColor: 'var(--mui-palette-primary-lighterOpacity)'
-          },
-          ...(themeConfig.disableRipple && {
-            '&.Mui-focusVisible:not(.Mui-disabled)': { backgroundColor: 'var(--mui-palette-primary-lighterOpacity)' }
-          }),
-          '&.Mui-disabled': {
-            opacity: 0.45,
-            color: 'var(--mui-palette-primary-main)'
+        style: ({ theme }: OwnerStateThemeType) => ({
+          '&:hover': {
+            backgroundColor: hexToRGBA(theme.palette.primary.main, 0.08)
           }
-        }
+        })
       },
       {
         props: { color: 'secondary' },
-        style: {
-          '&:not(.Mui-disabled):hover, &:not(.Mui-disabled):active': {
-            backgroundColor: 'var(--mui-palette-secondary-lighterOpacity)'
-          },
-          ...(themeConfig.disableRipple && {
-            '&.Mui-focusVisible:not(.Mui-disabled)': { backgroundColor: 'var(--mui-palette-secondary-lighterOpacity)' }
-          }),
-          '&.Mui-disabled': {
-            opacity: 0.45,
-            color: 'var(--mui-palette-secondary-main)'
+        style: ({ theme }: OwnerStateThemeType) => ({
+          '&:hover': {
+            backgroundColor: hexToRGBA(theme.palette.secondary.main, 0.08)
           }
-        }
-      },
-      {
-        props: { color: 'error' },
-        style: {
-          '&:not(.Mui-disabled):hover, &:not(.Mui-disabled):active': {
-            backgroundColor: 'var(--mui-palette-error-lighterOpacity)'
-          },
-          ...(themeConfig.disableRipple && {
-            '&.Mui-focusVisible:not(.Mui-disabled)': { backgroundColor: 'var(--mui-palette-error-lighterOpacity)' }
-          }),
-          '&.Mui-disabled': {
-            opacity: 0.45,
-            color: 'var(--mui-palette-error-main)'
-          }
-        }
-      },
-      {
-        props: { color: 'warning' },
-        style: {
-          '&:not(.Mui-disabled):hover, &:not(.Mui-disabled):active': {
-            backgroundColor: 'var(--mui-palette-warning-lighterOpacity)'
-          },
-          ...(themeConfig.disableRipple && {
-            '&.Mui-focusVisible:not(.Mui-disabled)': { backgroundColor: 'var(--mui-palette-warning-lighterOpacity)' }
-          }),
-          '&.Mui-disabled': {
-            opacity: 0.45,
-            color: 'var(--mui-palette-warning-main)'
-          }
-        }
-      },
-      {
-        props: { color: 'info' },
-        style: {
-          '&:not(.Mui-disabled):hover, &:not(.Mui-disabled):active': {
-            backgroundColor: 'var(--mui-palette-info-lighterOpacity)'
-          },
-          ...(themeConfig.disableRipple && {
-            '&.Mui-focusVisible:not(.Mui-disabled)': { backgroundColor: 'var(--mui-palette-info-lighterOpacity)' }
-          }),
-          '&.Mui-disabled': {
-            opacity: 0.45,
-            color: 'var(--mui-palette-info-main)'
-          }
-        }
+        })
       },
       {
         props: { color: 'success' },
-        style: {
-          '&:not(.Mui-disabled):hover, &:not(.Mui-disabled):active': {
-            backgroundColor: 'var(--mui-palette-success-lighterOpacity)'
-          },
-          ...(themeConfig.disableRipple && {
-            '&.Mui-focusVisible:not(.Mui-disabled)': { backgroundColor: 'var(--mui-palette-success-lighterOpacity)' }
-          }),
-          '&.Mui-disabled': {
-            opacity: 0.45,
-            color: 'var(--mui-palette-success-main)'
+        style: ({ theme }: OwnerStateThemeType) => ({
+          '&:hover': {
+            backgroundColor: hexToRGBA(theme.palette.success.main, 0.08)
           }
-        }
+        })
+      },
+      {
+        props: { color: 'error' },
+        style: ({ theme }: OwnerStateThemeType) => ({
+          '&:hover': {
+            backgroundColor: hexToRGBA(theme.palette.error.main, 0.08)
+          }
+        })
+      },
+      {
+        props: { color: 'warning' },
+        style: ({ theme }: OwnerStateThemeType) => ({
+          '&:hover': {
+            backgroundColor: hexToRGBA(theme.palette.warning.main, 0.08)
+          }
+        })
+      },
+      {
+        props: { color: 'info' },
+        style: ({ theme }: OwnerStateThemeType) => ({
+          '&:hover': {
+            backgroundColor: hexToRGBA(theme.palette.info.main, 0.08)
+          }
+        })
       }
-    ]
+    ],
+    styleOverrides: {
+      root: ({ theme }: OwnerStateThemeType) => ({
+        '&:hover': {
+          backgroundColor: `rgba(${theme.palette.customColors.main}, 0.08)`
+        }
+      })
+    }
   }
 }
 
-export default iconButton
+export default IconButton

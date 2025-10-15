@@ -1,220 +1,175 @@
-'use client'
-
-// React Imports
+// ** React Imports
 import { useState } from 'react'
 
-// Next Imports
-import Link from 'next/link'
-import { useParams } from 'next/navigation'
-
-// MUI Imports
-import useMediaQuery from '@mui/material/useMediaQuery'
-import { styled, useTheme } from '@mui/material/styles'
+// ** MUI Imports
+import Avatar from '@mui/material/Avatar'
 import Stepper from '@mui/material/Stepper'
-import MuiStep from '@mui/material/Step'
 import StepLabel from '@mui/material/StepLabel'
 import Typography from '@mui/material/Typography'
-import type { StepProps } from '@mui/material/Step'
+import { Theme, styled } from '@mui/material/styles'
+import useMediaQuery from '@mui/material/useMediaQuery'
+import MuiStep, { StepProps } from '@mui/material/Step'
 
-// Third-party Imports
-import classnames from 'classnames'
+// ** Icon Imports
+import Icon from 'src/@core/components/icon'
 
-// Type Imports
-import type { SystemMode } from '@core/types'
-import type { Locale } from '@configs/i18n'
+// ** Custom Components Imports
+import CustomAvatar from 'src/@core/components/mui/avatar'
 
-// Component Imports
-import CustomAvatar from '@core/components/mui/Avatar'
-import DirectionalIcon from '@components/DirectionalIcon'
-import Logo from '@components/layout/shared/Logo'
-import StepperWrapper from '@core/styles/stepper'
-import StepAccountDetails from './StepAccountDetails'
-import StepPersonalInfo from './StepPersonalInfo'
-import StepBillingDetails from './StepBillingDetails'
+// ** Step Components
+import StepPersonalInfo from 'src/views/pages/auth/register-multi-steps/StepPersonalInfo'
+import StepAccountDetails from 'src/views/pages/auth/register-multi-steps/StepAccountDetails'
+import StepBillingDetails from 'src/views/pages/auth/register-multi-steps/StepBillingDetails'
 
-// Hook Imports
-import { useImageVariant } from '@core/hooks/useImageVariant'
-import { useSettings } from '@core/hooks/useSettings'
+// ** Hook Import
+import { useSettings } from 'src/@core/hooks/useSettings'
 
-// Util Imports
-import { getLocalizedUrl } from '@/utils/i18n'
+// ** Util Import
+import { hexToRGBA } from 'src/@core/utils/hex-to-rgba'
 
-// Styled Custom Components
-const RegisterIllustration = styled('img')(({ theme }) => ({
-  zIndex: 2,
-  maxBlockSize: 550,
-  marginBlock: theme.spacing(12)
-}))
+// ** Styled Components
+import StepperWrapper from 'src/@core/styles/mui/stepper'
 
-const MaskImg = styled('img')({
-  blockSize: 'auto',
-  maxBlockSize: 250,
-  inlineSize: '100%',
-  position: 'absolute',
-  insetBlockEnd: 0,
-  zIndex: -1
-})
-
-// Vars
 const steps = [
   {
     title: 'Account',
-    icon: 'tabler-file-analytics',
-    subtitle: 'Enter your Account Details'
+    icon: 'tabler:smart-home',
+    subtitle: 'Account Details'
   },
   {
     title: 'Personal',
-    icon: 'tabler-user',
-    subtitle: 'Setup Information'
+    icon: 'tabler:users',
+    subtitle: 'Enter Information'
   },
   {
     title: 'Billing',
-    icon: 'tabler-credit-card',
-    subtitle: 'Add Social Links'
+    icon: 'tabler:file-text',
+    subtitle: 'Payment Details'
   }
 ]
 
 const Step = styled(MuiStep)<StepProps>(({ theme }) => ({
-  paddingInline: theme.spacing(7),
-  paddingBlock: theme.spacing(1),
-  '& + i': {
-    color: 'var(--mui-palette-text-secondary)'
-  },
-  '&:first-of-type': {
-    paddingInlineStart: 0
-  },
-  '&:last-of-type': {
-    paddingInlineEnd: 0
-  },
+  padding: 0,
   '& .MuiStepLabel-iconContainer': {
     display: 'none'
   },
-  '&.Mui-completed .step-title, &.Mui-completed .step-subtitle': {
-    color: 'var(--mui-palette-text-disabled)'
+  '& .step-subtitle': {
+    color: `${theme.palette.text.disabled} !important`
   },
-  '&.Mui-completed + i': {
-    color: 'var(--mui-palette-primary-main)'
+  '& + svg': {
+    color: theme.palette.text.disabled
+  },
+  '&.Mui-completed .step-title': {
+    color: theme.palette.text.disabled
+  },
+  '&.Mui-completed + svg': {
+    color: theme.palette.primary.main
+  },
+  '& .MuiStepLabel-label': {
+    cursor: 'pointer'
   },
   [theme.breakpoints.down('md')]: {
-    padding: 0,
-    ':not(:last-of-type)': {
-      marginBlockEnd: theme.spacing(6)
+    '&:not(:last-child)': {
+      marginBottom: theme.spacing(6)
+    },
+    '& + svg': {
+      display: 'none'
+    }
+  },
+  [theme.breakpoints.up('md')]: {
+    marginLeft: theme.spacing(4),
+    marginRight: theme.spacing(4),
+    '&:first-of-type': {
+      marginLeft: 0
+    },
+    '&:last-of-type': {
+      marginRight: 0
     }
   }
 }))
 
-const getStepContent = (step: number, handleNext: () => void, handlePrev: () => void) => {
-  switch (step) {
-    case 0:
-      return <StepAccountDetails handleNext={handleNext} />
-    case 1:
-      return <StepPersonalInfo handleNext={handleNext} handlePrev={handlePrev} />
-    case 2:
-      return <StepBillingDetails handlePrev={handlePrev} />
-
-    default:
-      return null
-  }
-}
-
-const RegisterMultiSteps = ({ mode }: { mode: SystemMode }) => {
-  // States
+const RegisterMultiSteps = () => {
+  // ** States
   const [activeStep, setActiveStep] = useState<number>(0)
 
-  // Vars
-  const darkImg = '/images/pages/auth-reg-multi-mask-dark.png'
-  const lightImg = '/images/pages/auth-reg-multi-mask-light.png'
-
-  // Hooks
+  // ** Hooks & Var
   const { settings } = useSettings()
-  const theme = useTheme()
-  const { lang: locale } = useParams()
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'))
-  const authBackground = useImageVariant(mode, lightImg, darkImg)
+  const smallScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'))
+  const { direction } = settings
 
   // Handle Stepper
   const handleNext = () => {
     setActiveStep(activeStep + 1)
   }
-
   const handlePrev = () => {
     if (activeStep !== 0) {
       setActiveStep(activeStep - 1)
     }
   }
 
+  const getStepContent = (step: number) => {
+    switch (step) {
+      case 0:
+        return <StepAccountDetails handleNext={handleNext} />
+      case 1:
+        return <StepPersonalInfo handleNext={handleNext} handlePrev={handlePrev} />
+      case 2:
+        return <StepBillingDetails handlePrev={handlePrev} />
+
+      default:
+        return null
+    }
+  }
+
+  const renderContent = () => {
+    return getStepContent(activeStep)
+  }
+
   return (
-    <div className='flex bs-full justify-between items-center'>
-      <div
-        className={classnames(
-          'flex bs-full items-center justify-center is-[23.75rem] lg:is-[28.125rem] relative p-6 max-lg:hidden',
-          {
-            'border-ie': settings.skin === 'bordered'
+    <>
+      <StepperWrapper sx={{ mb: 11.5 }}>
+        <Stepper
+          activeStep={activeStep}
+          sx={{ justifyContent: 'space-between' }}
+          connector={
+            !smallScreen ? <Icon icon={direction === 'ltr' ? 'tabler:chevron-right' : 'tabler:chevron-left'} /> : null
           }
-        )}
-      >
-        <RegisterIllustration
-          src='/images/illustrations/characters/7.png'
-          alt='character-illustration'
-          className={classnames({ 'scale-x-[-1]': theme.direction === 'rtl' })}
-        />
-        {!isSmallScreen && (
-          <MaskImg
-            alt='mask'
-            src={authBackground}
-            className={classnames({ 'scale-x-[-1]': theme.direction === 'rtl' })}
-          />
-        )}
-      </div>
-      <div className='flex flex-1 justify-center items-center bs-full bg-backgroundPaper'>
-        <Link
-          href={getLocalizedUrl('/', locale as Locale)}
-          className='absolute block-start-5 sm:block-start-[33px] inline-start-6 sm:inline-start-[38px]'
         >
-          <Logo />
-        </Link>
-        <StepperWrapper className='p-6 sm:p-8 max-is-[46.25rem] mbs-11 sm:mbs-14 lg:mbs-0'>
-          <Stepper
-            activeStep={activeStep}
-            connector={
-              !isSmallScreen ? (
-                <DirectionalIcon
-                  ltrIconClass='tabler-chevron-right'
-                  rtlIconClass='tabler-chevron-left'
-                  className='text-xl'
-                />
-              ) : null
-            }
-            className='mbe-6 md:mbe-12'
-          >
-            {steps.map((step, index) => {
-              return (
-                <Step key={index}>
-                  <StepLabel>
-                    <div className='step-label'>
-                      <CustomAvatar
-                        variant='rounded'
-                        skin={activeStep === index ? 'filled' : 'light'}
-                        {...(activeStep >= index && { color: 'primary' })}
-                        {...(activeStep === index && { className: 'shadow-primarySm' })}
-                        size={38}
-                      >
-                        <i className={classnames(step.icon, 'text-[22px]')} />
-                      </CustomAvatar>
-                      <div>
-                        <Typography className='step-title'>{step.title}</Typography>
-                        <Typography className='step-subtitle'>{step.subtitle}</Typography>
-                      </div>
+          {steps.map((step, index) => {
+            const RenderAvatar = activeStep >= index ? CustomAvatar : Avatar
+
+            return (
+              <Step key={index} onClick={() => setActiveStep(index)}>
+                <StepLabel>
+                  <div className='step-label'>
+                    <RenderAvatar
+                      variant='rounded'
+                      {...(activeStep >= index && { skin: 'light' })}
+                      {...(activeStep === index && { skin: 'filled' })}
+                      {...(activeStep >= index && { color: 'primary' })}
+                      sx={{
+                        mr: 4,
+                        ...(activeStep === index && { boxShadow: theme => theme.shadows[3] }),
+                        ...(activeStep > index && { color: theme => hexToRGBA(theme.palette.primary.main, 0.4) })
+                      }}
+                    >
+                      <Icon fontSize='1.5rem' icon={step.icon} />
+                    </RenderAvatar>
+                    <div>
+                      <Typography variant='h6' className='step-title'>
+                        {step.title}
+                      </Typography>
+                      <Typography className='step-subtitle'>{step.subtitle}</Typography>
                     </div>
-                  </StepLabel>
-                </Step>
-              )
-            })}
-          </Stepper>
-          {getStepContent(activeStep, handleNext, handlePrev)}
-        </StepperWrapper>
-      </div>
-    </div>
+                  </div>
+                </StepLabel>
+              </Step>
+            )
+          })}
+        </Stepper>
+      </StepperWrapper>
+      {renderContent()}
+    </>
   )
 }
 

@@ -1,5 +1,5 @@
-// Type Imports
-import type { ThemeColor } from '@core/types'
+// ** Types
+import { ThemeColor } from 'src/@core/layouts/types'
 
 export type UsersType = {
   id: number
@@ -7,6 +7,7 @@ export type UsersType = {
   email: string
   status: string
   avatar: string
+  billing: string
   company: string
   country: string
   contact: string
@@ -14,5 +15,15 @@ export type UsersType = {
   username: string
   currentPlan: string
   avatarColor?: ThemeColor
-  billing: string
+}
+
+export type ProjectListDataType = {
+  id: number
+  img: string
+  hours: string
+  totalTask: string
+  projectType: string
+  projectTitle: string
+  progressValue: number
+  progressColor: ThemeColor
 }
