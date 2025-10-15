@@ -28,6 +28,11 @@ const navigation = (): HorizontalNavItemsType => {
           title: 'Services',
           icon: 'tabler:tools',
           path: '/cms/services'
+        },
+        {
+          title: 'Hamkorlar',
+          icon: 'tabler:users-group',
+          path: '/cms/partners'
         }
       ]
     }

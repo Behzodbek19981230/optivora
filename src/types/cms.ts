@@ -65,9 +65,18 @@ export type EquipmentCategoryUpdate = Partial<EquipmentCategoryCreate>
 // Service
 export interface Service extends BaseEntity {
   name: string
+  name_en: string
+  name_uz: string
+  name_ru: string
   slug: string
-  short_description?: string | null
-  description?: string | null
+  short_description: string
+  short_description_en: string
+  short_description_uz: string
+  short_description_ru: string
+  description: string
+  description_en: string
+  description_uz: string
+  description_ru: string
   icon?: string | null
   industries: ID[]
   equipment_categories: ID[]
@@ -90,10 +99,16 @@ export type PartnerCategory = typeof PartnerCategory[keyof typeof PartnerCategor
 
 export interface Partner extends BaseEntity {
   name: string
-  category: PartnerCategory
-  logo?: string | null
-  website?: string | null
-  description?: string | null
+  name_en: string
+  name_uz: string
+  name_ru: string
+  category: string
+  logo: string
+  website: string
+  description: string
+  description_en: string
+  description_uz: string
+  description_ru: string
   industries: ID[]
   equipment_categories: ID[]
   order_index: number
