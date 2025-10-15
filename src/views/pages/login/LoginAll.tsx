@@ -71,8 +71,8 @@ const LoginAllPage = () => {
     <Card>
       <CardContent sx={{ p: theme => `${theme.spacing(10.5, 8, 8)} !important` }}>
         <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2.1 }}>
-          {/* <LogoIcon /> */}
-          Optivora
+          <LogoIcon />
+          
         </Box>
         <Box sx={{ mb: 6 }}>
           <Typography variant='h4' sx={{ mb: 1.5, textAlign: 'center' }}>

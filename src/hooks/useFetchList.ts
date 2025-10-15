@@ -23,9 +23,11 @@ export function useFetchList<T = any>(
       ...options
     }
   )
+  console.log('payload', payload);
+  
 
   return {
-    data: payload?.result || [],
+    data: payload?.results || [],
     total: payload?.pagination?.total || 0,
     loading: Boolean(isLoading),
     error,

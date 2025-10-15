@@ -40,7 +40,7 @@ const RegionsList = () => {
     }
 
     try {
-      await DataService.post(endpoints.region, data)
+      await DataService.post(endpoints.country, data)
       toast.success(<Translations text='Success!' />)
       handleClose()
       getData()
@@ -57,7 +57,7 @@ const RegionsList = () => {
   const [regions, setRegions] = useState<[]>()
   const getData = async () => {
     try {
-      const reponse = await DataService.get(endpoints.region, { search: value })
+      const reponse = await DataService.get(endpoints.country, { search: value })
       setRegions(reponse.data?.result)
     } catch (err) {
       console.log(err)

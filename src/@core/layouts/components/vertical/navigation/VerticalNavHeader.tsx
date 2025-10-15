@@ -98,16 +98,7 @@ const VerticalNavHeader = (props: Props) => {
         <LinkStyled href='/' sx={{ display: 'flex', alignItems: 'center' }}>
           <LogoIcon />
 
-          <Box
-            sx={{
-              ...menuCollapsedStyles,
-              alignItems: 'center',
-              display: 'flex',
-              ...(navCollapsed && !navHover ? {} : { ml: 2.5 })
-            }}
-          >
-            Optivora
-          </Box>
+          
         </LinkStyled>
       )}
 

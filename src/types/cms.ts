@@ -34,6 +34,9 @@ export type CompanyProfileUpdate = Partial<CompanyProfileCreate>
 // Industry
 export interface Industry extends BaseEntity {
   name: string
+  name_en: string
+  name_uz: string
+  name_ru: string
   slug: string
   short_description?: string | null
   description?: string | null
@@ -41,16 +44,19 @@ export interface Industry extends BaseEntity {
   order_index: number
 }
 
-export type IndustryCreate = Omit<Industry, 'id' | 'created_at' | 'updated_at' | 'icon'> & {
-  icon?: FileLike
-}
+export type IndustryCreate = Omit<Industry, 'id' | 'created_at' | 'updated_at'>
 export type IndustryUpdate = Partial<IndustryCreate>
 
 // EquipmentCategory
 export interface EquipmentCategory extends BaseEntity {
-  name: string
+  name_en: string
+  name_uz: string
+  name_ru: string
   slug: string
-  description?: string | null
+  description: string
+  description_en: string
+  description_uz: string
+  description_ru: string
   order_index: number
 }
 export type EquipmentCategoryCreate = Omit<EquipmentCategory, 'id' | 'created_at' | 'updated_at'>

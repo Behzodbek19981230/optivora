@@ -18,6 +18,11 @@ const navigation = (): VerticalNavItemsType => {
       path: '/cms/industries'
     },
     {
+      title: 'Jihoz kategoriyalari',
+      icon: 'tabler:category',
+      path: '/cms/equipment-category'
+    },
+    {
       title: 'Services',
       icon: 'tabler:tools',
       path: '/cms/services'

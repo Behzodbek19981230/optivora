@@ -8,6 +8,21 @@ const path = require('path')
 module.exports = {
   trailingSlash: true,
   reactStrictMode: false,
+  output: 'export',
+  images: { unoptimized: true },
+
+  // Limit static export to known safe routes (extend as needed)
+  exportPathMap: async function () {
+    return {
+      '/': { page: '/' },
+      '/login': { page: '/login' },
+      '/404': { page: '/404' },
+      '/401': { page: '/401' },
+      '/500': { page: '/500' },
+      // CMS
+      '/cms/industries': { page: '/cms/industries' }
+    }
+  },
 
   webpack: config => {
     config.resolve.alias = {

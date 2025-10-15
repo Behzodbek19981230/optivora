@@ -110,21 +110,10 @@ class DataService {
   }
 }
 
-// Ensure all requests end with a trailing slash before query/hash
-const ensureTrailingSlash = (url: string) => {
-  if (!url) return url
-  // Separate hash if any
-  const [noHash, hash] = url.split('#', 2)
-  // Separate query if any
-  const [path, query] = noHash.split('?', 2)
-  const normalizedPath = path.endsWith('/') ? path : `${path}/`
-  return normalizedPath + (query ? `?${query}` : '') + (hash ? `#${hash}` : '')
-}
+
 
 client.interceptors.request.use(config => {
-  if (config.url) {
-    config.url = ensureTrailingSlash(config.url)
-  }
+
   return config
 })
 

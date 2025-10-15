@@ -9,7 +9,7 @@ export type ApiPagination = {
 // Standard list response wrapper
 export type ApiResponseListType<T> = {
   pagination: ApiPagination
-  result: T[]
+  results: T[]
 }
 
 // Standard single-entity response wrapper

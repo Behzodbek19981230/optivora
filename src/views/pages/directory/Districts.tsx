@@ -69,7 +69,7 @@ const DistrictsList = () => {
   const [districts, setDistricts] = useState<[]>()
   const getData = async () => {
     try {
-      const res = await DataService.get(endpoints.region)
+      const res = await DataService.get(endpoints.country)
       setRegions(res.data?.result)
       const reponse = await DataService.get(endpoints.district, { search: value })
       setDistricts(reponse.data?.result)
