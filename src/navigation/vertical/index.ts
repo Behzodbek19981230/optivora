@@ -1,3 +1,4 @@
+
 // ** Type import
 import { VerticalNavItemsType } from 'src/@core/layouts/types'
 
@@ -31,6 +32,36 @@ const navigation = (): VerticalNavItemsType => {
       title: 'Hamkorlar',
       icon: 'tabler:users-group',
       path: '/cms/partners'
+    },
+    {
+      title: 'Loyihalar',
+      icon: 'tabler:building-arch',
+      path: '/cms/projects'
+    },
+    {
+      title: 'Yangiliklar',
+      icon: 'tabler:news',
+      path: '/cms/news'
+    },
+    {
+      title: 'FAQ',
+      icon: 'tabler:help-circle',
+      path: '/cms/faq'
+    },
+    {
+      title: 'Biz haqimizda',
+      icon: 'tabler:info-circle',
+      path: '/cms/company-profile'
+    },
+    {
+      title: 'Murojaatlar',
+      icon: 'tabler:mail',
+      path: '/cms/inquiry'
+    },
+    {
+      title: 'Hududlar',
+      icon: 'tabler:map-pin',
+      path: '/cms/locations'
     }
   ]
 }

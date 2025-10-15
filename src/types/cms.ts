@@ -102,7 +102,6 @@ export interface Partner extends BaseEntity {
   name_en: string
   name_uz: string
   name_ru: string
-  category: string
   logo: string
   website: string
   description: string
@@ -119,21 +118,55 @@ export type PartnerCreate = Omit<Partner, 'id' | 'created_at' | 'updated_at' | '
 export type PartnerUpdate = Partial<PartnerCreate>
 
 // Project
+export interface Partner extends BaseEntity {
+  name: string
+  name_en: string
+  name_uz: string
+  name_ru: string
+  category: PartnerCategory
+  logo: string
+  website: string
+  description: string
+  description_en: string
+  description_uz: string
+  description_ru: string
+  industries: ID[]
+  equipment_categories: ID[]
+  order_index: number
+
+  is_featured: boolean
+
+  partners: ID[]
+  country: number
+  region: number
+  district: number
+}
+
 export interface Project extends BaseEntity {
   title: string
-  slug: string
-  location_city?: string | null
-  location_region?: string | null
+  title_en: string
+  title_uz: string
+  title_ru: string
   year: number
-  scope: string
-  summary?: string | null
+  slug: string
+  sector: string
+  client?: string | null
+  location?: string | null
+  start_date?: ISODateString | null
+  end_date?: ISODateString | null
+  description: string
+  description_en: string
+  description_uz: string
+  description_ru: string
   featured_image?: string | null
   industries: ID[]
   equipment_categories: ID[]
+  services: ID[]
   partners: ID[]
-  is_featured: boolean
   order_index: number
+  is_featured: boolean
 }
+
 export type ProjectCreate = Omit<Project, 'id' | 'created_at' | 'updated_at' | 'featured_image'> & {
   featured_image?: FileLike
 }

@@ -56,8 +56,8 @@ const endpoints = {
   downloads: '/download',
   downloadById: (id: string | number | string[] | null | undefined) => `/download/${normalizeId(id)}`,
 
-  news: '/news',
-  newsById: (id: string | number | string[] | null | undefined) => `/news/${normalizeId(id)}`,
+  news: '/news-post',
+  newsById: (id: string | number | string[] | null | undefined) => `/news-post/${normalizeId(id)}`,
 
   testimonials: '/testimonial',
   testimonialById: (id: string | number | string[] | null | undefined) => `/testimonial/${normalizeId(id)}`,

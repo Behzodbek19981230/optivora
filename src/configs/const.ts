@@ -34,3 +34,18 @@ export enum Roles {
   manager = 'manager',
   superuser = 'superuser',
 }
+
+export enum PartnerCategory{
+    power_control = 'power_control',
+    rotating = 'rotating',
+    specialized = 'specialized',
+    safety_monitoring = 'safety_monitoring',
+    electrical_power = 'electrical_power'
+}
+export const PartnerCategoryList = [
+  { value: 'power_control', label: 'Power & Control Systems' },
+  { value: 'rotating', label: 'Rotating Equipment & Pumps' },
+  { value: 'specialized', label: 'Specialized Systems' },
+  { value: 'safety_monitoring', label: 'Safety & Monitoring' },
+  { value: 'electrical_power', label: 'Electrical & Power Components' }
+]

@@ -33,6 +33,16 @@ const navigation = (): HorizontalNavItemsType => {
           title: 'Hamkorlar',
           icon: 'tabler:users-group',
           path: '/cms/partners'
+        },
+        {
+          title: 'Loyihalar',
+          icon: 'tabler:building-arch',
+          path: '/cms/projects'
+        },
+        {
+          title: 'Hududlar',
+          icon: 'tabler:map-pin',
+          path: '/cms/locations'
         }
       ]
     }

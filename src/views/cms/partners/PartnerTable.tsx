@@ -21,8 +21,10 @@ import PartnerFormDialog from './dialogs/PartnerFormDialog'
 import DeleteConfirmDialog from './dialogs/DeleteConfirmDialog'
 import { useFetchList } from 'src/hooks/useFetchList'
 import { TablePagination } from '@mui/material'
+import { PartnerCategoryList } from 'src/configs/const'
 
 const PartnerTable = () => {
+  // Removed tab state, only Partner table remains
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [search, setSearch] = useState('')
@@ -95,7 +97,7 @@ const PartnerTable = () => {
                   <TableCell>{row.name_uz}</TableCell>
                   <TableCell>{row.name_en}</TableCell>
                   <TableCell>{row.name_ru}</TableCell>
-                  <TableCell>{row.category}</TableCell>
+                  <TableCell>{PartnerCategoryList.find(cat => cat.value === row.category)?.label}</TableCell>
                   <TableCell>{row.website}</TableCell>
                   <TableCell>{row.order_index}</TableCell>
                   <TableCell align='right'>
