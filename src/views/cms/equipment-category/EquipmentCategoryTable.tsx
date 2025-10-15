@@ -12,9 +12,7 @@ import IconButton from '@mui/material/IconButton'
 import Button from '@mui/material/Button'
 import Stack from '@mui/material/Stack'
 import Tooltip from '@mui/material/Tooltip'
-// Fallback icons if @mui/icons-material is not installed
-const EditIcon = () => <span style={{fontWeight:'bold'}}>✏️</span>
-const DeleteIcon = () => <span style={{fontWeight:'bold', color:'red'}}>🗑️</span>
+
 const AddIcon = () => <span style={{fontWeight:'bold'}}>＋</span>
 import { EquipmentCategory } from 'src/types/cms'
 import endpoints from 'src/configs/endpoint '
@@ -23,6 +21,7 @@ import EquipmentCategoryFormDialog from './dialogs/EquipmentCategoryFormDialog'
 import DeleteConfirmDialog from './dialogs/DeleteConfirmDialog'
 import { useFetchList } from 'src/hooks/useFetchList'
 import { TablePagination } from '@mui/material'
+import IconifyIcon from 'src/@core/components/icon'
 
 const EquipmentCategoryTable = () => {
       const [page, setPage] = useState(0)
@@ -98,20 +97,18 @@ const EquipmentCategoryTable = () => {
                   <TableCell>{row.name_ru}</TableCell>
                   <TableCell>{row.slug}</TableCell>
                   <TableCell>{row.order_index}</TableCell>
-                  <TableCell align='right'>
-                    <Stack direction='row' spacing={1} justifyContent='flex-end'>
-                      <Tooltip title='Tahrirlash'>
-                        <IconButton size='small' onClick={() => handleEdit(row)}>
-                          <EditIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title='O‘chirish'>
-                        <IconButton size='small' color='error' onClick={() => handleDelete(row)}>
-                          <DeleteIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </Stack>
-                  </TableCell>
+              <TableCell align='right'>
+                               <Tooltip title='Tahrirlash'>
+                                 <IconButton size='small' onClick={() => handleEdit(row)}>
+                                   <IconifyIcon icon='tabler:edit' />
+                                 </IconButton>
+                               </Tooltip>
+                               <Tooltip title='O‘chirish'>
+                                 <IconButton size='small' color='error' onClick={() => handleDelete(row)}>
+                                   <IconifyIcon icon='tabler:trash' />
+                                 </IconButton>
+                               </Tooltip>
+                             </TableCell>
                 </TableRow>
               ))
             ) : (

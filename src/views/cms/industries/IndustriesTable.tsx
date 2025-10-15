@@ -96,7 +96,7 @@ const IndustriesTable = () => {
           </Box>
         }
       />
-      <CardContent sx={{ pt: 0 }}>
+      <CardContent sx={{ p: 0 }}>
         {loading && (
           <Box display='flex' justifyContent='center' py={6}>
             <CircularProgress size={24} />

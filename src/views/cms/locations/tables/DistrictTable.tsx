@@ -17,6 +17,7 @@ import { useFetchList } from 'src/hooks/useFetchList'
 import { TablePagination } from '@mui/material'
 import DistrictFormDialog from '../dialogs/DistrictFormDialog'
 import DeleteConfirmDialog from '../dialogs/DeleteConfirmDialog'
+import IconifyIcon from 'src/@core/components/icon'
 
 const DistrictTable = () => {
   const [page, setPage] = useState(0)
@@ -96,12 +97,13 @@ const DistrictTable = () => {
                     <Stack direction='row' spacing={1} justifyContent='flex-end'>
                       <Tooltip title='Tahrirlash'>
                         <IconButton size='small' onClick={() => handleEdit(row)}>
-                          <EditIcon />
+                          <IconifyIcon icon='tabler:edit' />
+                          
                         </IconButton>
                       </Tooltip>
                       <Tooltip title='O‘chirish'>
                         <IconButton size='small' color='error' onClick={() => handleDelete(row)}>
-                          <DeleteIcon />
+                          <IconifyIcon icon='tabler:trash' />
                         </IconButton>
                       </Tooltip>
                     </Stack>

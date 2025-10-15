@@ -143,7 +143,7 @@ const ProjectEditPage = () => {
               <input type='file' accept='image/*' onChange={onImageChange} />
               {imagePreview && (
                 <div style={{ marginTop: 8 }}>
-                  <img src={imagePreview} alt='featured preview' style={{ maxWidth: 120, maxHeight: 80, borderRadius: 8 }} />
+                  <img src={process.env.NEXT_PUBLIC_BASE_URL+imagePreview} alt='featured preview' style={{ maxWidth: 200, maxHeight: 200, borderRadius: 8 }} />
                 </div>
               )}
             </Grid>

@@ -22,6 +22,7 @@ import DeleteConfirmDialog from './dialogs/DeleteConfirmDialog'
 import { useFetchList } from 'src/hooks/useFetchList'
 import { TablePagination } from '@mui/material'
 import { PartnerCategoryList } from 'src/configs/const'
+import IconifyIcon from 'src/@core/components/icon'
 
 const PartnerTable = () => {
   // Removed tab state, only Partner table remains
@@ -104,12 +105,12 @@ const PartnerTable = () => {
                     <Stack direction='row' spacing={1} justifyContent='flex-end'>
                       <Tooltip title='Tahrirlash'>
                         <IconButton size='small' onClick={() => handleEdit(row)}>
-                          <EditIcon />
+                          <IconifyIcon icon='tabler:edit' />
                         </IconButton>
                       </Tooltip>
                       <Tooltip title='O‘chirish'>
                         <IconButton size='small' color='error' onClick={() => handleDelete(row)}>
-                          <DeleteIcon />
+                          <IconifyIcon icon='tabler:trash' />
                         </IconButton>
                       </Tooltip>
                     </Stack>

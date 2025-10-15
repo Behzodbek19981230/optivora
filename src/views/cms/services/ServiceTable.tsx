@@ -21,6 +21,7 @@ import ServiceFormDialog from './dialogs/ServiceFormDialog'
 import DeleteConfirmDialog from './dialogs/DeleteConfirmDialog'
 import { useFetchList } from 'src/hooks/useFetchList'
 import { TablePagination } from '@mui/material'
+import IconifyIcon from 'src/@core/components/icon'
 
 const ServiceTable = () => {
   const [page, setPage] = useState(0)
@@ -110,12 +111,13 @@ const ServiceTable = () => {
                     <Stack direction='row' spacing={1} justifyContent='flex-end'>
                       <Tooltip title='Tahrirlash'>
                         <IconButton size='small' onClick={() => handleEdit(row)}>
-                          <EditIcon />
+                          <IconifyIcon icon='tabler:edit' />
+                          
                         </IconButton>
                       </Tooltip>
                       <Tooltip title='O‘chirish'>
                         <IconButton size='small' color='error' onClick={() => handleDelete(row)}>
-                          <DeleteIcon />
+                          <IconifyIcon icon='tabler:trash' />
                         </IconButton>
                       </Tooltip>
                     </Stack>

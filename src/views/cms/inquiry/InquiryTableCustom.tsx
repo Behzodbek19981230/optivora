@@ -18,6 +18,7 @@ import DeleteConfirmDialog from '../projects/dialogs/DeleteConfirmDialog'
 import { useFetchList } from 'src/hooks/useFetchList'
 import { TablePagination, Typography } from '@mui/material'
 import { Inquiry } from 'src/types/inquiry'
+import IconifyIcon from 'src/@core/components/icon'
 
 const InquiryTableCustom = () => {
   const [page, setPage] = useState(0)
@@ -75,14 +76,13 @@ const InquiryTableCustom = () => {
                   <TableCell>{row.project_sector}</TableCell>
                   <TableCell>{row.status}</TableCell>
                   <TableCell align='right'>
-                    <Stack direction='row' spacing={1} justifyContent='flex-end'>
-                      <Tooltip title='O‘chirish'>
-                        <IconButton size='small' color='error' onClick={() => handleDelete(row)}>
-                          <DeleteIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </Stack>
-                  </TableCell>
+                                  
+                                   <Tooltip title='O‘chirish'>
+                                     <IconButton size='small' color='error' onClick={() => handleDelete(row)}>
+                                       <IconifyIcon icon='tabler:trash' />
+                                     </IconButton>
+                                   </Tooltip>
+                                 </TableCell>
                 </TableRow>
               ))
             ) : (

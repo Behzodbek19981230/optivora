@@ -22,6 +22,7 @@ import DeleteConfirmDialog from './dialogs/DeleteConfirmDialog'
 import { useFetchList } from 'src/hooks/useFetchList'
 import { TablePagination } from '@mui/material'
 import { Project } from 'src/types/cms'
+import IconifyIcon from 'src/@core/components/icon'
 
 const ProjectTable = () => {
   const [page, setPage] = useState(0)
@@ -95,13 +96,13 @@ const ProjectTable = () => {
                       <Tooltip title='Tahrirlash'>
                         <Link href={`/cms/projects/${row.id}/edit`} passHref legacyBehavior>
                           <IconButton size='small' component='a'>
-                            <EditIcon />
+                            <IconifyIcon icon='tabler:edit' />
                           </IconButton>
                         </Link>
                       </Tooltip>
                       <Tooltip title='O‘chirish'>
                         <IconButton size='small' color='error' onClick={() => handleDelete(row)}>
-                          <DeleteIcon />
+                          <IconifyIcon icon='tabler:trash' />
                         </IconButton>
                       </Tooltip>
                     </Stack>

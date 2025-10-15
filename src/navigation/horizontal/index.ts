@@ -14,11 +14,11 @@ const navigation = (): HorizontalNavItemsType => {
       title: 'CMS',
       icon: 'tabler:folder',
       children: [
-        {
-          title: 'Industries',
-          icon: 'tabler:category',
-          path: '/cms/industries'
-        },
+         {
+      title: 'Sanoat tarmoqlari',
+      icon: 'tabler:building-factory',
+      path: '/cms/industries'
+    },
         {
           title: 'Jihoz kategoriyalari',
           icon: 'tabler:category',
