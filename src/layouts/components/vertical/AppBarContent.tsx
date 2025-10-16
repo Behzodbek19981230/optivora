@@ -95,7 +95,7 @@ const AppBarContent = (props: Props) => {
         {auth.user && (
           <>
             {/* <ShortcutsDropdown settings={settings} shortcuts={shortcuts} /> */}
-            <NotificationDropdown settings={settings} notifications={notifications} />
+            <NotificationDropdown settings={settings}  />
             <UserDropdown settings={settings} data={auth.user} />
           </>
         )}

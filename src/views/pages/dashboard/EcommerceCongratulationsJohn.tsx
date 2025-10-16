@@ -4,7 +4,8 @@ import Button from '@mui/material/Button'
 import { styled } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
 import CardContent from '@mui/material/CardContent'
-
+import { useAuth } from 'src/hooks/useAuth'
+import moment from 'moment'
 const Illustration = styled('img')(({ theme }) => ({
   right: 20,
   bottom: 0,
@@ -16,17 +17,24 @@ const Illustration = styled('img')(({ theme }) => ({
 }))
 
 const EcommerceCongratulationsJohn = () => {
+    const {user}=useAuth()
   return (
     <Card sx={{ position: 'relative' }}>
       <CardContent>
         <Typography variant='h5' sx={{ mb: 0.5 }}>
-          Congratulations John! 🎉
+        Xush kelibsiz {user?.first_name} {user?.last_name}! 🎉
         </Typography>
-        <Typography sx={{ mb: 2, color: 'text.secondary' }}>Best seller of the month</Typography>
+        <Typography sx={{ mb: 2, color: 'text.secondary' }}>
+            {user?.role} sifatida tizimga muvaffaqiyatli kirdingiz.
+        </Typography>
         <Typography variant='h4' sx={{ mb: 0.75, color: 'primary.main' }}>
-          $48.9k
+          {
+          moment(user?.date_joined).format('DD.MM.YYYY')
+          }
         </Typography>
-        <Button variant='contained'>View Sales</Button>
+        <Button variant='contained'>
+            Foydalanuvchi qo'shish
+        </Button>
         <Illustration width={116} alt='congratulations john' src='/images/cards/congratulations-john.png' />
       </CardContent>
     </Card>

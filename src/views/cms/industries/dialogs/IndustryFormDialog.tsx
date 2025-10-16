@@ -128,7 +128,7 @@ const IndustryFormDialog = ({ open, onClose, onSaved, mode, item }: Props) => {
         <DialogContent>
           <Grid container spacing={4}>
             
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={4}>
                 <Controller
                   name='name_en'
                   control={control}
@@ -136,7 +136,7 @@ const IndustryFormDialog = ({ open, onClose, onSaved, mode, item }: Props) => {
                   render={({ field }) => <CustomTextField fullWidth label='Nomi (EN)' {...field} />}
                 />
               </Grid>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={4}>
                 <Controller
                   name='name_uz'
                   control={control}
@@ -144,7 +144,7 @@ const IndustryFormDialog = ({ open, onClose, onSaved, mode, item }: Props) => {
                   render={({ field }) => <CustomTextField fullWidth label='Nomi (UZ)' {...field} />}
                 />
               </Grid>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={4}>
                 <Controller
                   name='name_ru'
                   control={control}

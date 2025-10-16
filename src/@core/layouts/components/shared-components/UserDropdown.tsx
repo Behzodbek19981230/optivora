@@ -47,7 +47,8 @@ const MenuItemStyled = styled(MenuItem)<MenuItemProps>(({ theme }) => ({
 
 const UserDropdown = (props: any) => {
   // ** Props
-  const { settings, data } = props
+  const { settings } = props
+  const {user}=useAuth()
 
   // ** States
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)
@@ -104,7 +105,7 @@ const UserDropdown = (props: any) => {
       >
         <Avatar
           alt='John Doe'
-          src={data?.image ? process.env.NEXT_PUBLIC_BASE_URL + data?.image : '/images/avatars/1.png'}
+          src={user?.avatar ? process.env.NEXT_PUBLIC_BASE_URL + user?.avatar : '/images/avatars/1.png'}
           onClick={handleDropdownOpen}
           sx={{ width: 38, height: 38 }}
         />
@@ -129,29 +130,20 @@ const UserDropdown = (props: any) => {
             >
               <Avatar
                 alt='John Doe'
-                src={data?.image ? process.env.NEXT_PUBLIC_BASE_URL + data?.image : '/images/avatars/1.png'}
+                src={user?.avatar ? process.env.NEXT_PUBLIC_BASE_URL + user?.avatar : '/images/avatars/1.png'}
                 sx={{ width: '2.5rem', height: '2.5rem' }}
               />
             </Badge>
             <Box sx={{ display: 'flex', ml: 2.5, alignItems: 'flex-start', flexDirection: 'column' }}>
               <Typography sx={{ fontWeight: 500 }}>
-                {(data?.name ?? '') + ' ' + (data?.surname ?? '') + ' ' + (data?.fathers_name ?? '')}
+                {user?.first_name} {user?.last_name}
               </Typography>
-              <Typography variant='body2'>{data?.role ?? ''}</Typography>
+              <Typography variant='body2'>{user?.role ?? ''}</Typography>
             </Box>
           </Box>
         </Box>
         <Divider sx={{ my: theme => `${theme.spacing(2)} !important` }} />
-        {data?.role == 'merchant' ? (
-          <MenuItemStyled sx={{ p: 0 }} onClick={() => handleDropdownClose(`/merchants/detail/${data?.merchant?.id}`)}>
-            <Box sx={styles}>
-              <Icon icon='tabler:user-check' />
-              {<Translations text='my_profile' />}
-            </Box>
-          </MenuItemStyled>
-        ) : (
-          ''
-        )}
+       
         {/* <MenuItemStyled sx={{ p: 0 }} onClick={() => handleDropdownClose('/pages/account-settings/account')}>
           <Box sx={styles}>
             <Icon icon='tabler:settings' />

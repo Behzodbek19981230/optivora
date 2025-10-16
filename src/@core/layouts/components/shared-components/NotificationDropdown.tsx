@@ -1,5 +1,6 @@
 // ** React Imports
 import { useState, SyntheticEvent, Fragment, ReactNode } from 'react'
+import { useInquiryNotifications } from 'src/hooks/useIndustryNotifications'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -29,6 +30,7 @@ import CustomAvatar from 'src/@core/components/mui/avatar'
 
 // ** Util Import
 import { getInitials } from 'src/@core/utils/get-initials'
+import { Inquiry } from 'src/types/cms'
 
 export type NotificationsType = {
   meta: string
@@ -53,7 +55,6 @@ export type NotificationsType = {
 )
 interface Props {
   settings: Settings
-  notifications: NotificationsType[]
 }
 
 // ** Styled Menu component
@@ -127,16 +128,17 @@ const ScrollWrapper = ({ children, hidden }: { children: ReactNode; hidden: bool
 
 const NotificationDropdown = (props: Props) => {
   // ** Props
-  const { settings, notifications } = props
+  const { settings } = props
 
   // ** States
   const [anchorEl, setAnchorEl] = useState<(EventTarget & Element) | null>(null)
 
   // ** Hook
   const hidden = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'))
-
-  // ** Vars
   const { direction } = settings
+
+  // Fetch new inquiry notifications
+  const { data: inquiryNotifications = [], isLoading } = useInquiryNotifications()
 
   const handleDropdownOpen = (event: SyntheticEvent) => {
     setAnchorEl(event.currentTarget)
@@ -166,6 +168,15 @@ const NotificationDropdown = (props: Props) => {
     }
   }
 
+  // Map inquiry notifications to dropdown format
+  const notifications = inquiryNotifications.map((inquiry: Inquiry) => ({
+    title: inquiry.inquiry_type || 'Yangi Inquiry',
+    subtitle: inquiry.message || '',
+    meta: inquiry.created_at ? new Date(inquiry.created_at).toLocaleDateString('uz-UZ') : '',
+    avatarText: inquiry.full_name ? inquiry.full_name[0] : 'I',
+    avatarColor: 'primary'
+  }))
+
   return (
     <Fragment>
       <IconButton color='inherit' aria-haspopup='true' onClick={handleDropdownOpen} aria-controls='customized-menu'>
@@ -194,26 +205,40 @@ const NotificationDropdown = (props: Props) => {
         >
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
             <Typography variant='h5' sx={{ cursor: 'text' }}>
-              Notifications
+              Yangi Industry
             </Typography>
-            <CustomChip skin='light' size='small' color='primary' label={`${notifications.length} New`} />
+            <CustomChip skin='light' size='small' color='primary' label={`${notifications.length} yangi`} />
           </Box>
         </MenuItem>
         <ScrollWrapper hidden={hidden}>
-          {notifications.map((notification: NotificationsType, index: number) => (
-            <MenuItem key={index} disableRipple disableTouchRipple onClick={handleDropdownClose}>
-              <Box sx={{ width: '100%', display: 'flex', alignItems: 'center' }}>
-                <RenderAvatar notification={notification} />
-                <Box sx={{ mr: 4, ml: 2.5, flex: '1 1', display: 'flex', overflow: 'hidden', flexDirection: 'column' }}>
-                  <MenuItemTitle>{notification.title}</MenuItemTitle>
-                  <MenuItemSubtitle variant='body2'>{notification.subtitle}</MenuItemSubtitle>
-                </Box>
-                <Typography variant='body2' sx={{ color: 'text.disabled' }}>
-                  {notification.meta}
-                </Typography>
+          {isLoading ? (
+            <MenuItem>
+              <Box sx={{ width: '100%', textAlign: 'center' }}>
+                <Typography variant='body2'>Yuklanmoqda...</Typography>
               </Box>
             </MenuItem>
-          ))}
+          ) : notifications.length === 0 ? (
+            <MenuItem>
+              <Box sx={{ width: '100%', textAlign: 'center' }}>
+                <Typography variant='body2'>Yangi industry yo'q</Typography>
+              </Box>
+            </MenuItem>
+          ) : (
+            notifications.map((notification: NotificationsType, index: number) => (
+              <MenuItem key={index} disableRipple disableTouchRipple onClick={handleDropdownClose}>
+                <Box sx={{ width: '100%', display: 'flex', alignItems: 'center' }}>
+                  <RenderAvatar notification={notification} />
+                  <Box sx={{ mr: 4, ml: 2.5, flex: '1 1', display: 'flex', overflow: 'hidden', flexDirection: 'column' }}>
+                    <MenuItemTitle>{notification.title}</MenuItemTitle>
+                    <MenuItemSubtitle variant='body2'>{notification.subtitle}</MenuItemSubtitle>
+                  </Box>
+                  <Typography variant='body2' sx={{ color: 'text.disabled' }}>
+                    {notification.meta}
+                  </Typography>
+                </Box>
+              </MenuItem>
+            ))
+          )}
         </ScrollWrapper>
         <MenuItem
           disableRipple

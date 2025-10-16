@@ -112,13 +112,13 @@ const ServiceFormDialog = ({ open, onClose, onSaved, mode, item }: Props) => {
         <DialogContent>
           <Grid container spacing={4}>
            
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={4}>
               <Controller name='name_en' control={control} render={({ field }) => <CustomTextField fullWidth label='Nomi (EN)' {...field} />} />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={4}>
               <Controller name='name_uz' control={control} render={({ field }) => <CustomTextField fullWidth label='Nomi (UZ)' {...field} />} />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={4}>
               <Controller name='name_ru' control={control} render={({ field }) => <CustomTextField fullWidth label='Nomi (RU)' {...field} />} />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -128,23 +128,23 @@ const ServiceFormDialog = ({ open, onClose, onSaved, mode, item }: Props) => {
               <Controller name='order_index' control={control} render={({ field }) => <CustomTextField fullWidth type='number' label='Tartib raqami' {...field} inputProps={{ min: 0 }} />} />
             </Grid>
           
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={4}>
               <Controller name='short_description_en' control={control} render={({ field }) => <CustomTextField fullWidth label='Qisqa tavsif (EN)' multiline minRows={2} {...field} />} />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={4}>
               <Controller name='short_description_uz' control={control} render={({ field }) => <CustomTextField fullWidth label='Qisqa tavsif (UZ)' multiline minRows={2} {...field} />} />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={4}>
               <Controller name='short_description_ru' control={control} render={({ field }) => <CustomTextField fullWidth label='Qisqa tavsif (RU)' multiline minRows={2} {...field} />} />
             </Grid>
            
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={4}>
               <Controller name='description_en' control={control} render={({ field }) => <CustomTextField fullWidth label='To‘liq tavsif (EN)' multiline minRows={2} {...field} />} />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={4}>
               <Controller name='description_uz' control={control} render={({ field }) => <CustomTextField fullWidth label='To‘liq tavsif (UZ)' multiline minRows={2} {...field} />} />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={4}>
               <Controller name='description_ru' control={control} render={({ field }) => <CustomTextField fullWidth label='To‘liq tavsif (RU)' multiline minRows={2} {...field} />} />
             </Grid>
             <Grid item xs={12} md={6}>

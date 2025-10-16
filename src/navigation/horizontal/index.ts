@@ -19,6 +19,7 @@ const navigation = (): HorizontalNavItemsType => {
       icon: 'tabler:building-factory',
       path: '/cms/industries'
     },
+    
         {
           title: 'Jihoz kategoriyalari',
           icon: 'tabler:category',

@@ -11,14 +11,17 @@ import IconButton from '@mui/material/IconButton'
 import Button from '@mui/material/Button'
 import Stack from '@mui/material/Stack'
 import Tooltip from '@mui/material/Tooltip'
-const DeleteIcon = () => <span style={{fontWeight:'bold', color:'red'}}>🗑️</span>
 import endpoints from 'src/configs/endpoint '
 import { DataService } from 'src/configs/dataService'
-import DeleteConfirmDialog from '../projects/dialogs/DeleteConfirmDialog'
 import { useFetchList } from 'src/hooks/useFetchList'
 import { TablePagination, Typography } from '@mui/material'
 import { Inquiry } from 'src/types/inquiry'
 import IconifyIcon from 'src/@core/components/icon'
+import Dialog from '@mui/material/Dialog'
+import DialogTitle from '@mui/material/DialogTitle'
+import DialogContent from '@mui/material/DialogContent'
+import DialogActions from '@mui/material/DialogActions'
+
 
 const InquiryTableCustom = () => {
   const [page, setPage] = useState(0)
@@ -35,13 +38,19 @@ const InquiryTableCustom = () => {
     setOpenDelete(true)
   }
 
-  const handleDeleteConfirm = async () => {
+  const handleCheckConfirm = async () => {
     if (selected) {
-      await DataService.delete(endpoints.inquiryById(selected.id))
+      await DataService.put(endpoints.inquiryById(selected.id),{
+        status:"closed"
+      })
       mutate()
       setOpenDelete(false)
     }
   }
+  const onClose=()=>{
+    setOpenDelete(false)
+  }
+  
 
   return (
     <Card>
@@ -77,9 +86,9 @@ const InquiryTableCustom = () => {
                   <TableCell>{row.status}</TableCell>
                   <TableCell align='right'>
                                   
-                                   <Tooltip title='O‘chirish'>
-                                     <IconButton size='small' color='error' onClick={() => handleDelete(row)}>
-                                       <IconifyIcon icon='tabler:trash' />
+                                   <Tooltip title='Tahrirlash'>
+                                     <IconButton size='small' color='primary' onClick={() => handleDelete(row)}>
+                                       <IconifyIcon icon='tabler:edit' />
                                      </IconButton>
                                    </Tooltip>
                                  </TableCell>
@@ -105,13 +114,23 @@ const InquiryTableCustom = () => {
         }}
         rowsPerPageOptions={[5, 10, 20, 50]}
       />
-      <DeleteConfirmDialog
-        open={openDelete}
-        onClose={() => setOpenDelete(false)}
-        onConfirm={handleDeleteConfirm}
-        title="Murojaatni o‘chirishni tasdiqlang"
-        description={selected ? `“${selected.full_name}” murojaatini o‘chirmoqchimisiz?` : undefined}
-      />
+
+      <Dialog open={openDelete} onClose={onClose}  fullWidth maxWidth='xs'>
+           <DialogTitle>{"Tanishib chiqildi"}</DialogTitle>
+           <DialogContent>
+             <Typography variant='body2'>
+               Murojaat muvaffaqiyatli yuborildi.
+               </Typography>
+           </DialogContent>
+           <DialogActions>
+             <Button variant='tonal' color='secondary' onClick={onClose} >
+               Bekor qilish
+             </Button>
+             <Button color='primary' onClick={() => handleCheckConfirm()} >
+              O'qildi
+             </Button>
+           </DialogActions>
+         </Dialog>
     </Card>
   )
 }

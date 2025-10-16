@@ -30,13 +30,13 @@ const CompanyProfileForm = ({ initialValues, onSubmit, loading }: Props) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <CardContent>
           <Grid container spacing={4}>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={4}>
               <Controller name='name_uz' control={control} rules={{ required: true }} render={({ field }) => <CustomTextField fullWidth label='Nomi (UZ)' {...field} />} />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={4}>
               <Controller name='name_en' control={control} render={({ field }) => <CustomTextField fullWidth label='Nomi (EN)' {...field} />} />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={4}>
               <Controller name='name_ru' control={control} render={({ field }) => <CustomTextField fullWidth label='Nomi (RU)' {...field} />} />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -75,13 +75,13 @@ const CompanyProfileForm = ({ initialValues, onSubmit, loading }: Props) => {
             <Grid item xs={12} md={6}>
               <Controller name='title' control={control} render={({ field }) => <CustomTextField fullWidth label='Lavozim (DEFAULT)' {...field} />} />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={4}>
               <Controller name='description_uz' control={control} render={({ field }) => <CustomTextField fullWidth multiline rows={4} label='Tavsif (UZ)' {...field} />} />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={4}>
               <Controller name='description_en' control={control} render={({ field }) => <CustomTextField fullWidth multiline rows={4} label='Tavsif (EN)' {...field} />} />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={4}>
               <Controller name='description_ru' control={control} render={({ field }) => <CustomTextField fullWidth multiline rows={4} label='Tavsif (RU)' {...field} />} />
             </Grid>
             <Grid item xs={12} md={6}>

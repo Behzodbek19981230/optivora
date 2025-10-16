@@ -14,6 +14,11 @@ const navigation = (): VerticalNavItemsType => {
       sectionTitle: 'CMS'
     },
     {
+      title: 'Foydalanuvchilar',
+      icon: 'tabler:user',
+      path: '/cms/users'
+    },
+    {
       title: 'Sanoat tarmoqlari',
       icon: 'tabler:building-factory',
       path: '/cms/industries'
