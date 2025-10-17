@@ -11,7 +11,7 @@ import endpoints from 'src/configs/endpoint '
 import toast from 'react-hot-toast'
 import { NewsPost } from 'src/types/news-post'
 import { useState } from 'react'
-
+import { MenuItem } from '@mui/material'
 const defaultValues: Partial<NewsPost> = {
   title: '',
   slug: '',
@@ -20,8 +20,17 @@ const defaultValues: Partial<NewsPost> = {
   body: '',
   cover_image: '',
   status: 'draft',
-  published_at: ''
 }
+
+const STATUS_OPTIONS = [
+  { value: 'draft', label: 'Draft' },
+  { value: 'published', label: 'Published' }
+]
+const CATEGORY_OPTIONS = [
+  { value: 'project_updates', label: 'Project Updates' },
+  { value: 'industry_news', label: 'Industry News' },
+  { value: 'company_announcements', label: 'Company Announcements' }
+]
 
 const NewsCreatePage = () => {
   const router = useRouter()
@@ -65,10 +74,42 @@ const NewsCreatePage = () => {
               <Controller name='slug' control={control} rules={{ required: true }} render={({ field }) => <CustomTextField fullWidth label='Slug' {...field} />} />
             </Grid>
             <Grid item xs={12} md={6}>
-              <Controller name='category' control={control} render={({ field }) => <CustomTextField fullWidth label='Kategoriya' {...field} />} />
+              <Controller
+                name='category'
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <CustomTextField
+                    select
+                    fullWidth
+                    label='Kategoriya'
+                    {...field}
+                  >
+                    {CATEGORY_OPTIONS.map(opt => (
+                      <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
+                    ))}
+                  </CustomTextField>
+                )}
+              />
             </Grid>
             <Grid item xs={12} md={6}>
-              <Controller name='status' control={control} render={({ field }) => <CustomTextField fullWidth label='Status' {...field} />} />
+              <Controller
+                name='status'
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <CustomTextField
+                    select
+                    fullWidth
+                    label='Status'
+                    {...field}
+                  >
+                    {STATUS_OPTIONS.map(opt => (
+                      <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
+                    ))}
+                  </CustomTextField>
+                )}
+              />
             </Grid>
             <Grid item xs={12}>
               <Controller name='excerpt' control={control} render={({ field }) => <CustomTextField fullWidth label='Qisqacha' multiline minRows={2} {...field} />} />
@@ -85,9 +126,7 @@ const NewsCreatePage = () => {
                 </div>
               )}
             </Grid>
-            <Grid item xs={12} md={6}>
-              <Controller name='published_at' control={control} render={({ field }) => <CustomTextField fullWidth label='E‘lon qilingan vaqti' type='datetime-local' {...field} />} />
-            </Grid>
+            
           </Grid>
         </CardContent>
         <CardContent>

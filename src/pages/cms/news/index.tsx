@@ -9,6 +9,7 @@ import { NewsPost } from 'src/types/news-post'
 import Link from 'next/link'
 import DeleteConfirmDialog from 'src/views/cms/projects/dialogs/DeleteConfirmDialog'
 import { useFetchList } from 'src/hooks/useFetchList'
+import { CardContent } from '@mui/material'
 
 const NewsListPage = () => {
   const [selected, setSelected] = useState<NewsPost | null>(null)
@@ -38,7 +39,9 @@ const NewsListPage = () => {
           </Link>
         }
       />
-      <NewsCardGrid data={data} onDelete={handleDelete} />
+      <CardContent>
+        <NewsCardGrid data={data} onDelete={handleDelete} />
+      </CardContent>
       <DeleteConfirmDialog
         open={openDelete}
         onClose={() => setOpenDelete(false)}

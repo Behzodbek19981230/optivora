@@ -14,6 +14,7 @@ export interface User{
   avatar: string;
   email: string;
   role: string;
+  roles:{id:number;name:string;description:string}[];
   password: string;
   country: number;
   region: number;

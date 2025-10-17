@@ -11,7 +11,7 @@ import { DataService } from 'src/configs/dataService'
 import endpoints from 'src/configs/endpoint '
 import toast from 'react-hot-toast'
 import { NewsPost } from 'src/types/news-post'
-
+import { MenuItem } from '@mui/material'
 const defaultValues: Partial<NewsPost> = {
   title: '',
   slug: '',
@@ -20,9 +20,16 @@ const defaultValues: Partial<NewsPost> = {
   body: '',
   cover_image: '',
   status: 'draft',
-  published_at: ''
 }
-
+const STATUS_OPTIONS = [
+  { value: 'draft', label: 'Draft' },
+  { value: 'published', label: 'Published' }
+]
+const CATEGORY_OPTIONS = [
+  { value: 'project_updates', label: 'Project Updates' },
+  { value: 'industry_news', label: 'Industry News' },
+  { value: 'company_announcements', label: 'Company Announcements' }
+]
 const NewsEditPage = () => {
   const router = useRouter()
   const { id } = router.query
@@ -33,7 +40,7 @@ const NewsEditPage = () => {
     if (id) {
       DataService.get(`${endpoints.news}/${id}`).then((res: any) => {
         reset({ ...res.data, cover_image: '' })
-        if (typeof res.data.cover_image === 'string') setImagePreview(res.data.cover_image)
+        if (typeof res.data.cover_image === 'string') setImagePreview(process.env.NEXT_PUBLIC_BASE_URL + res.data.cover_image)
       })
     }
   }, [id, reset])
@@ -74,11 +81,43 @@ const NewsEditPage = () => {
             <Grid item xs={12} md={6}>
               <Controller name='slug' control={control} rules={{ required: true }} render={({ field }) => <CustomTextField fullWidth label='Slug' {...field} />} />
             </Grid>
-            <Grid item xs={12} md={6}>
-              <Controller name='category' control={control} render={({ field }) => <CustomTextField fullWidth label='Kategoriya' {...field} />} />
+         <Grid item xs={12} md={6}>
+              <Controller
+                name='category'
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <CustomTextField
+                    select
+                    fullWidth
+                    label='Kategoriya'
+                    {...field}
+                  >
+                    {CATEGORY_OPTIONS.map(opt => (
+                      <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
+                    ))}
+                  </CustomTextField>
+                )}
+              />
             </Grid>
             <Grid item xs={12} md={6}>
-              <Controller name='status' control={control} render={({ field }) => <CustomTextField fullWidth label='Status' {...field} />} />
+              <Controller
+                name='status'
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <CustomTextField
+                    select
+                    fullWidth
+                    label='Status'
+                    {...field}
+                  >
+                    {STATUS_OPTIONS.map(opt => (
+                      <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
+                    ))}
+                  </CustomTextField>
+                )}
+              />
             </Grid>
             <Grid item xs={12}>
               <Controller name='excerpt' control={control} render={({ field }) => <CustomTextField fullWidth label='Qisqacha' multiline minRows={2} {...field} />} />
@@ -91,13 +130,11 @@ const NewsEditPage = () => {
               <input type='file' accept='image/*' onChange={onImageChange} />
               {imagePreview && (
                 <div style={{ marginTop: 8 }}>
-                  <img src={imagePreview} alt='cover preview' style={{ maxWidth: 120, maxHeight: 80, borderRadius: 8 }} />
+                  <img src={ imagePreview} alt='cover preview' style={{ maxWidth: 120, maxHeight: 80, borderRadius: 8 }} />
                 </div>
               )}
             </Grid>
-            <Grid item xs={12} md={6}>
-              <Controller name='published_at' control={control} render={({ field }) => <CustomTextField fullWidth label='E‘lon qilingan vaqti' type='datetime-local' {...field} />} />
-            </Grid>
+           
           </Grid>
         </CardContent>
         <CardContent>
