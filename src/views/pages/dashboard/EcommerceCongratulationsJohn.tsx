@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography'
 import CardContent from '@mui/material/CardContent'
 import { useAuth } from 'src/hooks/useAuth'
 import moment from 'moment'
+import { useRouter } from 'next/router'
 const Illustration = styled('img')(({ theme }) => ({
   right: 20,
   bottom: 0,
@@ -18,8 +19,9 @@ const Illustration = styled('img')(({ theme }) => ({
 
 const EcommerceCongratulationsJohn = () => {
     const {user}=useAuth()
+    const router=useRouter()
   return (
-    <Card sx={{ position: 'relative' }}>
+    <Card sx={{ position: 'relative',height: '100%' }}>
       <CardContent>
         <Typography variant='h5' sx={{ mb: 0.5 }}>
         Xush kelibsiz {user?.first_name} {user?.last_name}! 🎉
@@ -32,7 +34,7 @@ const EcommerceCongratulationsJohn = () => {
           moment(user?.date_joined).format('DD.MM.YYYY')
           }
         </Typography>
-        <Button variant='contained'>
+        <Button variant='contained' onClick={()=>router.push('/cms/users')}>
             Foydalanuvchi qo'shish
         </Button>
         <Illustration width={116} alt='congratulations john' src='/images/cards/congratulations-john.png' />

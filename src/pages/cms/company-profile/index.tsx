@@ -40,25 +40,17 @@ const CompanyProfilePage = () => {
     setLoading(true)
     try {
       let res
+      const formData = new FormData()
+      Object.entries(values).forEach(([key, value]) => {
+        if ((key === 'logo' || key === 'file') && value) {
+          formData.append(key, value as File)
+        } else if (value !== undefined && value !== null) {
+          formData.append(key, String(value))
+        }
+      })
       if (profile?.id) {
-        const formData = new FormData()
-        Object.entries(values).forEach(([key, value]) => {
-          if (key === 'logo' && value) {
-            formData.append('logo', value as File)
-          } else if (value !== undefined && value !== null) {
-            formData.append(key, String(value))
-          }
-        })
         res = await DataService.putForm(endpoints.companyProfileById(profile.id), formData)
       } else {
-        const formData = new FormData()
-        Object.entries(values).forEach(([key, value]) => {
-          if (key === 'logo' && value) {
-            formData.append('logo', value as File)
-          } else if (value !== undefined && value !== null) {
-            formData.append(key, String(value))
-          }
-        })
         res = await DataService.postForm(endpoints.companyProfile, formData)
       }
       setProfile(res.data ? res.data : res)

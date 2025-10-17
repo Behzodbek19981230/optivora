@@ -14,60 +14,74 @@ const navigation = (): VerticalNavItemsType => {
       sectionTitle: 'CMS'
     },
     {
-      title: 'Foydalanuvchilar',
-      icon: 'tabler:user',
-      path: '/cms/users'
-    },
-    {
-      title: 'Sanoat tarmoqlari',
-      icon: 'tabler:building-factory',
-      path: '/cms/industries'
-    },
-    {
-      title: 'Jihoz kategoriyalari',
-      icon: 'tabler:category',
-      path: '/cms/equipment-category'
+      title: 'Biz haqimizda',
+      icon: 'tabler:info-circle',
+      path: '/cms/company-profile'
     },
     {
       title: 'Services',
       icon: 'tabler:tools',
       path: '/cms/services'
     },
-    {
-      title: 'Hamkorlar',
-      icon: 'tabler:users-group',
-      path: '/cms/partners'
+        {
+      title: 'Sanoat tarmoqlari',
+      icon: 'tabler:building-factory',
+      path: '/cms/industries'
     },
     {
       title: 'Loyihalar',
       icon: 'tabler:building-arch',
       path: '/cms/projects'
     },
-    {
-      title: 'Yangiliklar',
-      icon: 'tabler:news',
-      path: '/cms/news'
+     {
+      title: 'Hamkorlar',
+      icon: 'tabler:users-group',
+      path: '/cms/partners'
     },
+    
+
+   
+    
+   
+    
+    // {
+    //   title: 'Yangiliklar',
+    //   icon: 'tabler:news',
+    //   path: '/cms/news'
+    // },
     {
       title: 'FAQ',
       icon: 'tabler:help-circle',
       path: '/cms/faq'
     },
-    {
-      title: 'Biz haqimizda',
-      icon: 'tabler:info-circle',
-      path: '/cms/company-profile'
-    },
+    
     {
       title: 'Murojaatlar',
       icon: 'tabler:mail',
       path: '/cms/inquiry'
     },
     {
+      title: 'Our Work',
+      icon: 'tabler:star',
+      path: '/cms/our-work'
+    },
+     {
+      title: 'Jihoz kategoriyalari',
+      icon: 'tabler:category',
+      path: '/cms/equipment-category'
+    },
+
+    {
       title: 'Hududlar',
       icon: 'tabler:map-pin',
       path: '/cms/locations'
-    }
+    },
+    {
+      title: 'Foydalanuvchilar',
+      icon: 'tabler:user',
+      path: '/cms/users'
+    },
+    
   ]
 }
 

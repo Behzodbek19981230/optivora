@@ -85,12 +85,13 @@ const InquiryTableCustom = () => {
                   <TableCell>{row.project_sector}</TableCell>
                   <TableCell>{row.status}</TableCell>
                   <TableCell align='right'>
+                    {row.status==="new"&&
                                   
                                    <Tooltip title='Tahrirlash'>
                                      <IconButton size='small' color='primary' onClick={() => handleDelete(row)}>
-                                       <IconifyIcon icon='tabler:edit' />
+                                       <IconifyIcon icon='tabler:checks' />
                                      </IconButton>
-                                   </Tooltip>
+                                   </Tooltip>}
                                  </TableCell>
                 </TableRow>
               ))

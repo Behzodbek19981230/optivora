@@ -65,6 +65,9 @@ const endpoints = {
   testimonials: '/testimonial',
   testimonialById: (id: string | number | string[] | null | undefined) => `/testimonial/${normalizeId(id)}`,
 
+  ourWork: '/our-work',
+  ourWorkById: (id: string | number | string[] | null | undefined) => `/our-work/${normalizeId(id)}`,
+
   // Missing keys referenced in code
   applicationApprovedByID: (id: string | number | string[] | null | undefined) => `/application-approved/${normalizeId(id)}`,
   limitData: '/limit-data'

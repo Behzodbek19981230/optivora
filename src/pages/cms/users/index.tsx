@@ -3,11 +3,9 @@ import { Container, Box } from '@mui/material'
 
 const UsersPage = () => {
   return (
-    <Container maxWidth='lg' sx={{ mt: 6 }}>
-      <Box>
+  
         <UserTable />
-      </Box>
-    </Container>
+
   )
 }
 

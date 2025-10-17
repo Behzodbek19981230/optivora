@@ -17,4 +17,5 @@ export interface CompanyProfile {
   description_en: string;
   description_uz: string;
   description_ru: string;
+  file?: File | string;
 }

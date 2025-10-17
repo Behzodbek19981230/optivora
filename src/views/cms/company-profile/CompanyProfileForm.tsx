@@ -17,11 +17,18 @@ interface Props {
 const CompanyProfileForm = ({ initialValues, onSubmit, loading }: Props) => {
   const { control, handleSubmit, setValue, formState: { isSubmitting } } = useForm({ defaultValues: initialValues })
   const [logoPreview, setLogoPreview] = useState<string | null>(initialValues?.logo || null)
+  const [fileName, setFileName] = useState<string | null>(null)
 
   const onLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     setValue('logo', file as any)
     if (file) setLogoPreview(URL.createObjectURL(file))
+  }
+
+  const onFileDataChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    setValue('file', file as any)
+    setFileName(file ? file.name : null)
   }
 
   return (
@@ -39,9 +46,7 @@ const CompanyProfileForm = ({ initialValues, onSubmit, loading }: Props) => {
             <Grid item xs={12} md={4}>
               <Controller name='name_ru' control={control} render={({ field }) => <CustomTextField fullWidth label='Nomi (RU)' {...field} />} />
             </Grid>
-            <Grid item xs={12} md={6}>
-              <Controller name='name' control={control} render={({ field }) => <CustomTextField fullWidth label='Nomi (DEFAULT)' {...field} />} />
-            </Grid>
+           
             <Grid item xs={12} md={6}>
               <label style={{ display: 'block', marginBottom: 8 }}>Logo:</label>
               <input type='file' accept='image/*' onChange={onLogoChange} />
@@ -52,29 +57,32 @@ const CompanyProfileForm = ({ initialValues, onSubmit, loading }: Props) => {
               )}
             </Grid>
             <Grid item xs={12} md={6}>
+              <label style={{ display: 'block', marginBottom: 8 }}>Qo‘shimcha fayl (file_data):</label>
+              <input type='file' onChange={onFileDataChange} />
+              {fileName && <div style={{ marginTop: 8, fontSize: 13 }}>{fileName}</div>}
+            </Grid>
+            <Grid item xs={12} md={3}>
               <Controller name='email' control={control} render={({ field }) => <CustomTextField fullWidth label='Email' {...field} />} />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={3}>
               <Controller name='phone' control={control} render={({ field }) => <CustomTextField fullWidth label='Telefon' {...field} />} />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={3}>
               <Controller name='address' control={control} render={({ field }) => <CustomTextField fullWidth label='Manzil' {...field} />} />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={3}>
               <Controller name='business_hours' control={control} render={({ field }) => <CustomTextField fullWidth label='Ish vaqti' {...field} />} />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={4}>
               <Controller name='title_uz' control={control} render={({ field }) => <CustomTextField fullWidth label='Lavozim (UZ)' {...field} />} />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={4}>
               <Controller name='title_en' control={control} render={({ field }) => <CustomTextField fullWidth label='Lavozim (EN)' {...field} />} />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={4}>
               <Controller name='title_ru' control={control} render={({ field }) => <CustomTextField fullWidth label='Lavozim (RU)' {...field} />} />
             </Grid>
-            <Grid item xs={12} md={6}>
-              <Controller name='title' control={control} render={({ field }) => <CustomTextField fullWidth label='Lavozim (DEFAULT)' {...field} />} />
-            </Grid>
+            
             <Grid item xs={12} md={4}>
               <Controller name='description_uz' control={control} render={({ field }) => <CustomTextField fullWidth multiline rows={4} label='Tavsif (UZ)' {...field} />} />
             </Grid>
@@ -84,9 +92,7 @@ const CompanyProfileForm = ({ initialValues, onSubmit, loading }: Props) => {
             <Grid item xs={12} md={4}>
               <Controller name='description_ru' control={control} render={({ field }) => <CustomTextField fullWidth multiline rows={4} label='Tavsif (RU)' {...field} />} />
             </Grid>
-            <Grid item xs={12} md={6}>
-              <Controller name='description' control={control} render={({ field }) => <CustomTextField fullWidth multiline rows={4} label='Tavsif (DEFAULT)' {...field} />} />
-            </Grid>
+          
           </Grid>
         </CardContent>
         <CardContent>
