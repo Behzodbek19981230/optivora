@@ -33,6 +33,7 @@ const defaultValues: FormValues = {
   name_en: '',
   name_uz: '',
   name_ru: '',
+  name_lt: '',
   slug: '',
   description: '',
   icon: '',
@@ -72,6 +73,7 @@ const IndustryFormDialog = ({ open, onClose, onSaved, mode, item }: Props) => {
         name_en: item.name_en,
         name_uz: item.name_uz,
         name_ru: item.name_ru,
+        name_lt: item.name_lt,
         slug: item.slug,
         short_description: item.short_description || '',
         description: item.description || '',
@@ -89,6 +91,7 @@ const IndustryFormDialog = ({ open, onClose, onSaved, mode, item }: Props) => {
     fd.append('name_en', values.name_en)
     fd.append('name_uz', values.name_uz)
     fd.append('name_ru', values.name_ru)
+    fd.append('name_lt', values.name_lt)
     fd.append('slug', values.slug)
     if (values.description !== undefined) fd.append('description', values.description || '')
     fd.append('order_index', String(Number(values.order_index) || 0))
@@ -96,62 +99,67 @@ const IndustryFormDialog = ({ open, onClose, onSaved, mode, item }: Props) => {
       fd.append('icon', values.iconFile)
     }
 
-    try{
-    if (mode === 'create') {
-      await DataService.postForm(endpoints.industries, fd)
-    } else if (mode === 'edit' && item) {
-      await DataService.putForm(endpoints.industryById(item.id), fd)
-    }
-    onSaved()
-    onClose()
-}
-    catch(error: any){
+    try {
+      if (mode === 'create') {
+        await DataService.postForm(endpoints.industries, fd)
+      } else if (mode === 'edit' && item) {
+        await DataService.putForm(endpoints.industryById(item.id), fd)
+      }
+      onSaved()
+      onClose()
+    } catch (error: any) {
       console.error('Failed to save industry:', error)
       toast.error(error?.message || 'Failed to save industry')
     }
-   
   }
 
   return (
-     <Dialog
-        fullWidth
-        open={open}
-        onClose={onClose}
-        scroll='body'
-        sx={{ '& .MuiDialog-paper': { overflow: 'visible' } }}
-      >
-        <DialogCloseButton onClick={onClose} disableRipple>
-          <Icon icon={'tabler:x'} />
-        </DialogCloseButton>
-  <DialogTitle>{mode === 'create' ? 'Sanoat qo‘shish' : 'Sanoatni tahrirlash'}</DialogTitle>
+    <Dialog
+      fullWidth
+      open={open}
+      onClose={onClose}
+      scroll='body'
+      sx={{ '& .MuiDialog-paper': { overflow: 'visible' } }}
+    >
+      <DialogCloseButton onClick={onClose} disableRipple>
+        <Icon icon={'tabler:x'} />
+      </DialogCloseButton>
+      <DialogTitle>{mode === 'create' ? 'Sanoat qo‘shish' : 'Sanoatni tahrirlash'}</DialogTitle>
       <form onSubmit={handleSubmit(onSubmit)}>
         <DialogContent>
           <Grid container spacing={4}>
-            
-              <Grid item xs={12} md={4}>
-                <Controller
-                  name='name_en'
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field }) => <CustomTextField fullWidth label='Nomi (EN)' {...field} />}
-                />
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <Controller
-                  name='name_uz'
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field }) => <CustomTextField fullWidth label='Nomi (UZ)' {...field} />}
-                />
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <Controller
-                  name='name_ru'
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field }) => <CustomTextField fullWidth label='Nomi (RU)' {...field} />}
-                />
-              </Grid>
+            <Grid item xs={12} md={4}>
+              <Controller
+                name='name_en'
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => <CustomTextField fullWidth label='Nomi (EN)' {...field} />}
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Controller
+                name='name_uz'
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => <CustomTextField fullWidth label='Nomi (UZ)' {...field} />}
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Controller
+                name='name_ru'
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => <CustomTextField fullWidth label='Nomi (RU)' {...field} />}
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Controller
+                name='name_lt'
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => <CustomTextField fullWidth label='Nomi (LT)' {...field} />}
+              />
+            </Grid>
             <Grid item xs={12} md={6}>
               <Controller
                 name='slug'
@@ -160,12 +168,14 @@ const IndustryFormDialog = ({ open, onClose, onSaved, mode, item }: Props) => {
                 render={({ field }) => <CustomTextField fullWidth label='Slug' {...field} />}
               />
             </Grid>
-            
+
             <Grid item xs={12}>
               <Controller
                 name='description'
                 control={control}
-                render={({ field }) => <CustomTextField fullWidth label='To‘liq tavsif' multiline minRows={3} {...field} />}
+                render={({ field }) => (
+                  <CustomTextField fullWidth label='To‘liq tavsif' multiline minRows={3} {...field} />
+                )}
               />
             </Grid>
             <Grid item xs={12} md={6}>

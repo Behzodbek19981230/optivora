@@ -111,10 +111,10 @@ const IndustriesTable = () => {
           <TableHead>
             <TableRow>
               <TableCell width={80}>ID</TableCell>
-              <TableCell>Nomi</TableCell>
               <TableCell>Nomi (EN)</TableCell>
               <TableCell>Nomi (UZ)</TableCell>
               <TableCell>Nomi (RU)</TableCell>
+              <TableCell>Nomi (LT)</TableCell>
               <TableCell>Slug</TableCell>
               <TableCell>Icon</TableCell>
               <TableCell width={120}>Tartib raqami</TableCell>
@@ -127,10 +127,10 @@ const IndustriesTable = () => {
             {data.map(row => (
               <TableRow key={row.id} hover>
                 <TableCell>{row.id}</TableCell>
-                <TableCell>{row.name}</TableCell>
                 <TableCell>{row.name_en}</TableCell>
                 <TableCell>{row.name_uz}</TableCell>
                 <TableCell>{row.name_ru}</TableCell>
+                <TableCell>{row.name_lt}</TableCell>
                 <TableCell>{row.slug}</TableCell>
                 <TableCell>
                   <img

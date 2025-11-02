@@ -13,7 +13,7 @@ import Button from '@mui/material/Button'
 import Stack from '@mui/material/Stack'
 import Tooltip from '@mui/material/Tooltip'
 
-const AddIcon = () => <span style={{fontWeight:'bold'}}>＋</span>
+const AddIcon = () => <span style={{ fontWeight: 'bold' }}>＋</span>
 import { EquipmentCategory } from 'src/types/cms'
 import endpoints from 'src/configs/endpoint '
 import { DataService } from 'src/configs/dataService'
@@ -24,14 +24,14 @@ import { TablePagination } from '@mui/material'
 import IconifyIcon from 'src/@core/components/icon'
 
 const EquipmentCategoryTable = () => {
-      const [page, setPage] = useState(0)
-      const [rowsPerPage, setRowsPerPage] = useState(10)
-      const [search, setSearch] = useState('')
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(10)
+  const [search, setSearch] = useState('')
   const { data, total, loading, error, mutate } = useFetchList<EquipmentCategory>(endpoints.equipmentCategories, {
     page: page + 1,
     perPage: rowsPerPage,
     search
-  })  
+  })
   const [openForm, setOpenForm] = useState(false)
   const [formMode, setFormMode] = useState<'create' | 'edit'>('create')
   const [selected, setSelected] = useState<EquipmentCategory | null>(null)
@@ -79,6 +79,7 @@ const EquipmentCategoryTable = () => {
               <TableCell>Nomi (EN)</TableCell>
               <TableCell>Nomi (UZ)</TableCell>
               <TableCell>Nomi (RU)</TableCell>
+              <TableCell>Nomi (LT)</TableCell>
               <TableCell>Slug</TableCell>
               <TableCell>Tartib raqami</TableCell>
               <TableCell align='right'>Amallar</TableCell>
@@ -87,7 +88,9 @@ const EquipmentCategoryTable = () => {
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={6} align='center'>Yuklanmoqda…</TableCell>
+                <TableCell colSpan={7} align='center'>
+                  Yuklanmoqda…
+                </TableCell>
               </TableRow>
             ) : data && data.length > 0 ? (
               data.map(row => (
@@ -95,42 +98,45 @@ const EquipmentCategoryTable = () => {
                   <TableCell>{row.name_en}</TableCell>
                   <TableCell>{row.name_uz}</TableCell>
                   <TableCell>{row.name_ru}</TableCell>
+                  <TableCell>{row.name_lt}</TableCell>
                   <TableCell>{row.slug}</TableCell>
                   <TableCell>{row.order_index}</TableCell>
-              <TableCell align='right'>
-                               <Tooltip title='Tahrirlash'>
-                                 <IconButton size='small' onClick={() => handleEdit(row)}>
-                                   <IconifyIcon icon='tabler:edit' />
-                                 </IconButton>
-                               </Tooltip>
-                               <Tooltip title='O‘chirish'>
-                                 <IconButton size='small' color='error' onClick={() => handleDelete(row)}>
-                                   <IconifyIcon icon='tabler:trash' />
-                                 </IconButton>
-                               </Tooltip>
-                             </TableCell>
+                  <TableCell align='right'>
+                    <Tooltip title='Tahrirlash'>
+                      <IconButton size='small' onClick={() => handleEdit(row)}>
+                        <IconifyIcon icon='tabler:edit' />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title='O‘chirish'>
+                      <IconButton size='small' color='error' onClick={() => handleDelete(row)}>
+                        <IconifyIcon icon='tabler:trash' />
+                      </IconButton>
+                    </Tooltip>
+                  </TableCell>
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={7} align='center'>Ma‘lumotlar yo‘q</TableCell>
+                <TableCell colSpan={7} align='center'>
+                  Ma‘lumotlar yo‘q
+                </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </TableContainer>
       <TablePagination
-                component='div'
-                count={total}
-                page={page}
-                onPageChange={(_, p) => setPage(p)}
-                rowsPerPage={rowsPerPage}
-                onRowsPerPageChange={e => {
-                  setRowsPerPage(parseInt(e.target.value, 10))
-                  setPage(0)
-                }}
-                rowsPerPageOptions={[5, 10, 20, 50]}
-              />
+        component='div'
+        count={total}
+        page={page}
+        onPageChange={(_, p) => setPage(p)}
+        rowsPerPage={rowsPerPage}
+        onRowsPerPageChange={e => {
+          setRowsPerPage(parseInt(e.target.value, 10))
+          setPage(0)
+        }}
+        rowsPerPageOptions={[5, 10, 20, 50]}
+      />
       <EquipmentCategoryFormDialog
         open={openForm}
         onClose={() => setOpenForm(false)}
@@ -143,7 +149,7 @@ const EquipmentCategoryTable = () => {
         onClose={() => setOpenDelete(false)}
         onConfirm={handleDeleteConfirm}
         title='Jihoz kategoriyasini o‘chirishni tasdiqlang'
-        description={selected ? `“${selected.name_uz   }” kategoriyasini o‘chirmoqchimisiz?` : undefined}
+        description={selected ? `“${selected.name_uz}” kategoriyasini o‘chirmoqchimisiz?` : undefined}
       />
     </Card>
   )

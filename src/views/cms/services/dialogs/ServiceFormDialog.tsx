@@ -30,15 +30,18 @@ const defaultValues: FormValues = {
   name_en: '',
   name_uz: '',
   name_ru: '',
+  name_lt: '',
   slug: '',
   short_description: '',
   short_description_en: '',
   short_description_uz: '',
   short_description_ru: '',
+  short_description_lt: '',
   description: '',
   description_en: '',
   description_uz: '',
   description_ru: '',
+  description_lt: '',
   icon: null,
   industries: [],
   equipment_categories: [],
@@ -89,20 +92,18 @@ const ServiceFormDialog = ({ open, onClose, onSaved, mode, item }: Props) => {
         formData.append(key, String(value))
       }
     })
-    try{
-    if (mode === 'create') {
-      await DataService.postForm(endpoints.services, formData)
-    } else if (mode === 'edit' && item) {
-      await DataService.putForm(endpoints.serviceById(item.id), formData)
-    }
-    onSaved()
-    onClose()
-}
-    catch(error){
+    try {
+      if (mode === 'create') {
+        await DataService.postForm(endpoints.services, formData)
+      } else if (mode === 'edit' && item) {
+        await DataService.putForm(endpoints.serviceById(item.id), formData)
+      }
+      onSaved()
+      onClose()
+    } catch (error) {
       console.error('Failed to save service:', error)
       toast.error('Xizmatni saqlashda xatolik yuz berdi')
     }
-
   }
 
   return (
@@ -111,41 +112,124 @@ const ServiceFormDialog = ({ open, onClose, onSaved, mode, item }: Props) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <DialogContent>
           <Grid container spacing={4}>
-           
             <Grid item xs={12} md={4}>
-              <Controller name='name_en' control={control} render={({ field }) => <CustomTextField fullWidth label='Nomi (EN)' {...field} />} />
+              <Controller
+                name='name_en'
+                control={control}
+                render={({ field }) => <CustomTextField fullWidth label='Nomi (EN)' {...field} />}
+              />
             </Grid>
             <Grid item xs={12} md={4}>
-              <Controller name='name_uz' control={control} render={({ field }) => <CustomTextField fullWidth label='Nomi (UZ)' {...field} />} />
+              <Controller
+                name='name_uz'
+                control={control}
+                render={({ field }) => <CustomTextField fullWidth label='Nomi (UZ)' {...field} />}
+              />
             </Grid>
             <Grid item xs={12} md={4}>
-              <Controller name='name_ru' control={control} render={({ field }) => <CustomTextField fullWidth label='Nomi (RU)' {...field} />} />
+              <Controller
+                name='name_ru'
+                control={control}
+                render={({ field }) => <CustomTextField fullWidth label='Nomi (RU)' {...field} />}
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Controller
+                name='name_lt'
+                control={control}
+                render={({ field }) => <CustomTextField fullWidth label='Nomi (LT)' {...field} />}
+              />
             </Grid>
             <Grid item xs={12} md={6}>
-              <Controller name='slug' control={control} rules={{ required: true }} render={({ field }) => <CustomTextField fullWidth label='Slug' {...field} />} />
+              <Controller
+                name='slug'
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => <CustomTextField fullWidth label='Slug' {...field} />}
+              />
             </Grid>
             <Grid item xs={12} md={6}>
-              <Controller name='order_index' control={control} render={({ field }) => <CustomTextField fullWidth type='number' label='Tartib raqami' {...field} inputProps={{ min: 0 }} />} />
+              <Controller
+                name='order_index'
+                control={control}
+                render={({ field }) => (
+                  <CustomTextField fullWidth type='number' label='Tartib raqami' {...field} inputProps={{ min: 0 }} />
+                )}
+              />
             </Grid>
-          
+
             <Grid item xs={12} md={4}>
-              <Controller name='short_description_en' control={control} render={({ field }) => <CustomTextField fullWidth label='Qisqa tavsif (EN)' multiline minRows={2} {...field} />} />
+              <Controller
+                name='short_description_en'
+                control={control}
+                render={({ field }) => (
+                  <CustomTextField fullWidth label='Qisqa tavsif (EN)' multiline minRows={2} {...field} />
+                )}
+              />
             </Grid>
             <Grid item xs={12} md={4}>
-              <Controller name='short_description_uz' control={control} render={({ field }) => <CustomTextField fullWidth label='Qisqa tavsif (UZ)' multiline minRows={2} {...field} />} />
+              <Controller
+                name='short_description_uz'
+                control={control}
+                render={({ field }) => (
+                  <CustomTextField fullWidth label='Qisqa tavsif (UZ)' multiline minRows={2} {...field} />
+                )}
+              />
             </Grid>
             <Grid item xs={12} md={4}>
-              <Controller name='short_description_ru' control={control} render={({ field }) => <CustomTextField fullWidth label='Qisqa tavsif (RU)' multiline minRows={2} {...field} />} />
+              <Controller
+                name='short_description_ru'
+                control={control}
+                render={({ field }) => (
+                  <CustomTextField fullWidth label='Qisqa tavsif (RU)' multiline minRows={2} {...field} />
+                )}
+              />
             </Grid>
-           
             <Grid item xs={12} md={4}>
-              <Controller name='description_en' control={control} render={({ field }) => <CustomTextField fullWidth label='To‘liq tavsif (EN)' multiline minRows={2} {...field} />} />
+              <Controller
+                name='short_description_lt'
+                control={control}
+                render={({ field }) => (
+                  <CustomTextField fullWidth label='Qisqa tavsif (LT)' multiline minRows={2} {...field} />
+                )}
+              />
+            </Grid>
+
+            <Grid item xs={12} md={4}>
+              <Controller
+                name='description_en'
+                control={control}
+                render={({ field }) => (
+                  <CustomTextField fullWidth label='To‘liq tavsif (EN)' multiline minRows={2} {...field} />
+                )}
+              />
             </Grid>
             <Grid item xs={12} md={4}>
-              <Controller name='description_uz' control={control} render={({ field }) => <CustomTextField fullWidth label='To‘liq tavsif (UZ)' multiline minRows={2} {...field} />} />
+              <Controller
+                name='description_uz'
+                control={control}
+                render={({ field }) => (
+                  <CustomTextField fullWidth label='To‘liq tavsif (UZ)' multiline minRows={2} {...field} />
+                )}
+              />
             </Grid>
             <Grid item xs={12} md={4}>
-              <Controller name='description_ru' control={control} render={({ field }) => <CustomTextField fullWidth label='To‘liq tavsif (RU)' multiline minRows={2} {...field} />} />
+              <Controller
+                name='description_ru'
+                control={control}
+                render={({ field }) => (
+                  <CustomTextField fullWidth label='To‘liq tavsif (RU)' multiline minRows={2} {...field} />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Controller
+                name='description_lt'
+                control={control}
+                render={({ field }) => (
+                  <CustomTextField fullWidth label='To‘liq tavsif (LT)' multiline minRows={2} {...field} />
+                )}
+              />
             </Grid>
             <Grid item xs={12} md={6}>
               <label style={{ display: 'block', marginBottom: 8 }}>Icon (rasm):</label>

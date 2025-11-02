@@ -12,9 +12,9 @@ import IconButton from '@mui/material/IconButton'
 import Button from '@mui/material/Button'
 import Stack from '@mui/material/Stack'
 import Tooltip from '@mui/material/Tooltip'
-const EditIcon = () => <span style={{fontWeight:'bold'}}>✏️</span>
-const DeleteIcon = () => <span style={{fontWeight:'bold', color:'red'}}>🗑️</span>
-const AddIcon = () => <span style={{fontWeight:'bold'}}>＋</span>
+const EditIcon = () => <span style={{ fontWeight: 'bold' }}>✏️</span>
+const DeleteIcon = () => <span style={{ fontWeight: 'bold', color: 'red' }}>🗑️</span>
+const AddIcon = () => <span style={{ fontWeight: 'bold' }}>＋</span>
 import endpoints from 'src/configs/endpoint '
 import { DataService } from 'src/configs/dataService'
 import ProjectFormDialog from './dialogs/ProjectFormDialog'
@@ -71,6 +71,7 @@ const ProjectTable = () => {
               <TableCell>Nomi (UZ)</TableCell>
               <TableCell>Nomi (EN)</TableCell>
               <TableCell>Nomi (RU)</TableCell>
+              <TableCell>Nomi (LT)</TableCell>
               <TableCell>Yil</TableCell>
               <TableCell>Asosiy</TableCell>
               <TableCell>Tartib raqami</TableCell>
@@ -80,7 +81,9 @@ const ProjectTable = () => {
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={7} align='center'>Yuklanmoqda…</TableCell>
+                <TableCell colSpan={8} align='center'>
+                  Yuklanmoqda…
+                </TableCell>
               </TableRow>
             ) : data && data.length > 0 ? (
               data.map(row => (
@@ -88,6 +91,7 @@ const ProjectTable = () => {
                   <TableCell>{row.title_uz}</TableCell>
                   <TableCell>{row.title_en}</TableCell>
                   <TableCell>{row.title_ru}</TableCell>
+                  <TableCell>{row.title_lt}</TableCell>
                   <TableCell>{row.year}</TableCell>
                   <TableCell>{row.is_featured ? 'Ha' : 'Yo‘q'}</TableCell>
                   <TableCell>{row.order_index}</TableCell>
@@ -111,7 +115,9 @@ const ProjectTable = () => {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={7} align='center'>Ma‘lumotlar yo‘q</TableCell>
+                <TableCell colSpan={7} align='center'>
+                  Ma‘lumotlar yo‘q
+                </TableCell>
               </TableRow>
             )}
           </TableBody>

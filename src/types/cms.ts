@@ -37,6 +37,7 @@ export interface Industry extends BaseEntity {
   name_en: string
   name_uz: string
   name_ru: string
+  name_lt: string
   slug: string
   short_description?: string | null
   description?: string | null
@@ -52,11 +53,13 @@ export interface EquipmentCategory extends BaseEntity {
   name_en: string
   name_uz: string
   name_ru: string
+  name_lt: string
   slug: string
   description: string
   description_en: string
   description_uz: string
   description_ru: string
+  description_lt: string
   order_index: number
 }
 export type EquipmentCategoryCreate = Omit<EquipmentCategory, 'id' | 'created_at' | 'updated_at'>
@@ -68,15 +71,18 @@ export interface Service extends BaseEntity {
   name_en: string
   name_uz: string
   name_ru: string
+  name_lt: string
   slug: string
   short_description: string
   short_description_en: string
   short_description_uz: string
   short_description_ru: string
+  short_description_lt: string
   description: string
   description_en: string
   description_uz: string
   description_ru: string
+  description_lt: string
   icon?: string | null
   industries: ID[]
   equipment_categories: ID[]
@@ -95,19 +101,21 @@ export const PartnerCategory = {
   SAFETY_MONITORING: 'safety_monitoring',
   ELECTRICAL_POWER: 'electrical_power'
 } as const
-export type PartnerCategory = typeof PartnerCategory[keyof typeof PartnerCategory]
+export type PartnerCategory = (typeof PartnerCategory)[keyof typeof PartnerCategory]
 
 export interface Partner extends BaseEntity {
   name: string
   name_en: string
   name_uz: string
   name_ru: string
+  name_lt: string
   logo: string
   website: string
   description: string
   description_en: string
   description_uz: string
   description_ru: string
+  description_lt: string
   industries: ID[]
   equipment_categories: ID[]
   order_index: number
@@ -123,6 +131,7 @@ export interface Partner extends BaseEntity {
   name_en: string
   name_uz: string
   name_ru: string
+  name_lt: string
   category: PartnerCategory
   logo: string
   website: string
@@ -130,6 +139,7 @@ export interface Partner extends BaseEntity {
   description_en: string
   description_uz: string
   description_ru: string
+  description_lt: string
   industries: ID[]
   equipment_categories: ID[]
   order_index: number
@@ -147,6 +157,7 @@ export interface Project extends BaseEntity {
   title_en: string
   title_uz: string
   title_ru: string
+  title_lt: string
   year: number
   slug: string
   sector: string
@@ -158,6 +169,7 @@ export interface Project extends BaseEntity {
   description_en: string
   description_uz: string
   description_ru: string
+  description_lt: string
   featured_image?: string | null
   industries: ID[]
   equipment_categories: ID[]
@@ -218,7 +230,7 @@ export const InquiryType = {
   PARTNERSHIP: 'partnership',
   GENERAL: 'general'
 } as const
-export type InquiryType = typeof InquiryType[keyof typeof InquiryType]
+export type InquiryType = (typeof InquiryType)[keyof typeof InquiryType]
 
 export const ProjectSector = {
   POWER: 'power_generation',
@@ -228,14 +240,14 @@ export const ProjectSector = {
   RENEWABLE: 'renewable_energy',
   OTHER: 'other'
 } as const
-export type ProjectSector = typeof ProjectSector[keyof typeof ProjectSector]
+export type ProjectSector = (typeof ProjectSector)[keyof typeof ProjectSector]
 
 export const InquiryStatus = {
   NEW: 'new',
   IN_PROGRESS: 'in_progress',
   CLOSED: 'closed'
 } as const
-export type InquiryStatus = typeof InquiryStatus[keyof typeof InquiryStatus]
+export type InquiryStatus = (typeof InquiryStatus)[keyof typeof InquiryStatus]
 
 export interface Inquiry extends BaseEntity {
   full_name: string
@@ -251,7 +263,10 @@ export interface Inquiry extends BaseEntity {
   ip_address?: string | null
   user_agent?: string | null
 }
-export type InquiryCreate = Omit<Inquiry, 'id' | 'created_at' | 'updated_at' | 'attachment' | 'status' | 'ip_address' | 'user_agent'> & {
+export type InquiryCreate = Omit<
+  Inquiry,
+  'id' | 'created_at' | 'updated_at' | 'attachment' | 'status' | 'ip_address' | 'user_agent'
+> & {
   attachment?: FileLike
 }
 export type InquiryUpdate = Partial<Omit<InquiryCreate, 'status'>> & { status?: InquiryStatus }
@@ -264,7 +279,7 @@ export const FileCategory = {
   CASE_STUDY: 'case_study',
   OTHER: 'other'
 } as const
-export type FileCategory = typeof FileCategory[keyof typeof FileCategory]
+export type FileCategory = (typeof FileCategory)[keyof typeof FileCategory]
 
 export interface DownloadableFile extends BaseEntity {
   title: string
@@ -283,14 +298,14 @@ export const NewsStatus = {
   DRAFT: 'draft',
   PUBLISHED: 'published'
 } as const
-export type NewsStatus = typeof NewsStatus[keyof typeof NewsStatus]
+export type NewsStatus = (typeof NewsStatus)[keyof typeof NewsStatus]
 
 export const NewsCategory = {
   PROJECT_UPDATES: 'project_updates',
   INDUSTRY_NEWS: 'industry_news',
   COMPANY: 'company_announcements'
 } as const
-export type NewsCategory = typeof NewsCategory[keyof typeof NewsCategory]
+export type NewsCategory = (typeof NewsCategory)[keyof typeof NewsCategory]
 
 export interface NewsPost extends BaseEntity {
   title: string

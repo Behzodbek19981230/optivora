@@ -28,11 +28,13 @@ const defaultValues: FormValues = {
   name_en: '',
   name_uz: '',
   name_ru: '',
+  name_lt: '',
   slug: '',
   description: '',
   description_en: '',
   description_uz: '',
   description_ru: '',
+  description_lt: '',
   order_index: 0
 }
 
@@ -50,11 +52,13 @@ const EquipmentCategoryFormDialog = ({ open, onClose, onSaved, mode, item }: Pro
         name_en: item.name_en,
         name_uz: item.name_uz,
         name_ru: item.name_ru,
+        name_lt: item.name_lt,
         slug: item.slug,
         description: item.description,
         description_en: item.description_en,
         description_uz: item.description_uz,
         description_ru: item.description_ru,
+        description_lt: item.description_lt,
         order_index: item.order_index
       })
     } else if (mode === 'create') {
@@ -67,63 +71,128 @@ const EquipmentCategoryFormDialog = ({ open, onClose, onSaved, mode, item }: Pro
       ...values,
       order_index: Number(values.order_index) || 0
     }
-    try{
-    if (mode === 'create') {
-      await DataService.post(endpoints.equipmentCategories, body)
-    } else if (mode === 'edit' && item) {
-      await DataService.put(endpoints.equipmentCategoryById(item.id), body)
-    }
-    onSaved()
-    onClose()
-}
-    catch(error){
-      console.error(error);
+    try {
+      if (mode === 'create') {
+        await DataService.post(endpoints.equipmentCategories, body)
+      } else if (mode === 'edit' && item) {
+        await DataService.put(endpoints.equipmentCategoryById(item.id), body)
+      }
+      onSaved()
+      onClose()
+    } catch (error) {
+      console.error(error)
       toast.error('Xatolik yuz berdi. Iltimos, qayta urinib ko‘ring.')
     }
   }
 
   return (
-     <Dialog
-        fullWidth
-        open={open}
-        onClose={onClose}
-        scroll='body'
-        sx={{ '& .MuiDialog-paper': { overflow: 'visible' } }}
-      >
-        <DialogCloseButton onClick={onClose} disableRipple>
-          <Icon icon={'tabler:x'} />
-        </DialogCloseButton>
+    <Dialog
+      fullWidth
+      open={open}
+      onClose={onClose}
+      scroll='body'
+      sx={{ '& .MuiDialog-paper': { overflow: 'visible' } }}
+    >
+      <DialogCloseButton onClick={onClose} disableRipple>
+        <Icon icon={'tabler:x'} />
+      </DialogCloseButton>
       <DialogTitle>{mode === 'create' ? 'Jihoz kategoriyasi qo‘shish' : 'Jihoz kategoriyasini tahrirlash'}</DialogTitle>
       <form onSubmit={handleSubmit(onSubmit)}>
         <DialogContent>
           <Grid container spacing={4}>
-            
             <Grid item xs={12} md={4}>
-              <Controller name='name_en' control={control} rules={{ required: true }} render={({ field }) => <CustomTextField fullWidth label='Nomi (EN)' {...field} />} />
+              <Controller
+                name='name_en'
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => <CustomTextField fullWidth label='Nomi (EN)' {...field} />}
+              />
             </Grid>
             <Grid item xs={12} md={4}>
-              <Controller name='name_uz' control={control} rules={{ required: true }} render={({ field }) => <CustomTextField fullWidth label='Nomi (UZ)' {...field} />} />
+              <Controller
+                name='name_uz'
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => <CustomTextField fullWidth label='Nomi (UZ)' {...field} />}
+              />
             </Grid>
             <Grid item xs={12} md={4}>
-              <Controller name='name_ru' control={control} rules={{ required: true }} render={({ field }) => <CustomTextField fullWidth label='Nomi (RU)' {...field} />} />
+              <Controller
+                name='name_ru'
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => <CustomTextField fullWidth label='Nomi (RU)' {...field} />}
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Controller
+                name='name_lt'
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => <CustomTextField fullWidth label='Nomi (LT)' {...field} />}
+              />
             </Grid>
             <Grid item xs={12} md={6}>
-              <Controller name='slug' control={control} rules={{ required: true }} render={({ field }) => <CustomTextField fullWidth label='Slug' {...field} />} />
+              <Controller
+                name='slug'
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => <CustomTextField fullWidth label='Slug' {...field} />}
+              />
             </Grid>
             <Grid item xs={12}>
-              <Controller name='description' control={control} render={({ field }) => <CustomTextField fullWidth label='To‘liq tavsif' multiline minRows={2} {...field} />} />
+              <Controller
+                name='description'
+                control={control}
+                render={({ field }) => (
+                  <CustomTextField fullWidth label='To‘liq tavsif' multiline minRows={2} {...field} />
+                )}
+              />
             </Grid>
             <Grid item xs={12} md={4}>
-              <Controller name='description_en' control={control} render={({ field }) => <CustomTextField fullWidth label='To‘liq tavsif (EN)' multiline minRows={2} {...field} />} />
+              <Controller
+                name='description_en'
+                control={control}
+                render={({ field }) => (
+                  <CustomTextField fullWidth label='To‘liq tavsif (EN)' multiline minRows={2} {...field} />
+                )}
+              />
             </Grid>
             <Grid item xs={12} md={4}>
-              <Controller name='description_uz' control={control} render={({ field }) => <CustomTextField fullWidth label='To‘liq tavsif (UZ)' multiline minRows={2} {...field} />} />
+              <Controller
+                name='description_uz'
+                control={control}
+                render={({ field }) => (
+                  <CustomTextField fullWidth label='To‘liq tavsif (UZ)' multiline minRows={2} {...field} />
+                )}
+              />
             </Grid>
             <Grid item xs={12} md={4}>
-              <Controller name='description_ru' control={control} render={({ field }) => <CustomTextField fullWidth label='To‘liq tavsif (RU)' multiline minRows={2} {...field} />} />
+              <Controller
+                name='description_ru'
+                control={control}
+                render={({ field }) => (
+                  <CustomTextField fullWidth label='To`liq tavsif (RU)' multiline minRows={2} {...field} />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Controller
+                name='description_lt'
+                control={control}
+                render={({ field }) => (
+                  <CustomTextField fullWidth label='To`liq tavsif (LT)' multiline minRows={2} {...field} />
+                )}
+              />
             </Grid>
             <Grid item xs={12} md={6}>
-              <Controller name='order_index' control={control} render={({ field }) => <CustomTextField fullWidth type='number' label='Tartib raqami' {...field} inputProps={{ min: 0 }} />} />
+              <Controller
+                name='order_index'
+                control={control}
+                render={({ field }) => (
+                  <CustomTextField fullWidth type='number' label='Tartib raqami' {...field} inputProps={{ min: 0 }} />
+                )}
+              />
             </Grid>
           </Grid>
         </DialogContent>

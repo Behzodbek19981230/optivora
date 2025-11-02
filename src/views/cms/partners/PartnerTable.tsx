@@ -11,9 +11,9 @@ import IconButton from '@mui/material/IconButton'
 import Button from '@mui/material/Button'
 import Stack from '@mui/material/Stack'
 import Tooltip from '@mui/material/Tooltip'
-const EditIcon = () => <span style={{fontWeight:'bold'}}>✏️</span>
-const DeleteIcon = () => <span style={{fontWeight:'bold', color:'red'}}>🗑️</span>
-const AddIcon = () => <span style={{fontWeight:'bold'}}>＋</span>
+const EditIcon = () => <span style={{ fontWeight: 'bold' }}>✏️</span>
+const DeleteIcon = () => <span style={{ fontWeight: 'bold', color: 'red' }}>🗑️</span>
+const AddIcon = () => <span style={{ fontWeight: 'bold' }}>＋</span>
 import { Partner } from 'src/types/cms'
 import endpoints from 'src/configs/endpoint '
 import { DataService } from 'src/configs/dataService'
@@ -81,6 +81,7 @@ const PartnerTable = () => {
               <TableCell>Nomi (UZ)</TableCell>
               <TableCell>Nomi (EN)</TableCell>
               <TableCell>Nomi (RU)</TableCell>
+              <TableCell>Nomi (LT)</TableCell>
               <TableCell>Kategoriya</TableCell>
               <TableCell>Vebsayt</TableCell>
               <TableCell>Tartib raqami</TableCell>
@@ -90,7 +91,9 @@ const PartnerTable = () => {
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={7} align='center'>Yuklanmoqda…</TableCell>
+                <TableCell colSpan={8} align='center'>
+                  Yuklanmoqda…
+                </TableCell>
               </TableRow>
             ) : data && data.length > 0 ? (
               data.map(row => (
@@ -98,6 +101,7 @@ const PartnerTable = () => {
                   <TableCell>{row.name_uz}</TableCell>
                   <TableCell>{row.name_en}</TableCell>
                   <TableCell>{row.name_ru}</TableCell>
+                  <TableCell>{row.name_lt}</TableCell>
                   <TableCell>{PartnerCategoryList.find(cat => cat.value === row.category)?.label}</TableCell>
                   <TableCell>{row.website}</TableCell>
                   <TableCell>{row.order_index}</TableCell>
@@ -119,7 +123,9 @@ const PartnerTable = () => {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={7} align='center'>Ma‘lumotlar yo‘q</TableCell>
+                <TableCell colSpan={7} align='center'>
+                  Ma‘lumotlar yo‘q
+                </TableCell>
               </TableRow>
             )}
           </TableBody>

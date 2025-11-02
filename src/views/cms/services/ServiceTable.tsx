@@ -11,9 +11,9 @@ import IconButton from '@mui/material/IconButton'
 import Button from '@mui/material/Button'
 import Stack from '@mui/material/Stack'
 import Tooltip from '@mui/material/Tooltip'
-const EditIcon = () => <span style={{fontWeight:'bold'}}>✏️</span>
-const DeleteIcon = () => <span style={{fontWeight:'bold', color:'red'}}>🗑️</span>
-const AddIcon = () => <span style={{fontWeight:'bold'}}>＋</span>
+const EditIcon = () => <span style={{ fontWeight: 'bold' }}>✏️</span>
+const DeleteIcon = () => <span style={{ fontWeight: 'bold', color: 'red' }}>🗑️</span>
+const AddIcon = () => <span style={{ fontWeight: 'bold' }}>＋</span>
 import { Service } from 'src/types/cms'
 import endpoints from 'src/configs/endpoint '
 import { DataService } from 'src/configs/dataService'
@@ -79,6 +79,7 @@ const ServiceTable = () => {
               <TableCell>Nomi (UZ)</TableCell>
               <TableCell>Nomi (EN)</TableCell>
               <TableCell>Nomi (RU)</TableCell>
+              <TableCell>Nomi (LT)</TableCell>
               <TableCell>Slug</TableCell>
               <TableCell>Icon</TableCell>
               <TableCell>Tartib raqami</TableCell>
@@ -88,7 +89,9 @@ const ServiceTable = () => {
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={6} align='center'>Yuklanmoqda…</TableCell>
+                <TableCell colSpan={8} align='center'>
+                  Yuklanmoqda…
+                </TableCell>
               </TableRow>
             ) : data && data.length > 0 ? (
               data.map(row => (
@@ -96,23 +99,23 @@ const ServiceTable = () => {
                   <TableCell>{row.name_uz}</TableCell>
                   <TableCell>{row.name_en}</TableCell>
                   <TableCell>{row.name_ru}</TableCell>
+                  <TableCell>{row.name_lt}</TableCell>
                   <TableCell>{row.slug}</TableCell>
-                    <TableCell>
+                  <TableCell>
                     <img
-                        src={row.icon ?? undefined}
-                        width={100}
-                        height={100}
-                        alt={row.name_uz ?? ''}
-                        style={{ maxWidth: '100%', maxHeight: 40, objectFit: 'contain' }}
-                      />
-                    </TableCell>
+                      src={row.icon ?? undefined}
+                      width={100}
+                      height={100}
+                      alt={row.name_uz ?? ''}
+                      style={{ maxWidth: '100%', maxHeight: 40, objectFit: 'contain' }}
+                    />
+                  </TableCell>
                   <TableCell>{row.order_index}</TableCell>
                   <TableCell align='right'>
                     <Stack direction='row' spacing={1} justifyContent='flex-end'>
                       <Tooltip title='Tahrirlash'>
                         <IconButton size='small' onClick={() => handleEdit(row)}>
                           <IconifyIcon icon='tabler:edit' />
-                          
                         </IconButton>
                       </Tooltip>
                       <Tooltip title='O‘chirish'>
@@ -126,7 +129,9 @@ const ServiceTable = () => {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={7} align='center'>Ma‘lumotlar yo‘q</TableCell>
+                <TableCell colSpan={7} align='center'>
+                  Ma‘lumotlar yo‘q
+                </TableCell>
               </TableRow>
             )}
           </TableBody>

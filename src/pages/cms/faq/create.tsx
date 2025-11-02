@@ -16,16 +16,22 @@ const defaultValues: Partial<Faq> = {
   question_en: '',
   question_uz: '',
   question_ru: '',
+  question_lt: '',
   answer: '',
   answer_en: '',
   answer_uz: '',
   answer_ru: '',
+  answer_lt: '',
   order_index: 0
 }
 
 const FaqCreatePage = () => {
   const router = useRouter()
-  const { control, handleSubmit, formState: { isSubmitting } } = useForm({ defaultValues })
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting }
+  } = useForm({ defaultValues })
 
   const onSubmit = async (values: any) => {
     try {
@@ -44,31 +50,84 @@ const FaqCreatePage = () => {
         <CardContent>
           <Grid container spacing={4}>
             <Grid item xs={12} md={6}>
-              <Controller name='question_uz' control={control} rules={{ required: true }} render={({ field }) => <CustomTextField fullWidth label='Savol (UZ)' {...field} />} />
+              <Controller
+                name='question_uz'
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => <CustomTextField fullWidth label='Savol (UZ)' {...field} />}
+              />
             </Grid>
             <Grid item xs={12} md={6}>
-              <Controller name='question_en' control={control} render={({ field }) => <CustomTextField fullWidth label='Savol (EN)' {...field} />} />
+              <Controller
+                name='question_en'
+                control={control}
+                render={({ field }) => <CustomTextField fullWidth label='Savol (EN)' {...field} />}
+              />
             </Grid>
             <Grid item xs={12} md={6}>
-              <Controller name='question_ru' control={control} render={({ field }) => <CustomTextField fullWidth label='Savol (RU)' {...field} />} />
+              <Controller
+                name='question_ru'
+                control={control}
+                render={({ field }) => <CustomTextField fullWidth label='Savol (RU)' {...field} />}
+              />
             </Grid>
             <Grid item xs={12} md={6}>
-              <Controller name='question' control={control} render={({ field }) => <CustomTextField fullWidth label='Savol (DEFAULT)' {...field} />} />
+              <Controller
+                name='question_lt'
+                control={control}
+                render={({ field }) => <CustomTextField fullWidth label='Savol (LT)' {...field} />}
+              />
             </Grid>
             <Grid item xs={12} md={6}>
-              <Controller name='answer_uz' control={control} render={({ field }) => <CustomTextField fullWidth label='Javob (UZ)' {...field} />} />
+              <Controller
+                name='question'
+                control={control}
+                render={({ field }) => <CustomTextField fullWidth label='Savol (DEFAULT)' {...field} />}
+              />
             </Grid>
             <Grid item xs={12} md={6}>
-              <Controller name='answer_en' control={control} render={({ field }) => <CustomTextField fullWidth label='Javob (EN)' {...field} />} />
+              <Controller
+                name='answer_uz'
+                control={control}
+                render={({ field }) => <CustomTextField fullWidth label='Javob (UZ)' {...field} />}
+              />
             </Grid>
             <Grid item xs={12} md={6}>
-              <Controller name='answer_ru' control={control} render={({ field }) => <CustomTextField fullWidth label='Javob (RU)' {...field} />} />
+              <Controller
+                name='answer_en'
+                control={control}
+                render={({ field }) => <CustomTextField fullWidth label='Javob (EN)' {...field} />}
+              />
             </Grid>
             <Grid item xs={12} md={6}>
-              <Controller name='answer' control={control} render={({ field }) => <CustomTextField fullWidth label='Javob (DEFAULT)' {...field} />} />
+              <Controller
+                name='answer_ru'
+                control={control}
+                render={({ field }) => <CustomTextField fullWidth label='Javob (RU)' {...field} />}
+              />
             </Grid>
             <Grid item xs={12} md={6}>
-              <Controller name='order_index' control={control} render={({ field }) => <CustomTextField fullWidth type='number' label='Tartib raqami' {...field} inputProps={{ min: 0 }} />} />
+              <Controller
+                name='answer_lt'
+                control={control}
+                render={({ field }) => <CustomTextField fullWidth label='Javob (LT)' {...field} />}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Controller
+                name='answer'
+                control={control}
+                render={({ field }) => <CustomTextField fullWidth label='Javob (DEFAULT)' {...field} />}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Controller
+                name='order_index'
+                control={control}
+                render={({ field }) => (
+                  <CustomTextField fullWidth type='number' label='Tartib raqami' {...field} inputProps={{ min: 0 }} />
+                )}
+              />
             </Grid>
           </Grid>
         </CardContent>
@@ -76,7 +135,13 @@ const FaqCreatePage = () => {
           <Button type='submit' variant='contained' disabled={isSubmitting}>
             {isSubmitting ? 'Saqlanmoqda…' : 'Saqlash'}
           </Button>
-          <Button type='button' variant='tonal' color='secondary' onClick={() => router.push('/cms/faq')} style={{ marginLeft: 16 }}>
+          <Button
+            type='button'
+            variant='tonal'
+            color='secondary'
+            onClick={() => router.push('/cms/faq')}
+            style={{ marginLeft: 16 }}
+          >
             Bekor qilish
           </Button>
         </CardContent>
