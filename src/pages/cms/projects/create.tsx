@@ -12,7 +12,7 @@ import { useForm, Controller } from 'react-hook-form'
 import { DataService } from 'src/configs/dataService'
 import endpoints from 'src/configs/endpoint '
 import { useFetchList } from 'src/hooks/useFetchList'
-import {  Industry, EquipmentCategory, Partner } from 'src/types/cms'
+import { Industry, EquipmentCategory, Partner } from 'src/types/cms'
 import toast from 'react-hot-toast'
 
 type ProjectFormValues = {
@@ -23,16 +23,19 @@ type ProjectFormValues = {
   title_en: string
   title_uz: string
   title_ru: string
+  title_lt: string
   slug: string
   year: number
   scope: string
   scope_en: string
   scope_uz: string
   scope_ru: string
+  scope_lt: string
   summary: string
   summary_en: string
   summary_uz: string
   summary_ru: string
+  summary_lt: string
   featured_image: File | null
   is_featured: boolean
   order_index: number
@@ -42,37 +45,50 @@ type ProjectFormValues = {
 }
 
 const defaultValues: ProjectFormValues = {
-    industries: [],
-    partners: [],
-    title: '',
-    title_en: '',
-    title_uz: '',
-    title_ru: '',
-    slug: '',
-    year: new Date().getFullYear(),
-    scope: '',
-    scope_en: '',
-    scope_uz: '',
-    scope_ru: '',
-    summary: '',
-    summary_en: '',
-    summary_uz: '',
-    summary_ru: '',
-    featured_image: null,
-    is_featured: false,
-    order_index: 0,
-    country: '',
-    region: '',
-    district: '',
-    equipment_categories: []
+  industries: [],
+  partners: [],
+  title: '',
+  title_en: '',
+  title_uz: '',
+  title_ru: '',
+  title_lt: '',
+
+  slug: '',
+  year: new Date().getFullYear(),
+  scope: '',
+  scope_en: '',
+  scope_uz: '',
+  scope_ru: '',
+  scope_lt: '',
+  summary: '',
+  summary_en: '',
+  summary_uz: '',
+  summary_ru: '',
+  summary_lt: '',
+  featured_image: null,
+  is_featured: false,
+  order_index: 0,
+  country: '',
+  region: '',
+  district: '',
+  equipment_categories: []
 }
 
 const ProjectCreatePage = () => {
   const router = useRouter()
-  const { control, handleSubmit, setValue, watch, reset, formState: { isSubmitting } } = useForm({ defaultValues })
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    watch,
+    reset,
+    formState: { isSubmitting }
+  } = useForm({ defaultValues })
 
   const { data: industries = [] } = useFetchList<Industry>(endpoints.industries, { perPage: 100 })
-  const { data: equipmentCategories = [] } = useFetchList<EquipmentCategory>(endpoints.equipmentCategories, { perPage: 100 })
+  const { data: equipmentCategories = [] } = useFetchList<EquipmentCategory>(endpoints.equipmentCategories, {
+    perPage: 100
+  })
   const { data: partners = [] } = useFetchList<Partner>(endpoints.partners, { perPage: 100 })
   const { data: countries = [] } = useFetchList<any>('/country', { perPage: 100 })
   const { data: regions = [] } = useFetchList<any>('/region', { perPage: 100, country: watch('country') })
@@ -112,61 +128,156 @@ const ProjectCreatePage = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <CardContent>
           <Grid container spacing={4}>
-           
             <Grid item xs={12} md={6}>
-              <Controller name='title_en' control={control} render={({ field }) => <CustomTextField fullWidth label='Nomi (EN)' {...field} />} />
+              <Controller
+                name='title_en'
+                control={control}
+                render={({ field }) => <CustomTextField fullWidth label='Nomi (EN)' {...field} />}
+              />
             </Grid>
             <Grid item xs={12} md={6}>
-              <Controller name='title_uz' control={control} render={({ field }) => <CustomTextField fullWidth label='Nomi (UZ)' {...field} />} />
+              <Controller
+                name='title_uz'
+                control={control}
+                render={({ field }) => <CustomTextField fullWidth label='Nomi (UZ)' {...field} />}
+              />
             </Grid>
             <Grid item xs={12} md={6}>
-              <Controller name='title_ru' control={control} render={({ field }) => <CustomTextField fullWidth label='Nomi (RU)' {...field} />} />
+              <Controller
+                name='title_ru'
+                control={control}
+                render={({ field }) => <CustomTextField fullWidth label='Nomi (RU)' {...field} />}
+              />
             </Grid>
             <Grid item xs={12} md={6}>
-              <Controller name='slug' control={control} rules={{ required: true }} render={({ field }) => <CustomTextField fullWidth label='Slug' {...field} />} />
+              <Controller
+                name='title_lt'
+                control={control}
+                render={({ field }) => <CustomTextField fullWidth label='Nomi (LT)' {...field} />}
+              />
             </Grid>
             <Grid item xs={12} md={6}>
-              <Controller name='year' control={control} render={({ field }) => <CustomTextField fullWidth type='number' label='Yil' {...field} inputProps={{ min: 1900, max: 2100 }} />} />
-            </Grid>
-            
-            <Grid item xs={12} md={6}>
-              <Controller name='scope_en' control={control} render={({ field }) => <CustomTextField fullWidth label='Loyiha doirasi (EN)' {...field} />} />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Controller name='scope_uz' control={control} render={({ field }) => <CustomTextField fullWidth label='Loyiha doirasi (UZ)' {...field} />} />
+              <Controller
+                name='slug'
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => <CustomTextField fullWidth label='Slug' {...field} />}
+              />
             </Grid>
             <Grid item xs={12} md={6}>
-              <Controller name='scope_ru' control={control} render={({ field }) => <CustomTextField fullWidth label='Loyiha doirasi (RU)' {...field} />} />
+              <Controller
+                name='year'
+                control={control}
+                render={({ field }) => (
+                  <CustomTextField
+                    fullWidth
+                    type='number'
+                    label='Yil'
+                    {...field}
+                    inputProps={{ min: 1900, max: 2100 }}
+                  />
+                )}
+              />
             </Grid>
-           
+
             <Grid item xs={12} md={6}>
-              <Controller name='summary_en' control={control} render={({ field }) => <CustomTextField fullWidth label='Qisqacha ma’lumot (EN)' multiline minRows={2} {...field} />} />
+              <Controller
+                name='scope_en'
+                control={control}
+                render={({ field }) => <CustomTextField fullWidth label='Loyiha doirasi (EN)' {...field} />}
+              />
             </Grid>
             <Grid item xs={12} md={6}>
-              <Controller name='summary_uz' control={control} render={({ field }) => <CustomTextField fullWidth label='Qisqacha ma’lumot (UZ)' multiline minRows={2} {...field} />} />
+              <Controller
+                name='scope_uz'
+                control={control}
+                render={({ field }) => <CustomTextField fullWidth label='Loyiha doirasi (UZ)' {...field} />}
+              />
             </Grid>
             <Grid item xs={12} md={6}>
-              <Controller name='summary_ru' control={control} render={({ field }) => <CustomTextField fullWidth label='Qisqacha ma’lumot (RU)' multiline minRows={2} {...field} />} />
+              <Controller
+                name='scope_ru'
+                control={control}
+                render={({ field }) => <CustomTextField fullWidth label='Loyiha doirasi (RU)' {...field} />}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Controller
+                name='scope_lt'
+                control={control}
+                render={({ field }) => <CustomTextField fullWidth label='Loyiha doirasi (LT)' {...field} />}
+              />
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <Controller
+                name='summary_en'
+                control={control}
+                render={({ field }) => (
+                  <CustomTextField fullWidth label='Qisqacha ma’lumot (EN)' multiline minRows={2} {...field} />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Controller
+                name='summary_uz'
+                control={control}
+                render={({ field }) => (
+                  <CustomTextField fullWidth label='Qisqacha ma’lumot (UZ)' multiline minRows={2} {...field} />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Controller
+                name='summary_ru'
+                control={control}
+                render={({ field }) => (
+                  <CustomTextField fullWidth label='Qisqacha ma’lumot (RU)' multiline minRows={2} {...field} />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Controller
+                name='summary_lt'
+                control={control}
+                render={({ field }) => (
+                  <CustomTextField fullWidth label='Qisqacha ma’lumot (LT)' multiline minRows={2} {...field} />
+                )}
+              />
             </Grid>
             <Grid item xs={12} md={6}>
               <label style={{ display: 'block', marginBottom: 8 }}>Asosiy rasm:</label>
               <input type='file' accept='image/*' onChange={onImageChange} />
               {imagePreview && (
                 <div style={{ marginTop: 8 }}>
-                  <img src={imagePreview} alt='featured preview' style={{ maxWidth: 120, maxHeight: 80, borderRadius: 8 }} />
+                  <img
+                    src={imagePreview}
+                    alt='featured preview'
+                    style={{ maxWidth: 120, maxHeight: 80, borderRadius: 8 }}
+                  />
                 </div>
               )}
             </Grid>
             <Grid item xs={12} md={6}>
-              <Controller name='is_featured' control={control} render={({ field }) => (
-                <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <input type='checkbox' checked={field.value} onChange={e => field.onChange(e.target.checked)} />
-                  Asosiy loyiha
-                </label>
-              )} />
+              <Controller
+                name='is_featured'
+                control={control}
+                render={({ field }) => (
+                  <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <input type='checkbox' checked={field.value} onChange={e => field.onChange(e.target.checked)} />
+                    Asosiy loyiha
+                  </label>
+                )}
+              />
             </Grid>
             <Grid item xs={12} md={6}>
-              <Controller name='order_index' control={control} render={({ field }) => <CustomTextField fullWidth type='number' label='Tartib raqami' {...field} inputProps={{ min: 0 }} />} />
+              <Controller
+                name='order_index'
+                control={control}
+                render={({ field }) => (
+                  <CustomTextField fullWidth type='number' label='Tartib raqami' {...field} inputProps={{ min: 0 }} />
+                )}
+              />
             </Grid>
             <Grid item xs={12} md={6}>
               <Controller<any, 'industries'>
@@ -232,31 +343,49 @@ const ProjectCreatePage = () => {
               />
             </Grid>
             <Grid item xs={12} md={4}>
-              <Controller name='country' control={control} render={({ field }) => (
-                <CustomTextField select fullWidth label='Mamlakat' {...field} value={field.value || ''}>
-                  {countries.map((country: any) => (
-                    <MenuItem key={country.id} value={country.id}>{country.name_uz || country.name}</MenuItem>
-                  ))}
-                </CustomTextField>
-              )} />
+              <Controller
+                name='country'
+                control={control}
+                render={({ field }) => (
+                  <CustomTextField select fullWidth label='Mamlakat' {...field} value={field.value || ''}>
+                    {countries.map((country: any) => (
+                      <MenuItem key={country.id} value={country.id}>
+                        {country.name_uz || country.name}
+                      </MenuItem>
+                    ))}
+                  </CustomTextField>
+                )}
+              />
             </Grid>
             <Grid item xs={12} md={4}>
-              <Controller name='region' control={control} render={({ field }) => (
-                <CustomTextField select fullWidth label='Viloyat' {...field} value={field.value || ''}>
-                  {regions.map((region: any) => (
-                    <MenuItem key={region.id} value={region.id}>{region.name_uz || region.name}</MenuItem>
-                  ))}
-                </CustomTextField>
-              )} />
+              <Controller
+                name='region'
+                control={control}
+                render={({ field }) => (
+                  <CustomTextField select fullWidth label='Viloyat' {...field} value={field.value || ''}>
+                    {regions.map((region: any) => (
+                      <MenuItem key={region.id} value={region.id}>
+                        {region.name_uz || region.name}
+                      </MenuItem>
+                    ))}
+                  </CustomTextField>
+                )}
+              />
             </Grid>
             <Grid item xs={12} md={4}>
-              <Controller name='district' control={control} render={({ field }) => (
-                <CustomTextField select fullWidth label='Tuman' {...field} value={field.value || ''}>
-                  {districts.map((district: any) => (
-                    <MenuItem key={district.id} value={district.id}>{district.name_uz || district.name}</MenuItem>
-                  ))}
-                </CustomTextField>
-              )} />
+              <Controller
+                name='district'
+                control={control}
+                render={({ field }) => (
+                  <CustomTextField select fullWidth label='Tuman' {...field} value={field.value || ''}>
+                    {districts.map((district: any) => (
+                      <MenuItem key={district.id} value={district.id}>
+                        {district.name_uz || district.name}
+                      </MenuItem>
+                    ))}
+                  </CustomTextField>
+                )}
+              />
             </Grid>
           </Grid>
         </CardContent>
@@ -264,7 +393,13 @@ const ProjectCreatePage = () => {
           <Button type='submit' variant='contained' disabled={isSubmitting}>
             {isSubmitting ? 'Saqlanmoqda…' : 'Saqlash'}
           </Button>
-          <Button type='button' variant='tonal' color='secondary' onClick={() => router.push('/cms/projects')} style={{ marginLeft: 16 }}>
+          <Button
+            type='button'
+            variant='tonal'
+            color='secondary'
+            onClick={() => router.push('/cms/projects')}
+            style={{ marginLeft: 16 }}
+          >
             Bekor qilish
           </Button>
         </CardContent>

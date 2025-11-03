@@ -15,7 +15,9 @@ const CompanyProfilePage = () => {
 
   const fetchProfile = async () => {
     setLoading(true)
-    const { data: { results: res } } = await DataService.get(endpoints.companyProfile)
+    const {
+      data: { results: res }
+    } = await DataService.get(endpoints.companyProfile)
     setProfile(Array.isArray(res) ? res[0] : res)
     setLoading(false)
   }
@@ -43,7 +45,7 @@ const CompanyProfilePage = () => {
       const formData = new FormData()
       Object.entries(values).forEach(([key, value]) => {
         if ((key === 'logo' || key === 'file') && value) {
-          formData.append(key, value as File)
+          if (value instanceof File) formData.append(key, value as File)
         } else if (value !== undefined && value !== null) {
           formData.append(key, String(value))
         }

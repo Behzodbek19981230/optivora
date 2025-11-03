@@ -35,7 +35,10 @@ const defaultValues: FormValues = {
   name_ru: '',
   name_lt: '',
   slug: '',
-  description: '',
+  description_uz: '',
+  description_en: '',
+  description_ru: '',
+  description_lt: '',
   icon: '',
   iconFile: null,
   order_index: 0
@@ -76,7 +79,10 @@ const IndustryFormDialog = ({ open, onClose, onSaved, mode, item }: Props) => {
         name_lt: item.name_lt,
         slug: item.slug,
         short_description: item.short_description || '',
-        description: item.description || '',
+        description_uz: item.description_uz || '',
+        description_en: item.description_en || '',
+        description_ru: item.description_ru || '',
+        description_lt: item.description_lt || '',
         icon: item.icon || '',
         iconFile: null,
         order_index: item.order_index
@@ -93,7 +99,10 @@ const IndustryFormDialog = ({ open, onClose, onSaved, mode, item }: Props) => {
     fd.append('name_ru', values.name_ru)
     fd.append('name_lt', values.name_lt)
     fd.append('slug', values.slug)
-    if (values.description !== undefined) fd.append('description', values.description || '')
+    fd.append('description_uz', values.description_uz || '')
+    fd.append('description_en', values.description_en || '')
+    fd.append('description_ru', values.description_ru || '')
+    fd.append('description_lt', values.description_lt || '')
     fd.append('order_index', String(Number(values.order_index) || 0))
     if (values.iconFile) {
       fd.append('icon', values.iconFile)
@@ -169,15 +178,43 @@ const IndustryFormDialog = ({ open, onClose, onSaved, mode, item }: Props) => {
               />
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid item xs={6}>
               <Controller
-                name='description'
+                name='description_uz'
                 control={control}
                 render={({ field }) => (
-                  <CustomTextField fullWidth label='To‘liq tavsif' multiline minRows={3} {...field} />
+                  <CustomTextField fullWidth label='To‘liq tavsif(Uz)' multiline minRows={3} {...field} />
                 )}
               />
             </Grid>
+            <Grid item xs={6}>
+              <Controller
+                name='description_en'
+                control={control}
+                render={({ field }) => (
+                  <CustomTextField fullWidth label='To‘liq tavsif(En)' multiline minRows={3} {...field} />
+                )}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Controller
+                name='description_ru'
+                control={control}
+                render={({ field }) => (
+                  <CustomTextField fullWidth label='To‘liq tavsif(Ru)' multiline minRows={3} {...field} />
+                )}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Controller
+                name='description_lt'
+                control={control}
+                render={({ field }) => (
+                  <CustomTextField fullWidth label='To‘liq tavsif(Lt)' multiline minRows={3} {...field} />
+                )}
+              />
+            </Grid>
+
             <Grid item xs={12} md={6}>
               <Controller
                 name='iconFile'

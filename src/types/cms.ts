@@ -40,6 +40,10 @@ export interface Industry extends BaseEntity {
   name_lt: string
   slug: string
   short_description?: string | null
+  description_uz?: string | null
+  description_en?: string | null
+  description_ru?: string | null
+  description_lt?: string | null
   description?: string | null
   icon?: string | null
   order_index: number
