@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button,  MenuItem, Grid } from '@mui/material'
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, MenuItem, Grid } from '@mui/material'
 import { OurWork, OUR_WORK_TYPE_OPTIONS } from 'src/types/our-work'
 import { DataService } from 'src/configs/dataService'
 import endpoints from 'src/configs/endpoint '
@@ -63,33 +63,134 @@ const OurWorkFormDialog: React.FC<OurWorkFormDialogProps> = ({ open, onClose, on
       <DialogContent>
         <Grid container spacing={2} sx={{ mt: 1 }}>
           <Grid item xs={12}>
-            <CustomTextField label='Sarlavha' name='title' value={form.title || ''} onChange={handleChange} fullWidth required />
+            <CustomTextField
+              label='Sarlavha(Uz)'
+              name='title_uz'
+              value={form.title_uz || ''}
+              onChange={handleChange}
+              fullWidth
+              required
+            />
           </Grid>
           <Grid item xs={12}>
-            <CustomTextField label='Tavsif' name='description' value={form.description || ''} onChange={handleChange} fullWidth multiline rows={3} />
+            <CustomTextField
+              label='Sarlavha(Ru)'
+              name='title_ru'
+              value={form.title_ru || ''}
+              onChange={handleChange}
+              fullWidth
+              required
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <CustomTextField
+              label='Sarlavha(En)'
+              name='title_en'
+              value={form.title_en || ''}
+              onChange={handleChange}
+              fullWidth
+              required
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <CustomTextField
+              label='Sarlavha(Lt)'
+              name='title_lt'
+              value={form.title_lt || ''}
+              onChange={handleChange}
+              fullWidth
+              required
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <CustomTextField
+              label='Tavsif(Uz)'
+              name='description_uz'
+              value={form.description_uz || ''}
+              onChange={handleChange}
+              fullWidth
+              multiline
+              rows={3}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <CustomTextField
+              label='Tavsif(Ru)'
+              name='description_ru'
+              value={form.description_ru || ''}
+              onChange={handleChange}
+              fullWidth
+              multiline
+              rows={3}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <CustomTextField
+              label='Tavsif(En)'
+              name='description_en'
+              value={form.description_en || ''}
+              onChange={handleChange}
+              fullWidth
+              multiline
+              rows={3}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <CustomTextField
+              label='Tavsif(Lt)'
+              name='description_lt'
+              value={form.description_lt || ''}
+              onChange={handleChange}
+              fullWidth
+              multiline
+              rows={3}
+            />
           </Grid>
           <Grid item xs={12} md={6}>
-                            <label style={{ display: 'block', marginBottom: 8 }}>Logo (rasm):</label>
-                            <input type='file' accept='image/*' onChange={onLogoChange} />
-                            {logoPreview && (
-                                <div style={{ marginTop: 8 }}>
-                                    <img src={logoPreview} alt='logo preview' style={{ maxWidth: 80, maxHeight: 80, borderRadius: 8 }} />
-                                </div>
-                            )}
-                        </Grid>
+            <label style={{ display: 'block', marginBottom: 8 }}>Logo (rasm):</label>
+            <input type='file' accept='image/*' onChange={onLogoChange} />
+            {logoPreview && (
+              <div style={{ marginTop: 8 }}>
+                <img src={logoPreview} alt='logo preview' style={{ maxWidth: 80, maxHeight: 80, borderRadius: 8 }} />
+              </div>
+            )}
+          </Grid>
           <Grid item xs={12}>
-            <CustomTextField label='Type' name='type' value={form.type || ''} onChange={handleChange} select fullWidth required>
-              {OUR_WORK_TYPE_OPTIONS.map(opt => <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>)}
+            <CustomTextField
+              label='Type'
+              name='type'
+              value={form.type || ''}
+              onChange={handleChange}
+              select
+              fullWidth
+              required
+            >
+              {OUR_WORK_TYPE_OPTIONS.map(opt => (
+                <MenuItem key={opt.value} value={opt.value}>
+                  {opt.label}
+                </MenuItem>
+              ))}
             </CustomTextField>
           </Grid>
           <Grid item xs={12}>
-            <CustomTextField label='Tartib raqami' name='order_index' type='number' value={form.order_index ?? ''} onChange={handleChange} fullWidth />
+            <CustomTextField
+              label='Tartib raqami'
+              name='order_index'
+              type='number'
+              value={form.order_index ?? ''}
+              onChange={handleChange}
+              fullWidth
+            />
           </Grid>
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} disabled={loading}>Bekor qilish</Button>
-        <Button onClick={handleSubmit} variant='contained' disabled={loading}>{form.id ? 'Saqlash' : 'Qo‘shish'}</Button>
+        <Button onClick={onClose} disabled={loading}>
+          Bekor qilish
+        </Button>
+        <Button onClick={handleSubmit} variant='contained' disabled={loading}>
+          {form.id ? 'Saqlash' : 'Qo‘shish'}
+        </Button>
       </DialogActions>
     </Dialog>
   )
