@@ -40,6 +40,7 @@ const OurWorkFormDialog: React.FC<OurWorkFormDialogProps> = ({ open, onClose, on
       const formData = new FormData()
       Object.entries(form).forEach(([key, value]) => {
         if (key === 'icon' && value && typeof value !== 'string') {
+            if (value instanceof File)
           formData.append('icon', value as unknown as File)
         } else if (value !== undefined && value !== null) {
           formData.append(key, String(value))

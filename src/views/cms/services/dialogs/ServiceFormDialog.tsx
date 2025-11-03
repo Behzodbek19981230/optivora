@@ -85,7 +85,7 @@ const ServiceFormDialog = ({ open, onClose, onSaved, mode, item }: Props) => {
     const formData = new FormData()
     Object.entries(values).forEach(([key, value]) => {
       if (key === 'icon' && value) {
-        formData.append('icon', value as File)
+        if (value instanceof File) formData.append('icon', value as File)
       } else if (Array.isArray(value)) {
         value.forEach(v => formData.append(key, String(v)))
       } else if (value !== undefined && value !== null) {
