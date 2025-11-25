@@ -21,4 +21,8 @@ export interface CompanyProfile {
   description_ru: string
   description_lt: string
   file?: File | string
+  years_experience: string
+  equipment_categories: string
+  projects_supported: string
+  international_partners: string
 }

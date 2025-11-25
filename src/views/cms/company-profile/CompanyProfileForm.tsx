@@ -173,6 +173,35 @@ const CompanyProfileForm = ({ initialValues, onSubmit, loading }: Props) => {
                 render={({ field }) => <CustomTextField fullWidth multiline rows={4} label='Tavsif (LT)' {...field} />}
               />
             </Grid>
+            <Grid item xs={12} md={8}></Grid>
+            <Grid item xs={12} md={3}>
+              <Controller
+                name='years_experience'
+                control={control}
+                render={({ field }) => <CustomTextField fullWidth label='Yillik tajriba' {...field} />}
+              />
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <Controller
+                name='equipment_categories'
+                control={control}
+                render={({ field }) => <CustomTextField fullWidth label='Uskuna kategoriyalari' {...field} />}
+              />
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <Controller
+                name='projects_supported'
+                control={control}
+                render={({ field }) => <CustomTextField fullWidth label='Qo‘llab-quvvatlangan loyihalar' {...field} />}
+              />
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <Controller
+                name='international_partners'
+                control={control}
+                render={({ field }) => <CustomTextField fullWidth label='Xalqaro hamkorlar' {...field} />}
+              />
+            </Grid>
           </Grid>
         </CardContent>
         <CardContent>
